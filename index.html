@@ -789,6 +789,9 @@
   :root[data-theme="light"] .eonet-item { background: #f7f9ff; }
   .eonet-item strong { color: var(--ink); }
   .eonet-item .meta { color: var(--ink-3); font-size: 0.72rem; }
+  .warm-chart { width: 100%; height: 72px; display: block; margin-top: 6px; border-radius: 8px; background: rgba(0,0,0,0.25); border: 1px solid var(--border); }
+  :root[data-theme="light"] .warm-chart { background: #eaf1ff; }
+  .lang-btn { font-family: var(--mono); font-size: 0.72rem; letter-spacing: 0.08em; }
 
   footer {
     border-top: 1px solid var(--border);
@@ -1015,6 +1018,7 @@
     </div>
     <button class="btn" id="tourBtn" aria-pressed="false" title="Auto tour — cycle the four Earth scenes (T)">Auto tour</button>
     <button class="btn" id="recordBtn" aria-pressed="false" title="Record the sonification as a .webm file">Record</button>
+    <button class="btn lang-btn" id="langBtn" title="Switch language / மொழி மாற்று">EN · தமிழ்</button>
     <button class="btn icon" id="themeBtn" title="Light / dark theme (L)" aria-label="Switch to light theme">☀</button>
     <button class="btn icon" id="contrastBtn" aria-pressed="false" title="High contrast mode" aria-label="Toggle high contrast mode">◐</button>
     <button class="btn icon" id="helpBtn" title="Help and keyboard shortcuts (H)" aria-label="Open help">?</button>
@@ -1282,7 +1286,8 @@
         <h4>🌡️ Global warming</h4>
         <div class="big" id="liveTemp">+1.2 °C since 1880</div>
         <div class="sub">NASA GISS global mean anomaly · <a href="https://climate.nasa.gov/vital-signs/global-temperature/" target="_blank" rel="noopener">climate.nasa.gov ↗</a></div>
-        <div class="trend alert" id="liveTempTrend">▲ Warming trend — sonified as rising pitch</div>
+        <canvas class="warm-chart" id="warmChart" width="260" height="72" aria-label="Global temperature anomaly 1880-2026 warming curve — click to sonify"></canvas>
+        <div class="trend alert" id="liveTempTrend">▲ Warming trend — click chart to hear rising pitch</div>
       </div>
       <div class="climate-card">
         <h4>🌊 Sea level & CO₂</h4>
@@ -1299,8 +1304,8 @@
       <div class="climate-card">
         <h4>🛰️ Satellite fleet — live orbits</h4>
         <div class="big" id="liveSatCount">7 tracked · ISS + GEO + polar</div>
-        <div class="sub">Himawari-9 (140.7°E) · GOES-18 (75.2°W) · ISS · NOAA-20 · Terra · Aqua · GPM</div>
-        <div class="trend cool">Visible as colored dots orbiting the globe with trails</div>
+        <div class="sub" id="liveIssSub">Himawari-9 (140.7°E) · GOES-18 (75.2°W) · <span id="liveIssPos">ISS live: fetching…</span> · NOAA-20 · Terra · Aqua · GPM</div>
+        <div class="trend cool" id="liveSatTrend">Visible as colored dots orbiting the globe with trails — <button type="button" class="link-btn" id="liveIssBtn" style="font-size:0.72rem;padding:0 4px;">📍 Track ISS now</button></div>
       </div>
     </div>
 
@@ -1667,7 +1672,9 @@
     mediaName: '',
     nasaDate: null,
     nasaLayer: null,
-    glOk: false
+    glOk: false,
+    lang: (localStorage.getItem('msb-lang') || 'en'),
+    liveISS: null
   };
 
   const feat = {
@@ -1759,7 +1766,12 @@
     liveDisasterSub: $('liveDisasterSub'),
     liveDisasterTrend: $('liveDisasterTrend'),
     eonetList: $('eonetList'),
-    footerLiveCheck: $('footerLiveCheck')
+    footerLiveCheck: $('footerLiveCheck'),
+    warmChart: $('warmChart'),
+    liveIssPos: $('liveIssPos'),
+    liveIssBtn: $('liveIssBtn'),
+    liveSatCount: $('liveSatCount'),
+    langBtn: $('langBtn')
   };
 
   const flatCtx = el.flatCanvas.getContext('2d');
@@ -3510,11 +3522,26 @@
       const trails = this.satTrails;
       // time in seconds, scale for visible orbit speed (real periods scaled 20x for demo)
       const speedScale = 18;
+      // if live ISS available and fresh (< 60s), override ISS position from real lat/lon
+      const live = state.liveISS && (Date.now() - state.liveISS.at < 60000) ? state.liveISS : null;
       for (let i = 0; i < sats.defs.length; i++) {
         const s = sats.defs[i];
         const isGeo = s.alt > 3;
+        const isISS = s.name === 'ISS';
         let x, y, z;
-        if (isGeo) {
+        if (isISS && live) {
+          const latR = live.lat * DEG, lonR = live.lon * DEG;
+          const r = s.alt;
+          const st = Math.sin((90 - live.lat) * DEG), ct = Math.cos((90 - live.lat) * DEG);
+          // convert lat/lon to 3D
+          x = st * Math.cos((lonR + Math.PI)) * r;
+          y = ct * r;
+          z = -st * Math.sin((lonR + Math.PI)) * r;
+          const pulse = 0.95 + Math.sin(time * 2.5) * 0.12;
+          sats.colorData[i * 3] = s.color[0] * pulse;
+          sats.colorData[i * 3 + 1] = s.color[1] * pulse;
+          sats.colorData[i * 3 + 2] = s.color[2] * pulse;
+        } else if (isGeo) {
           // geostationary — fixed lon, slightly inclined
           const lonRad = (s.lon || 0) * DEG;
           const r = s.alt;
@@ -3551,7 +3578,15 @@
           const idx = i * 10 + j;
           const lag = (j + 1) * 0.06;
           let tx, ty, tz;
-          if (isGeo) {
+          if (isISS && live) {
+            const lagDeg = (j + 1) * 1.2;
+            const lagLon = (live.lon - lagDeg) * DEG;
+            const r = s.alt;
+            const st = Math.sin((90 - live.lat) * DEG), ct = Math.cos((90 - live.lat) * DEG);
+            tx = st * Math.cos((lagLon + Math.PI)) * r;
+            ty = ct * r;
+            tz = -st * Math.sin((lagLon + Math.PI)) * r;
+          } else if (isGeo) {
             const lonRad = (s.lon || 0) * DEG;
             const r = s.alt;
             const t = time * 0.015 + s.phase - lag * 0.4;
@@ -4489,6 +4524,140 @@
     // periodic re-check every 10 minutes alongside GIBS
     setInterval(() => { if (document.visibilityState === 'visible') checkLiveDisasters(); }, 10 * 60 * 1000);
 
+    // ---- ISS live position — wheretheiss.at + open-notify fallback ----
+    async function fetchISSLive() {
+      const posEl = el.liveIssPos;
+      const tryFetch = async (url, parser) => {
+        const c = new AbortController();
+        const to = setTimeout(() => c.abort(), 8000);
+        try {
+          const r = await fetch(url, { signal: c.signal });
+          clearTimeout(to);
+          if (!r.ok) throw new Error('HTTP ' + r.status);
+          const j = await r.json();
+          return parser(j);
+        } catch (e) { clearTimeout(to); throw e; }
+      };
+      try {
+        let lat, lon, alt, vel;
+        try {
+          const d = await tryFetch('https://api.wheretheiss.at/v1/satellites/25544', j => j);
+          lat = d.latitude; lon = d.longitude; alt = d.altitude; vel = d.velocity;
+        } catch {
+          const d2 = await tryFetch('http://api.open-notify.org/iss-now.json', j => j);
+          lat = parseFloat(d2.iss_position.latitude);
+          lon = parseFloat(d2.iss_position.longitude);
+          alt = 408; vel = 27600;
+        }
+        state.liveISS = { lat, lon, alt, vel, at: Date.now() };
+        if (posEl) posEl.textContent = 'ISS live: ' + lat.toFixed(1) + '°, ' + lon.toFixed(1) + '° · ' + Math.round(alt) + ' km · ' + Math.round(vel) + ' km/h';
+        if (el.liveSatCount) el.liveSatCount.textContent = '7 tracked · ISS LIVE ' + lat.toFixed(0) + '°, ' + lon.toFixed(0) + '°';
+        if (el.footerLiveCheck) el.footerLiveCheck.textContent = 'Live: ISS ' + lat.toFixed(1) + '°, ' + lon.toFixed(1) + '° · EONET ' + (el.liveDisasterCount ? el.liveDisasterCount.textContent : '');
+      } catch (err) {
+        if (posEl) posEl.textContent = 'ISS live: unavailable — using simulated orbit (click Track ISS for web map)';
+        state.liveISS = null;
+      }
+    }
+    if (el.liveIssBtn) el.liveIssBtn.addEventListener('click', () => {
+      fetchISSLive();
+      window.open('https://spotthestation.nasa.gov/tracking_map.cfm', '_blank', 'noopener');
+    });
+    // poll ISS every 12s when visible
+    setTimeout(fetchISSLive, 1800);
+    setInterval(() => { if (document.visibilityState === 'visible') fetchISSLive(); }, 12000);
+
+    // ---- Global warming chart — NASA GISS style curve + click to sonify ----
+    (function initWarmChart(){
+      const c = el.warmChart;
+      if (!c) return;
+      const ctx = c.getContext('2d');
+      if (!ctx) return;
+      // NASA GISS approx anomalies 1880-2024 (°C) — educational, real trend, links to source
+      const years = [1880,1900,1920,1940,1960,1980,1990,2000,2010,2015,2020,2024];
+      const anom = [-0.16,-0.08,-0.25,-0.12,-0.03,0.12,0.35,0.42,0.72,0.98,1.02,1.47];
+      function draw() {
+        const dpr = window.devicePixelRatio || 1;
+        const w = c.clientWidth * dpr, h = c.clientHeight * dpr;
+        if (c.width !== w || c.height !== h) { c.width = w; c.height = h; }
+        ctx.clearRect(0,0,w,h);
+        const pad = 10 * dpr;
+        const gw = w - pad*2, gh = h - pad*2;
+        // grid
+        ctx.strokeStyle = 'rgba(120,150,200,0.15)'; ctx.lineWidth = 1*dpr;
+        for (let i=0;i<=4;i++){ const y=pad+gh*i/4; ctx.beginPath(); ctx.moveTo(pad,y); ctx.lineTo(pad+gw,y); ctx.stroke(); }
+        // area
+        const xFor = i => pad + gw * i/(years.length-1);
+        const yFor = v => pad + gh * (1 - (v+0.4)/2.0);
+        ctx.fillStyle = 'rgba(245,165,36,0.18)'; ctx.beginPath();
+        ctx.moveTo(xFor(0), yFor(0));
+        anom.forEach((v,i)=> ctx.lineTo(xFor(i), yFor(v)));
+        ctx.lineTo(xFor(anom.length-1), pad+gh); ctx.lineTo(pad, pad+gh); ctx.closePath(); ctx.fill();
+        // line
+        ctx.strokeStyle = '#f5a524'; ctx.lineWidth = 2*dpr; ctx.beginPath();
+        anom.forEach((v,i)=> { const x=xFor(i), y=yFor(v); if(i===0) ctx.moveTo(x,y); else ctx.lineTo(x,y); });
+        ctx.stroke();
+        // dots
+        anom.forEach((v,i)=> { ctx.fillStyle = i===anom.length-1 ? '#ff6b6b' : 'rgba(255,220,140,0.9)'; ctx.beginPath(); ctx.arc(xFor(i), yFor(v), i===anom.length-1?3*dpr:1.8*dpr,0,Math.PI*2); ctx.fill(); });
+        // labels
+        ctx.fillStyle = 'rgba(180,200,230,0.9)'; ctx.font = (9*dpr)+'px monospace'; ctx.fillText('1880', pad, h-2*dpr); ctx.fillText('2024 +1.47°C', w-pad-62*dpr, h-2*dpr);
+      }
+      draw(); window.addEventListener('resize', draw);
+      // sonify on click/tap: map anomaly to pitch rising
+      c.addEventListener('click', () => {
+        const ctxA = Audio.init(); if (!ctxA) return;
+        if (ctxA.state === 'suspended') ctxA.resume();
+        // play rising notes for each point
+        anom.forEach((v,i)=>{
+          const t = ctxA.currentTime + i*0.28;
+          const freq = 180 + (v+0.4)/2.0 * 520; // -0.4..1.6 => 180..700Hz rising
+          const o = ctxA.createOscillator(); const g = ctxA.createGain();
+          o.type = i>8 ? 'sine' : 'triangle'; o.frequency.value = freq;
+          g.gain.setValueAtTime(0.0001, t);
+          g.gain.linearRampToValueAtTime(0.22, t+0.04);
+          g.gain.exponentialRampToValueAtTime(0.0001, t+0.26);
+          o.connect(g); g.connect(Audio.master || ctxA.destination);
+          o.start(t); o.stop(t+0.3);
+        });
+        announce('Playing warming curve: 1880 to 2024 rising pitch.');
+      });
+      c.style.cursor = 'pointer'; c.title = 'Click to hear warming — rising pitch 1880→2024';
+    })();
+
+    // ---- Tamil / English toggle ----
+    const I18N = {
+      en: {
+        tour: 'Auto tour', record: 'Record', liveTitle: 'Live Earth — climate · disasters · satellites',
+        check: '🔄 Check live disasters', openEonet: 'Open NASA EONET', openClimate: 'Open NASA Climate', openWorldview: 'Open NASA Worldview',
+        warming: 'Global warming', disasters: 'Active disasters — EONET', satellites: 'Satellite fleet — live orbits',
+        footerLive: 'Live data: NASA GIBS + EONET'
+      },
+      ta: {
+        tour: 'தானியங்கி சுற்றுப்பயணம்', record: 'பதிவு', liveTitle: 'நேரடி பூமி — காலநிலை · பேரிடர் · செயற்கைக்கோள்கள்',
+        check: '🔄 நேரடி பேரிடர்களைச் சரிபார்', openEonet: 'EONET திற', openClimate: 'காலநிலை திற', openWorldview: 'Worldview திற',
+        warming: 'புவி வெப்பமயமாதல்', disasters: 'செயலில் பேரிடர்கள் — EONET', satellites: 'செயற்கைக்கோள் குழு — நேரடி சுற்றுப்பாதைகள்',
+        footerLive: 'நேரடி தரவு: NASA GIBS + EONET'
+      }
+    };
+    function applyLang(lang){
+      state.lang = (lang === 'ta' ? 'ta' : 'en');
+      try{ localStorage.setItem('msb-lang', state.lang); }catch{}
+      const d = I18N[state.lang];
+      if (el.tourBtn) el.tourBtn.textContent = d.tour;
+      if (el.recordBtn) el.recordBtn.textContent = state.tour ? 'Stop rec' : d.record;
+      const lt = document.getElementById('liveTitle');
+      if (lt) lt.textContent = d.liveTitle;
+      if (el.liveCheckBtn) el.liveCheckBtn.textContent = d.check;
+      if (el.liveEonetBtn) el.liveEonetBtn.textContent = d.openEonet;
+      if (el.liveClimateBtn) el.liveClimateBtn.textContent = d.openClimate;
+      if (el.liveGibsBtn) el.liveGibsBtn.textContent = d.openWorldview;
+      if (el.langBtn) el.langBtn.textContent = state.lang === 'ta' ? 'தமிழ் · EN' : 'EN · தமிழ்';
+      // announce
+      announce(state.lang === 'ta' ? 'தமிழ் மொழி தேர்ந்தெடுக்கப்பட்டது' : 'English selected');
+    }
+    if (el.langBtn) el.langBtn.addEventListener('click', () => applyLang(state.lang === 'en' ? 'ta' : 'en'));
+    // init from saved
+    if (state.lang === 'ta') setTimeout(()=>applyLang('ta'), 500);
+
     // drag, pinch and wheel on the stage
     el.stage.addEventListener('pointerdown', (e) => {
       if (state.mode !== '3d') return;
@@ -4755,7 +4924,7 @@
 
   // expose a tiny diagnostics hook for the console / automated smoke tests
   window.MSB_EARTH_VIEW = {
-    version: '3.0.0',
+    version: '3.1.0',
     state: state,
     features: () => ({ warmth: feat.warmth, lum: feat.lum, motion: feat.motion, freq: feat.freq, pan: feat.pan }),
     isBooted: () => booted,

@@ -18,7 +18,7 @@ This application scans Earth imagery in real time and converts **colour, brightn
 motion** into an evolving musical performance. There are no recorded tracks: every note, filter sweep and
 drum pulse is synthesised live in the browser with the Web Audio API.
 
-Version 3 adds a hand-written WebGL globe with **1800 twinkling stars**, a **live satellite fleet** (ISS, Himawari-9, GOES-18, NOAA-20, Terra, Aqua, GPM), great-circle data arcs and scanning meridian — plus video input, session recording, auto tour, keyboard control, a full accessibility layer, **boosted audio**, and a **Live Earth** panel that checks public NASA data in real time.
+Version 3.1 adds a hand-written WebGL globe with **1800 twinkling stars**, a **live satellite fleet** (ISS live via wheretheiss.at, Himawari-9, GOES-18, NOAA-20, Terra, Aqua, GPM), great-circle data arcs and scanning meridian — plus video input, session recording, auto tour, keyboard control, a full accessibility layer, **boosted audio**, a **Live Earth** panel that checks public NASA data in real time, a **warming chart you can click to hear**, and **EN · தமிழ்** language toggle.
 
 ---
 

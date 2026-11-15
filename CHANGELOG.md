@@ -2,6 +2,13 @@
 
 All notable changes to MSB NASA EARTH VIEW.
 
+## [3.1.0] — 2026-11-15
+
+### Added
+- **ISS live position:** fetches `api.wheretheiss.at` (fallback `open-notify`) every 12s, shows lat/lon/alt/velocity in Live Earth panel and overrides ISS dot to true orbital position with lag trail.
+- **Global warming chart:** NASA GISS warming curve 1880–2024 canvas (1880 −0.16°C → 2024 +1.47°C) in Live Earth card — click to sonify rising pitch.
+- **Tamil / English toggle:** header button `EN · தமிழ்` persists in `localStorage`, switches Live Earth labels and announces selection.
+
 ## [3.0.0] — 2026-11-15
 
 ### Added
