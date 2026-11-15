@@ -1683,6 +1683,16 @@
     transition: width 0.4s ease, background-color 0.3s ease;
   }
 
+  /* 2D HUD Canvas Overlay on 3D Globe Stage */
+  .stage-hud-canvas {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 2;
+  }
+
   /* Floating Visual Alert Toast Stack */
   .rt-toast-stack {
     position: fixed;
@@ -1820,6 +1830,129 @@
 </header>
 
 <main>
+  <!-- Real-Time Visual Events & Alerts Command Center (Above the fold) -->
+  <section class="panel rt-command-deck" id="rtVisualPanel" aria-labelledby="rtCommandTitle">
+    <div class="panel-head">
+      <span class="panel-title" id="rtCommandTitle"><i class="live-dot" aria-hidden="true"></i><b>⚡</b> Real-Time Visual Events &amp; Alerts Command Center</span>
+      <span class="panel-meta" id="rtCommandMeta">Live Radar · Radial Gauges · 60s Sparklines · 3D Globe Fly-To · Alert Toasts</span>
+    </div>
+
+    <div class="rt-topbar">
+      <div class="rt-status-cluster">
+        <span class="rt-live-badge" id="rtStreamBadge"><i aria-hidden="true"></i> <span id="rtStreamStateText">LIVE VISUAL STREAM</span></span>
+        <span class="rt-stat-pill">Events <b id="rtStatTotal">0</b></span>
+        <span class="rt-stat-pill crit">Critical/Warn <b id="rtStatCrit">0</b></span>
+        <span class="rt-stat-pill good">Throughput <b id="rtStatRate">12/min</b></span>
+        <span class="rt-stat-pill">UTC <b id="rtStatClock">--:--:--</b></span>
+      </div>
+      <div class="rt-controls">
+        <button type="button" class="btn btn-burst" id="rtSimulateBtn" title="Trigger a live planetary event burst with radar shockwave, toast alert, 3D globe lock &amp; audio">⚡ Simulate Live Alert</button>
+        <button type="button" class="btn" id="rtAutoStreamBtn" aria-pressed="true" title="Toggle continuous real-time visual telemetry pulse &amp; auto-cycling highlights">🔴 Auto-Stream: ON</button>
+        <button type="button" class="btn" id="rtAlertSoundBtn" aria-pressed="true" title="Toggle Web Audio synth chime when a high-priority alert arrives">🔊 Alert Chime: ON</button>
+        <button type="button" class="btn btn-primary" id="rtSyncAllBtn" title="Poll NASA EONET, USGS Quakes, NOAA SWPC, ISS &amp; Open-Meteo right now">🔄 Sync All Live Feeds</button>
+      </div>
+    </div>
+
+    <!-- 4 Real-Time Visual Radial Gauges + Rolling 60s Sparklines -->
+    <div class="rt-gauges-grid">
+      <div class="rt-gauge-card" id="rtCardQuake">
+        <div class="rt-gauge-head">
+          <span class="rt-gauge-title">🫨 Seismic Activity (USGS)</span>
+          <span class="rt-sev-pill watch" id="rtSevQuake">LIVE</span>
+        </div>
+        <div class="rt-gauge-body">
+          <canvas class="rt-radial-canvas" id="rtGaugeQuake" width="68" height="68" aria-label="Seismic magnitude radial gauge"></canvas>
+          <div class="rt-gauge-metrics">
+            <div class="rt-gauge-big" id="rtValQuake">M5.2 peak</div>
+            <div class="rt-gauge-sub" id="rtSubQuake">24h global feed · click sparkline to hear</div>
+          </div>
+        </div>
+        <canvas class="rt-spark-canvas" id="rtSparkQuake" width="240" height="36" title="Rolling 60s seismic energy &amp; magnitude bursts — click to sonify"></canvas>
+      </div>
+
+      <div class="rt-gauge-card" id="rtCardEonet">
+        <div class="rt-gauge-head">
+          <span class="rt-gauge-title">🔥 Active Disasters (EONET)</span>
+          <span class="rt-sev-pill warn" id="rtSevEonet">ACTIVE</span>
+        </div>
+        <div class="rt-gauge-body">
+          <canvas class="rt-radial-canvas" id="rtGaugeEonet" width="68" height="68" aria-label="Active NASA EONET disasters radial gauge"></canvas>
+          <div class="rt-gauge-metrics">
+            <div class="rt-gauge-big" id="rtValEonet">12 open</div>
+            <div class="rt-gauge-sub" id="rtSubEonet">Wildfires · storms · volcanoes</div>
+          </div>
+        </div>
+        <canvas class="rt-spark-canvas" id="rtSparkEonet" width="240" height="36" title="Category &amp; intensity breakdown — click to sonify"></canvas>
+      </div>
+
+      <div class="rt-gauge-card" id="rtCardSpace">
+        <div class="rt-gauge-head">
+          <span class="rt-gauge-title">🧲 Magnetosphere (NOAA)</span>
+          <span class="rt-sev-pill nominal" id="rtSevSpace">NOMINAL</span>
+        </div>
+        <div class="rt-gauge-body">
+          <canvas class="rt-radial-canvas" id="rtGaugeSpace" width="68" height="68" aria-label="Geomagnetic Kp index radial gauge"></canvas>
+          <div class="rt-gauge-metrics">
+            <div class="rt-gauge-big" id="rtValSpace">Kp 2.3 · 410 km/s</div>
+            <div class="rt-gauge-sub" id="rtSubSpace">Solar wind &amp; IMF Bz coupling</div>
+          </div>
+        </div>
+        <canvas class="rt-spark-canvas" id="rtSparkSpace" width="240" height="36" title="Rolling solar wind &amp; Kp fluctuations — click to sonify"></canvas>
+      </div>
+
+      <div class="rt-gauge-card" id="rtCardAir">
+        <div class="rt-gauge-head">
+          <span class="rt-gauge-title">🌫️ Air &amp; ISS Telemetry</span>
+          <span class="rt-sev-pill nominal" id="rtSevAir">GOOD</span>
+        </div>
+        <div class="rt-gauge-body">
+          <canvas class="rt-radial-canvas" id="rtGaugeAir" width="68" height="68" aria-label="Air quality index radial gauge"></canvas>
+          <div class="rt-gauge-metrics">
+            <div class="rt-gauge-big" id="rtValAir">AQI 48 · ISS Live</div>
+            <div class="rt-gauge-sub" id="rtSubAir">PM2.5 &amp; orbital station pass</div>
+          </div>
+        </div>
+        <canvas class="rt-spark-canvas" id="rtSparkAir" width="240" height="36" title="Rolling AQI &amp; orbital telemetry — click to sonify"></canvas>
+      </div>
+    </div>
+
+    <!-- Main Split: Interactive Tactical World Radar Map + Visual Event Cards -->
+    <div class="rt-main-split">
+      <div class="rt-map-box">
+        <div class="rt-subhead">
+          <strong>🗺️ Live Tactical Planetary Event Radar (Click any pulsing ring to lock 3D Globe + Sonify)</strong>
+          <span id="rtMapCoordsReadout">Hover or click map · Day/Night terminator + ISS orbit</span>
+        </div>
+        <div class="rt-map-stage">
+          <canvas id="rtWorldMapCanvas" width="720" height="360" aria-label="Interactive real-time world map showing pulsing earthquakes, NASA EONET disasters, solar terminator, and live ISS orbit"></canvas>
+          <div class="rt-map-tooltip" id="rtMapTooltip" hidden></div>
+        </div>
+        <div class="rt-map-legend" aria-hidden="true">
+          <span><i style="background:#ef4444;box-shadow:0 0 8px #ef4444"></i> Critical Quake / Volcano / Fire</span>
+          <span><i style="background:#f59e0b;box-shadow:0 0 8px #f59e0b"></i> Severe Storm / M4.5+ Quake</span>
+          <span><i style="background:#38bdf8;box-shadow:0 0 8px #38bdf8"></i> Flood / Sea Ice / Moderate</span>
+          <span><i style="background:#fde047;box-shadow:0 0 8px #fde047"></i> ISS Live Orbit</span>
+          <span><i style="background:#22c55e;box-shadow:0 0 8px #22c55e"></i> Your Station</span>
+        </div>
+      </div>
+
+      <div class="rt-stream-box">
+        <div class="rt-subhead">
+          <strong>⚡ Live Visual Event Stream &amp; Alert Timeline</strong>
+          <span id="rtStreamSubCount">Showing all live feeds</span>
+        </div>
+        <div class="rt-filter-bar" role="group" aria-label="Filter real-time visual events">
+          <button type="button" class="rt-filter-btn active" data-filter="all">All Live</button>
+          <button type="button" class="rt-filter-btn" data-filter="crit">🚨 Alerts (Warn/Crit)</button>
+          <button type="button" class="rt-filter-btn" data-filter="eonet">🔥 EONET Disasters</button>
+          <button type="button" class="rt-filter-btn" data-filter="quake">🫨 USGS Quakes</button>
+          <button type="button" class="rt-filter-btn" data-filter="space">🧲 Space &amp; ISS</button>
+        </div>
+        <div class="rt-event-stream" id="rtEventStream" role="region" aria-live="polite" aria-label="Visual real-time event cards"></div>
+      </div>
+    </div>
+  </section>
+
   <section class="panel" aria-labelledby="stageTitle">
     <div class="panel-head">
       <span class="panel-title" id="stageTitle"><b>2</b> Frame scanner &amp; acoustic engine</span>
@@ -1831,6 +1964,7 @@
         <canvas id="glCanvas" aria-hidden="true"></canvas>
         <canvas id="flatCanvas" role="img"
           aria-label="Flat map of the selected Earth dataset with a vertical scan line moving left to right."></canvas>
+        <canvas id="stageHudCanvas" class="stage-hud-canvas" aria-hidden="true"></canvas>
 
         <div class="hud-top">
           <span class="chip accent" id="hudDataset">Dataset: global sea surface currents</span>
@@ -2072,129 +2206,6 @@
       </div>
     </section>
   </aside>
-
-  <!-- Real-Time Visual Events & Alerts Command Center -->
-  <section class="panel rt-command-deck" id="rtVisualPanel" aria-labelledby="rtCommandTitle">
-    <div class="panel-head">
-      <span class="panel-title" id="rtCommandTitle"><i class="live-dot" aria-hidden="true"></i><b>⚡</b> Real-Time Visual Events &amp; Alerts Command Center</span>
-      <span class="panel-meta" id="rtCommandMeta">Live Radar · Radial Gauges · 60s Sparklines · 3D Globe Fly-To · Alert Toasts</span>
-    </div>
-
-    <div class="rt-topbar">
-      <div class="rt-status-cluster">
-        <span class="rt-live-badge" id="rtStreamBadge"><i aria-hidden="true"></i> <span id="rtStreamStateText">LIVE VISUAL STREAM</span></span>
-        <span class="rt-stat-pill">Events <b id="rtStatTotal">0</b></span>
-        <span class="rt-stat-pill crit">Critical/Warn <b id="rtStatCrit">0</b></span>
-        <span class="rt-stat-pill good">Throughput <b id="rtStatRate">12/min</b></span>
-        <span class="rt-stat-pill">UTC <b id="rtStatClock">--:--:--</b></span>
-      </div>
-      <div class="rt-controls">
-        <button type="button" class="btn btn-burst" id="rtSimulateBtn" title="Trigger a live planetary event burst with radar shockwave, toast alert, 3D globe lock &amp; audio">⚡ Simulate Live Alert</button>
-        <button type="button" class="btn" id="rtAutoStreamBtn" aria-pressed="true" title="Toggle continuous real-time visual telemetry pulse &amp; auto-cycling highlights">🔴 Auto-Stream: ON</button>
-        <button type="button" class="btn" id="rtAlertSoundBtn" aria-pressed="true" title="Toggle Web Audio synth chime when a high-priority alert arrives">🔊 Alert Chime: ON</button>
-        <button type="button" class="btn btn-primary" id="rtSyncAllBtn" title="Poll NASA EONET, USGS Quakes, NOAA SWPC, ISS &amp; Open-Meteo right now">🔄 Sync All Live Feeds</button>
-      </div>
-    </div>
-
-    <!-- 4 Real-Time Visual Radial Gauges + Rolling 60s Sparklines -->
-    <div class="rt-gauges-grid">
-      <div class="rt-gauge-card" id="rtCardQuake">
-        <div class="rt-gauge-head">
-          <span class="rt-gauge-title">🫨 Seismic Activity (USGS)</span>
-          <span class="rt-sev-pill watch" id="rtSevQuake">LIVE</span>
-        </div>
-        <div class="rt-gauge-body">
-          <canvas class="rt-radial-canvas" id="rtGaugeQuake" width="68" height="68" aria-label="Seismic magnitude radial gauge"></canvas>
-          <div class="rt-gauge-metrics">
-            <div class="rt-gauge-big" id="rtValQuake">M5.2 peak</div>
-            <div class="rt-gauge-sub" id="rtSubQuake">24h global feed · click sparkline to hear</div>
-          </div>
-        </div>
-        <canvas class="rt-spark-canvas" id="rtSparkQuake" width="240" height="36" title="Rolling 60s seismic energy &amp; magnitude bursts — click to sonify"></canvas>
-      </div>
-
-      <div class="rt-gauge-card" id="rtCardEonet">
-        <div class="rt-gauge-head">
-          <span class="rt-gauge-title">🔥 Active Disasters (EONET)</span>
-          <span class="rt-sev-pill warn" id="rtSevEonet">ACTIVE</span>
-        </div>
-        <div class="rt-gauge-body">
-          <canvas class="rt-radial-canvas" id="rtGaugeEonet" width="68" height="68" aria-label="Active NASA EONET disasters radial gauge"></canvas>
-          <div class="rt-gauge-metrics">
-            <div class="rt-gauge-big" id="rtValEonet">12 open</div>
-            <div class="rt-gauge-sub" id="rtSubEonet">Wildfires · storms · volcanoes</div>
-          </div>
-        </div>
-        <canvas class="rt-spark-canvas" id="rtSparkEonet" width="240" height="36" title="Category &amp; intensity breakdown — click to sonify"></canvas>
-      </div>
-
-      <div class="rt-gauge-card" id="rtCardSpace">
-        <div class="rt-gauge-head">
-          <span class="rt-gauge-title">🧲 Magnetosphere (NOAA)</span>
-          <span class="rt-sev-pill nominal" id="rtSevSpace">NOMINAL</span>
-        </div>
-        <div class="rt-gauge-body">
-          <canvas class="rt-radial-canvas" id="rtGaugeSpace" width="68" height="68" aria-label="Geomagnetic Kp index radial gauge"></canvas>
-          <div class="rt-gauge-metrics">
-            <div class="rt-gauge-big" id="rtValSpace">Kp 2.3 · 410 km/s</div>
-            <div class="rt-gauge-sub" id="rtSubSpace">Solar wind &amp; IMF Bz coupling</div>
-          </div>
-        </div>
-        <canvas class="rt-spark-canvas" id="rtSparkSpace" width="240" height="36" title="Rolling solar wind &amp; Kp fluctuations — click to sonify"></canvas>
-      </div>
-
-      <div class="rt-gauge-card" id="rtCardAir">
-        <div class="rt-gauge-head">
-          <span class="rt-gauge-title">🌫️ Air &amp; ISS Telemetry</span>
-          <span class="rt-sev-pill nominal" id="rtSevAir">GOOD</span>
-        </div>
-        <div class="rt-gauge-body">
-          <canvas class="rt-radial-canvas" id="rtGaugeAir" width="68" height="68" aria-label="Air quality index radial gauge"></canvas>
-          <div class="rt-gauge-metrics">
-            <div class="rt-gauge-big" id="rtValAir">AQI 48 · ISS Live</div>
-            <div class="rt-gauge-sub" id="rtSubAir">PM2.5 &amp; orbital station pass</div>
-          </div>
-        </div>
-        <canvas class="rt-spark-canvas" id="rtSparkAir" width="240" height="36" title="Rolling AQI &amp; orbital telemetry — click to sonify"></canvas>
-      </div>
-    </div>
-
-    <!-- Main Split: Interactive Tactical World Radar Map + Visual Event Cards -->
-    <div class="rt-main-split">
-      <div class="rt-map-box">
-        <div class="rt-subhead">
-          <strong>🗺️ Live Tactical Planetary Event Radar (Click any pulsing ring to lock 3D Globe + Sonify)</strong>
-          <span id="rtMapCoordsReadout">Hover or click map · Day/Night terminator + ISS orbit</span>
-        </div>
-        <div class="rt-map-stage">
-          <canvas id="rtWorldMapCanvas" width="720" height="360" aria-label="Interactive real-time world map showing pulsing earthquakes, NASA EONET disasters, solar terminator, and live ISS orbit"></canvas>
-          <div class="rt-map-tooltip" id="rtMapTooltip" hidden></div>
-        </div>
-        <div class="rt-map-legend" aria-hidden="true">
-          <span><i style="background:#ef4444;box-shadow:0 0 8px #ef4444"></i> Critical Quake / Volcano / Fire</span>
-          <span><i style="background:#f59e0b;box-shadow:0 0 8px #f59e0b"></i> Severe Storm / M4.5+ Quake</span>
-          <span><i style="background:#38bdf8;box-shadow:0 0 8px #38bdf8"></i> Flood / Sea Ice / Moderate</span>
-          <span><i style="background:#fde047;box-shadow:0 0 8px #fde047"></i> ISS Live Orbit</span>
-          <span><i style="background:#22c55e;box-shadow:0 0 8px #22c55e"></i> Your Station</span>
-        </div>
-      </div>
-
-      <div class="rt-stream-box">
-        <div class="rt-subhead">
-          <strong>⚡ Live Visual Event Stream &amp; Alert Timeline</strong>
-          <span id="rtStreamSubCount">Showing all live feeds</span>
-        </div>
-        <div class="rt-filter-bar" role="group" aria-label="Filter real-time visual events">
-          <button type="button" class="rt-filter-btn active" data-filter="all">All Live</button>
-          <button type="button" class="rt-filter-btn" data-filter="crit">🚨 Alerts (Warn/Crit)</button>
-          <button type="button" class="rt-filter-btn" data-filter="eonet">🔥 EONET Disasters</button>
-          <button type="button" class="rt-filter-btn" data-filter="quake">🫨 USGS Quakes</button>
-          <button type="button" class="rt-filter-btn" data-filter="space">🧲 Space &amp; ISS</button>
-        </div>
-        <div class="rt-event-stream" id="rtEventStream" role="region" aria-live="polite" aria-label="Visual real-time event cards"></div>
-      </div>
-    </div>
-  </section>
 
   <!-- Live Earth Science — public real-time checks -->
   <section class="panel live-earth" aria-labelledby="liveTitle">
@@ -8734,6 +8745,204 @@
     }
   }
 
+  // ---------------------------------------------------------------- 3D stage HUD overlay (live projected shockwaves + callout labels)
+  const stageHudCanvas = document.getElementById('stageHudCanvas');
+  const stageHudCtx = stageHudCanvas ? stageHudCanvas.getContext('2d') : null;
+
+  function projectLatLonToStage(lat, lon, w, h, radiusScale) {
+    const cam = GL.cam;
+    const theta = (90 - lat) * DEG;
+    const phi = (lon + 180) * DEG;
+    const st = Math.sin(theta), ct = Math.cos(theta);
+    const r = radiusScale || 1.012;
+    const px = st * Math.cos(phi) * r;
+    const py = ct * r;
+    const pz = -st * Math.sin(phi) * r;
+
+    const cy = Math.cos(cam.yaw), sy = Math.sin(cam.yaw);
+    const cx = Math.cos(cam.pitch), sx = Math.sin(cam.pitch);
+
+    // m = rotX(pitch) * rotY(yaw) (column-major in GL.draw)
+    const wx = cy * px + sy * pz;
+    const wy = (sx * sy) * px + cx * py + (-sx * cy) * pz;
+    const wz = (-cx * sy) * px + sx * py + (cx * cy) * pz;
+
+    const vz = wz - cam.dist;
+    if (vz >= -0.2) return null;
+
+    // Facing check: dot(normalWorld, normalize(camPos - worldPos))
+    const nx = wx / r, ny = wy / r, nz = wz / r;
+    const tx = -wx, ty = -wy, tz = cam.dist - wz;
+    const tl = Math.hypot(tx, ty, tz) || 1;
+    const facing = (nx * tx + ny * ty + nz * tz) / tl;
+    if (facing < 0.08) return null;
+
+    const fov = 38 * DEG;
+    const f = 1 / Math.tan(fov / 2);
+    const aspect = w / Math.max(1, h);
+    const ndcX = (wx * (f / aspect)) / (-vz);
+    const ndcY = (wy * f) / (-vz);
+
+    return {
+      x: (ndcX * 0.5 + 0.5) * w,
+      y: (0.5 - ndcY * 0.5) * h,
+      facing: facing
+    };
+  }
+
+  function drawStageHudOverlay(t) {
+    if (!stageHudCanvas || !stageHudCtx) return;
+    const dpr = Math.min(window.devicePixelRatio || 1, 2);
+    const rect = stageHudCanvas.getBoundingClientRect();
+    const w = Math.max(320, Math.round((rect.width || 960) * dpr));
+    const h = Math.max(200, Math.round((rect.height || 540) * dpr));
+    if (stageHudCanvas.width !== w || stageHudCanvas.height !== h) {
+      stageHudCanvas.width = w;
+      stageHudCanvas.height = h;
+    }
+    const ctx = stageHudCtx;
+    ctx.clearRect(0, 0, w, h);
+
+    if (state.mode === '3d' && GL.ok) {
+      const list = Array.isArray(state.liveBeacons) ? state.liveBeacons : [];
+      const pulse = (t * 1.35) % 1;
+      let labelsDrawn = 0;
+
+      for (let i = 0; i < Math.min(20, list.length); i++) {
+        const b = list[i];
+        if (!isFinite(b.lat) || !isFinite(b.lon)) continue;
+        const p = projectLatLonToStage(b.lat, b.lon, w, h, 1.012);
+        if (!p) continue;
+        const col = b.color || (b.severity === 'crit' ? '#ef4444' : b.severity === 'warn' ? '#f59e0b' : '#38bdf8');
+        const phase = (pulse + i * 0.19) % 1;
+        const maxR = (b.severity === 'crit' ? 24 : b.severity === 'warn' ? 18 : 13) * dpr * (0.55 + 0.45 * p.facing);
+
+        // Expanding radar shockwave ring on 3D globe
+        ctx.save();
+        ctx.strokeStyle = col;
+        ctx.globalAlpha = (1 - phase) * 0.85 * p.facing;
+        ctx.lineWidth = 1.6 * dpr;
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, 4 * dpr + phase * maxR, 0, TAU);
+        ctx.stroke();
+
+        // Second harmonic ring for critical events
+        if (b.severity === 'crit' || b.severity === 'warn') {
+          const phase2 = (phase + 0.5) % 1;
+          ctx.globalAlpha = (1 - phase2) * 0.55 * p.facing;
+          ctx.beginPath();
+          ctx.arc(p.x, p.y, 4 * dpr + phase2 * maxR * 1.15, 0, TAU);
+          ctx.stroke();
+        }
+
+        // Glowing core beacon dot
+        ctx.globalAlpha = 0.95;
+        ctx.fillStyle = col;
+        ctx.shadowColor = col;
+        ctx.shadowBlur = 10 * dpr;
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, (b.severity === 'crit' ? 4.4 : 3.4) * dpr, 0, TAU);
+        ctx.fill();
+        ctx.shadowBlur = 0;
+
+        // Floating HUD callout label for top visible events on front of globe
+        if (labelsDrawn < 5 && p.facing > 0.32 && b.title) {
+          labelsDrawn++;
+          const dirX = p.x >= w * 0.5 ? 1 : -1;
+          const dirY = (i % 2 === 0) ? -1 : 1;
+          const lx = p.x + dirX * 18 * dpr;
+          const ly = p.y + dirY * 14 * dpr;
+          ctx.strokeStyle = col;
+          ctx.globalAlpha = 0.78;
+          ctx.lineWidth = 1.1 * dpr;
+          ctx.beginPath();
+          ctx.moveTo(p.x, p.y);
+          ctx.lineTo(lx, ly);
+          ctx.lineTo(lx + dirX * 10 * dpr, ly);
+          ctx.stroke();
+
+          const shortTxt = String(b.title).slice(0, 24);
+          ctx.font = '700 ' + Math.round(9.5 * dpr) + 'px ui-monospace, monospace';
+          const tw = ctx.measureText(shortTxt).width + 10 * dpr;
+          const th = 16 * dpr;
+          const bx = dirX > 0 ? lx + 10 * dpr : lx - 10 * dpr - tw;
+          const by = ly - th * 0.5;
+
+          ctx.globalAlpha = 0.88;
+          ctx.fillStyle = 'rgba(5, 11, 26, 0.86)';
+          ctx.fillRect(bx, by, tw, th);
+          ctx.strokeStyle = col;
+          ctx.strokeRect(bx, by, tw, th);
+          ctx.fillStyle = '#eaf2ff';
+          ctx.textAlign = 'left';
+          ctx.textBaseline = 'middle';
+          ctx.fillText(shortTxt, bx + 5 * dpr, by + th * 0.52);
+        }
+        ctx.restore();
+      }
+
+      // Live ISS 3D HUD projection on globe
+      if (state.liveISS && isFinite(state.liveISS.lat) && isFinite(state.liveISS.lon)) {
+        const pIss = projectLatLonToStage(state.liveISS.lat, state.liveISS.lon, w, h, 1.055);
+        if (pIss) {
+          ctx.save();
+          ctx.strokeStyle = '#fde047';
+          ctx.lineWidth = 1.6 * dpr;
+          ctx.beginPath();
+          ctx.arc(pIss.x, pIss.y, (7 + 4 * Math.sin(t * 4.5)) * dpr, 0, TAU);
+          ctx.stroke();
+          ctx.fillStyle = '#fde047';
+          ctx.beginPath();
+          ctx.arc(pIss.x, pIss.y, 4 * dpr, 0, TAU);
+          ctx.fill();
+          ctx.font = '700 ' + Math.round(9.5 * dpr) + 'px ui-monospace, monospace';
+          ctx.fillStyle = '#fde047';
+          ctx.fillText('🛰️ ISS LIVE', pIss.x + 10 * dpr, pIss.y - 6 * dpr);
+          ctx.restore();
+        }
+      }
+
+      // Locked Target Reticle on 3D Globe
+      if (state.targetBeacon && isFinite(state.targetBeacon.lat) && isFinite(state.targetBeacon.lon)) {
+        const pt = projectLatLonToStage(state.targetBeacon.lat, state.targetBeacon.lon, w, h, 1.015);
+        if (pt) {
+          const r = (15 + 4 * Math.sin(t * 5.2)) * dpr;
+          ctx.save();
+          ctx.strokeStyle = '#38bdf8';
+          ctx.lineWidth = 2 * dpr;
+          ctx.shadowColor = '#38bdf8';
+          ctx.shadowBlur = 12 * dpr;
+          ctx.beginPath();
+          ctx.arc(pt.x, pt.y, r, 0, TAU);
+          ctx.stroke();
+          ctx.beginPath();
+          ctx.moveTo(pt.x - r - 6 * dpr, pt.y); ctx.lineTo(pt.x - r + 4 * dpr, pt.y);
+          ctx.moveTo(pt.x + r - 4 * dpr, pt.y); ctx.lineTo(pt.x + r + 6 * dpr, pt.y);
+          ctx.moveTo(pt.x, pt.y - r - 6 * dpr); ctx.lineTo(pt.x, pt.y - r + 4 * dpr);
+          ctx.moveTo(pt.x, pt.y + r - 4 * dpr); ctx.lineTo(pt.x, pt.y + r + 6 * dpr);
+          ctx.stroke();
+          ctx.shadowBlur = 0;
+          if (state.targetBeacon.title) {
+            const lbl = '🎯 ' + String(state.targetBeacon.title).slice(0, 28);
+            ctx.font = '700 ' + Math.round(10 * dpr) + 'px ui-monospace, monospace';
+            const tw = ctx.measureText(lbl).width + 12 * dpr;
+            const bx = clamp(pt.x - tw / 2, 8 * dpr, w - tw - 8 * dpr);
+            const by = Math.max(44 * dpr, pt.y - r - 24 * dpr);
+            ctx.fillStyle = 'rgba(6, 18, 42, 0.92)';
+            ctx.fillRect(bx, by, tw, 18 * dpr);
+            ctx.strokeStyle = '#38bdf8';
+            ctx.strokeRect(bx, by, tw, 18 * dpr);
+            ctx.fillStyle = '#bae6fd';
+            ctx.textAlign = 'left';
+            ctx.textBaseline = 'middle';
+            ctx.fillText(lbl, bx + 6 * dpr, by + 9 * dpr);
+          }
+          ctx.restore();
+        }
+      }
+    }
+  }
+
   // ---------------------------------------------------------------- main loop
   let lastTime = 0;
   let elapsed = 0;
@@ -8762,6 +8971,7 @@
 
     if (state.mode === '2d') drawFlat(elapsed);
     else GL.draw(elapsed);
+    drawStageHudOverlay(elapsed);
 
     drawSpectrum();
 
@@ -8856,7 +9066,7 @@
 
   // expose a tiny diagnostics hook for the console / automated smoke tests
   window.MSB_EARTH_VIEW = {
-    version: '3.8.0',
+    version: '3.9.0',
     state: state,
     features: () => ({ warmth: feat.warmth, lum: feat.lum, motion: feat.motion, freq: feat.freq, pan: feat.pan }),
     isBooted: () => booted,
