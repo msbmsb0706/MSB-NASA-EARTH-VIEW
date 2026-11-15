@@ -2,6 +2,36 @@
 
 All notable changes to MSB NASA EARTH VIEW.
 
+## [3.7.1] — 2026-11-15
+
+### Added
+- **In-app help covers the new features:** a *Live Earth & Scientific Lab* section (EONET, GIBS, live ISS, plus merged blocks 7.1–7.5 and the satellite comparison) and a *Languages* section listing all 20, noting that Arabic and Urdu switch layout direction.
+- **Right-to-left support:** `applyLang()` now sets `dir="rtl"` for العربية and اردو; a saved RTL language is applied before the deferred label pass, so the page never renders LTR first.
+- **Footer version:** `v3.7.1` in the footer, read from the single `MSB_EARTH_VIEW.version` constant.
+- **In-app disclosures:** the *Data & disclosures* panel now names every Scientific Lab source (Open-Meteo/CAMS, USGS, NASA GISS, Mauna Loa Keeling, curated satellite catalogue) and labels the AQI as an indicator, not a regulatory index.
+
+### Docs
+- **README** rewritten around the current app: version line, six-step quick start, a *What's new* history (3.0 → 3.7.1), a full **Scientific Lab** table for 7.1–7.5, a **Languages** section, extra Controls rows, updated architecture tree (sci-lab + i18n modules), refreshed disclosures and roadmap.
+- **Lite-build docs** (`MSB NASA EARTH VIEW – Earth Jukebox.md`) now point at Live Earth, the Scientific Lab and the 20-language pill.
+- GitHub repository description and topics refreshed to match.
+
+## [3.7.0] — 2026-11-15
+
+### Added
+- **Scientific Lab 7.5 — Satellite comparison: most public data, still running.** A new visual block in the merged lab with:
+  - An interactive **bar-chart comparison** of 10 operational free/public missions (Sentinel-2, Sentinel-1, Landsat 8/9, MODIS, VIIRS, Himawari-9, GOES-18, GPM IMERG, SMAP, GRACE-FO), toggleable between **🔍 Spatial detail**, **⏱️ Update speed** and **🌍 Openness**. Bars are log-scaled so the best mission is longest, values are printed in a right-hand column, and the chart is clickable — click any bar to hear that mission.
+  - A **"Running now — operational & free"** list with a status dot, resolution, refresh time, a PUBLIC tag and a link per mission, plus a headline count (`10 of 10 running · 96 % open`).
+  - 🔊 Sonify the ranking, ⬇ CSV export of the whole catalogue, and a GIBS link. Data is a curated open-data catalogue, not live telemetry (stated in the panel), and the chart re-draws automatically on theme / high-contrast switch.
+
+### Changed
+- **中文 is labelled `中文 (Mandarin)`** in the `🌐 LANG` pill so Mandarin is easy to find. All existing languages are kept — the pill still has 20.
+
+## [3.6.0] — 2026-11-15
+
+### Changed
+- **Scientific Lab is now one merged view:** the four tab buttons (Air Quality / Climate Lab / Water & Ice / Hazards Live) are gone. Every dataset — AQI + pollutant badges, the Keeling CO₂ curve, the sea-level curve and the USGS quake list — is stacked in a single panel, so all visuals are visible together on one scroll. Each block keeps its own numbered heading (7.1–7.4), buttons and sonification, and air/quakes still auto-load on page load.
+- **Urdu flag:** `اردو (Urdu)` in the `🌐 LANG` pill now shows 🇮🇳 instead of the Pakistan flag (Urdu is an Indian language too). The language itself is unchanged — still 20 languages.
+
 ## [3.5.0] — 2026-11-15
 
 ### Added

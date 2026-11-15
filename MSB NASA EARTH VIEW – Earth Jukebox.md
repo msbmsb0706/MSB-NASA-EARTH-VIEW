@@ -28,10 +28,10 @@ Change triggers percussion
 - Warmth sets the note on a pentatonic scale, brightness sets loudness and filter opening, position sets stereo pan, and motion triggers drum pulses.
 - Sound is synthesized live with the Web Audio API. No recorded tracks.
 - Still images are swept by a moving scan line, so the picture is heard from left to right over 14 seconds.
-- **Full app adds:** 1800 twinkling stars, 7 orbiting satellites (ISS, Himawari-9, GOES-18, NOAA-20, Terra, Aqua, GPM) with trails, and a Live Earth panel that fetches open disasters from NASA EONET (public, no key) and links to NASA Climate vital signs for global warming / CO₂ / sea level.
+- **Full app adds:** 1800 twinkling stars, 7 orbiting satellites (ISS, Himawari-9, GOES-18, NOAA-20, Terra, Aqua, GPM) with trails; a Live Earth panel that fetches open disasters from NASA EONET (public, no key) and links to NASA Climate vital signs for global warming / CO₂ / sea level; a **Scientific Lab** shown as one merged page (7.1 Air Quality, 7.2 Climate Lab, 7.3 Water & Ice, 7.4 Hazards, 7.5 Satellite comparison with a public-data graph); and a **20-language** interface pill (Arabic and Urdu switch to right-to-left).
 
 ## Data and disclosures
 
 The four built-in scenes (sea surface, aerosols, night lights, lightning) are procedurally generated demo visuals, not NASA data. To hear real data, download frames or animations from the NASA Earth Information Center or the NASA Scientific Visualization Studio and load them above — or use `index.html` to load NASA GIBS imagery directly. NASA media are credited to NASA. Live disaster data in `index.html` comes from NASA EONET (public API, no key). Your files stay in your browser and are not uploaded. Team MSB Creative Studios. Super Intelligence tools were used to help write and debug code and documentation; mapping logic and creative direction are by the team. Sonification approach inspired by NASA’s data sonification work.
 
-**Full instructions:** see `README.md` → Live Earth — climate · disasters · satellites, and open `index.html` to hear it.
+**Full instructions:** see `README.md` → *Live Earth science — public real-time checks*, *Scientific Lab — five datasets, one page* and *Languages — 20, with right-to-left support*, then open `index.html` to hear it.
