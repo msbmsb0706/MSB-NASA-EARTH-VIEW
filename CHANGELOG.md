@@ -2,6 +2,11 @@
 
 All notable changes to MSB NASA EARTH VIEW.
 
+## [3.4.0] — 2026-11-15
+
+### Added
+- **More Indian + Korean:** added বাংলা (Bengali), मराठी (Marathi), ગુજરાતી (Gujarati), اردو (Urdu), ਪੰਜਾਬੀ (Punjabi), 한국어 (Korean) — now **20 languages** in NASA pill.
+
 ## [3.3.0] — 2026-11-15
 
 ### Added
