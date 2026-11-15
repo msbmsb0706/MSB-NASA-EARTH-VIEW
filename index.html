@@ -4,17 +4,17 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
 <meta name="color-scheme" content="dark light" />
-<meta name="description" content="MSB NASA EARTH VIEW — The Earth Information Jukebox. A zero-dependency 3D Earth and real-time visual-to-audio sonification engine for NASA Earth Information Center and SVS imagery, with Live Earth checks, a merged Scientific Lab (air quality, climate, water &amp; ice, hazards, satellite comparison) and 20 languages." />
+<meta name="description" content="MSB NASA EARTH VIEW — The Earth Information Jukebox. A zero-dependency 3D Earth and real-time visual-to-audio sonification engine for NASA Earth Information Center and SVS imagery, with Live Earth checks, a merged Scientific Lab (air quality, climate, water &amp; ice, hazards, satellite comparison), live NOAA space weather, planet sunlight, Earth-rotation readouts, ISS passes over your location and 20 languages." />
 <meta name="theme-color" content="#05070f" />
 <meta name="author" content="MSB Creative Studios" />
 <meta property="og:type" content="website" />
 <meta property="og:site_name" content="MSB NASA EARTH VIEW" />
 <meta property="og:title" content="MSB NASA EARTH VIEW — The Earth Information Jukebox" />
-<meta property="og:description" content="Hear NASA Earth imagery as it is scanned. WebGL globe with live satellites, Live Earth public data checks, a merged Scientific Lab with charts you can click to hear, and a 20-language interface. NASA Space Apps 2026." />
+<meta property="og:description" content="Hear NASA Earth imagery as it is scanned. WebGL globe with live satellites, Live Earth public data checks, a merged Scientific Lab with charts you can click to hear, live space weather, planet sunlight, ISS passes over you, and a 20-language interface. NASA Space Apps 2026." />
 <meta property="og:url" content="https://msbmsb0706.github.io/MSB-NASA-EARTH-VIEW/" />
 <meta name="twitter:card" content="summary" />
 <meta name="twitter:title" content="MSB NASA EARTH VIEW — The Earth Information Jukebox" />
-<meta name="twitter:description" content="Hear NASA Earth imagery as it is scanned — WebGL globe, live satellites, Scientific Lab charts and 20 languages. NASA Space Apps 2026." />
+<meta name="twitter:description" content="Hear NASA Earth imagery as it is scanned — WebGL globe, live satellites, Scientific Lab charts, NOAA space weather, planet sunlight, ISS passes and 20 languages. NASA Space Apps 2026." />
 <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🌍</text></svg>" />
 <script>
   /* Resolve the stored theme before first paint so there is no flash. */
@@ -847,6 +847,88 @@
   .sat-tag { padding: 1px 6px; border-radius: 999px; font-size: 0.64rem; font-weight: 700; background: rgba(34,197,94,0.18); color: #4ade80; border: 1px solid rgba(34,197,94,0.35); }
   :root[data-theme="light"] .sat-tag { color: #15803d; }
 
+
+  /* ---- 8. Space weather, Earth's spin, planets & local passes ---- */
+  .sky-lab { grid-column: 1 / -1; overflow: hidden; }
+  .sky-lab .panel-head .live-dot {
+    display: inline-block;
+    width: 8px; height: 8px; border-radius: 50%;
+    background: #22c55e;
+    box-shadow: 0 0 8px rgba(34, 197, 94, 0.7);
+    animation: pulseLive 1.6s ease-in-out infinite alternate;
+  }
+  .sky-now { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 5px 12px; font-size: 0.78rem; }
+  .sky-now > div { display: contents; }
+  .sky-k { color: var(--ink-3); }
+  .sky-v { font-family: var(--mono); font-weight: 700; text-align: right; color: var(--ink); white-space: nowrap; }
+  .sky-v.warn { color: #fb7185; }
+  .sky-v.good { color: #34d399; }
+  .sky-wide { grid-column: 1 / -1; }
+  .planet-table { display: grid; gap: 6px; }
+  .planet-row {
+    display: grid; grid-template-columns: 104px minmax(40px, 1fr) 148px;
+    align-items: center; gap: 8px; width: 100%;
+    border: 1px solid var(--border); border-radius: 8px;
+    background: rgba(12, 20, 40, 0.5);
+    padding: 6px 9px; font-size: 0.75rem; color: inherit;
+    font-family: inherit; text-align: left; cursor: pointer;
+    -webkit-appearance: none; appearance: none;
+  }
+  .planet-row:hover, .planet-row:focus-visible { border-color: var(--border-strong); background: rgba(22, 36, 68, 0.85); }
+  .planet-row.is-earth { border-color: rgba(56, 189, 248, 0.55); box-shadow: inset 0 0 0 1px rgba(56, 189, 248, 0.12); }
+  :root[data-theme="light"] .planet-row { background: #f7f9ff; }
+  :root[data-theme="light"] .planet-row:hover { background: #eaf1ff; }
+  .p-name { font-weight: 700; white-space: nowrap; }
+  .p-bar { height: 8px; border-radius: 999px; background: rgba(126, 158, 214, 0.16); overflow: hidden; }
+  .p-bar i { display: block; height: 100%; border-radius: 999px; }
+  .p-val { font-family: var(--mono); text-align: right; color: var(--ink-2); font-size: 0.7rem; }
+  .pass-list { display: grid; gap: 6px; max-height: 260px; overflow-y: auto; }
+  .pass-row {
+    display: flex; flex-wrap: wrap; align-items: center; gap: 4px 8px; width: 100%;
+    border: 1px solid var(--border); border-radius: 8px;
+    background: rgba(12, 20, 40, 0.5); color: inherit;
+    padding: 7px 10px; font-size: 0.76rem; font-family: inherit; text-align: left; cursor: pointer;
+    -webkit-appearance: none; appearance: none;
+  }
+  .pass-row:hover, .pass-row:focus-visible { border-color: var(--border-strong); }
+  .pass-row.sel { border-color: #38bdf8; background: rgba(56, 189, 248, 0.14); }
+  :root[data-theme="light"] .pass-row { background: #f7f9ff; }
+  :root[data-theme="light"] .pass-row.sel { background: #e2f3ff; }
+  .pass-time { font-family: var(--mono); font-weight: 700; }
+  .pass-meta { color: var(--ink-2); font-size: 0.72rem; }
+  .pass-tag {
+    margin-left: auto; padding: 1px 7px; border-radius: 999px;
+    font-size: 0.62rem; font-weight: 700; letter-spacing: 0.04em;
+    background: rgba(126, 158, 214, 0.16); color: var(--ink-3);
+    border: 1px solid var(--border);
+  }
+  .pass-tag.visible { background: rgba(45, 212, 191, 0.18); color: #2dd4bf; border-color: rgba(45, 212, 191, 0.4); }
+  :root[data-theme="light"] .pass-tag.visible { color: #0f766e; }
+  .sky-plot {
+    width: 100%; height: 240px; display: block; cursor: pointer;
+    border-radius: 10px; border: 1px solid var(--border); background: rgba(0, 0, 0, 0.28);
+  }
+  :root[data-theme="light"] .sky-plot { background: #eef4ff; }
+  .sky-extra { padding: 0 16px 16px; }
+  .sky-extra summary { cursor: pointer; font-size: 0.78rem; color: var(--ink-2); padding: 6px 0; }
+  .sky-extra textarea {
+    width: 100%; min-height: 66px; margin: 6px 0 8px; padding: 8px 10px;
+    border-radius: 8px; border: 1px solid var(--border);
+    background: rgba(5, 10, 25, 0.8); color: var(--ink);
+    font-family: var(--mono); font-size: 0.72rem; resize: vertical;
+  }
+  :root[data-theme="light"] .sky-extra textarea { background: #fff; color: #0b1224; }
+  .sky-extra p { margin: 0; }
+  @media (max-width: 560px) {
+    .planet-row { grid-template-columns: 88px minmax(30px, 1fr) 118px; }
+    .p-val { font-size: 0.64rem; }
+  }
+  @media (max-width: 720px) {
+    .sky-lab .panel-meta { display: none; }
+    .sky-v { white-space: normal; }
+    .planet-row { grid-template-columns: 86px minmax(28px, 1fr) 112px; }
+  }
+
   footer {
     border-top: 1px solid var(--border);
     padding: 16px clamp(14px, 3vw, 28px) calc(20px + env(safe-area-inset-bottom, 0px));
@@ -1402,6 +1484,7 @@
       <button type="button" class="btn" id="liveEonetBtn">Open NASA EONET</button>
       <button type="button" class="btn" id="liveClimateBtn">Open NASA Climate</button>
       <button type="button" class="btn" id="liveGibsBtn">Open NASA Worldview</button>
+      <a class="link-btn" href="#skyPanel" style="align-self:center;">🛰️ Passes over you ↓</a>
       <span style="font-size:0.74rem;color:var(--ink-3);align-self:center;" id="liveCheckStatus">Auto-check on load · GIBS every 5 min</span>
     </div>
 
@@ -1551,6 +1634,145 @@
     </div>
   </section>
 
+
+  <!-- 8. Space weather, Earth's spin, planet sunlight & satellites over you -->
+  <section class="panel sci-lab sky-lab" id="skyPanel" aria-labelledby="skyTitle">
+    <div class="panel-head">
+      <span class="panel-title" id="skyTitle"><i class="live-dot" aria-hidden="true"></i><b>8</b> 🧲 Space weather, planets &amp; satellites over you</span>
+      <span class="panel-meta" id="skyMeta">NOAA SWPC · computed orbits · public, no key</span>
+    </div>
+
+    <!-- 8.1 magnetosphere -->
+    <div class="sci-panel" role="region" aria-labelledby="swTitle">
+      <h3 class="sci-panel-title" id="swTitle"><b>8.1</b> 🧲 Live magnetosphere — solar wind, IMF &amp; storms</h3>
+      <div class="sci-grid">
+        <div class="sci-card">
+          <h4>Right now from NOAA SWPC</h4>
+          <div class="sky-now">
+            <div><span class="sky-k">Solar wind speed</span><span class="sky-v" id="swSpeed">—</span></div>
+            <div><span class="sky-k">IMF Bz — southward couples</span><span class="sky-v" id="swBz">—</span></div>
+            <div><span class="sky-k">IMF Bt — field strength</span><span class="sky-v" id="swBt">—</span></div>
+            <div><span class="sky-k">Kp index</span><span class="sky-v" id="swKp">—</span></div>
+            <div><span class="sky-k">Dst — ring current</span><span class="sky-v" id="swDst">—</span></div>
+            <div><span class="sky-k">NOAA storm scale</span><span class="sky-v" id="swStorm">—</span></div>
+          </div>
+          <div class="sci-sub" id="swUpdated" role="status" aria-live="polite">Contacting NOAA SWPC…</div>
+          <div class="sci-sub" id="swForecast"></div>
+          <div class="sci-actions">
+            <button type="button" class="btn btn-primary" id="swRefreshBtn">🔄 Refresh now</button>
+            <button type="button" class="btn" id="swSonifyBtn">🔊 Hear conditions</button>
+            <a class="link-btn" href="https://www.swpc.noaa.gov/" target="_blank" rel="noopener noreferrer">NOAA SWPC ↗</a>
+          </div>
+        </div>
+        <div class="sci-card">
+          <h4>What it does — and does not do — to Earth</h4>
+          <div class="sci-value" id="swAuroraVerdict">Checking…</div>
+          <div class="sci-sub" id="swAuroraSub">Aurora estimate at your magnetic latitude</div>
+          <canvas class="sci-chart" id="kpChart" width="320" height="96"
+            aria-label="Kp index for the last two days plus the NOAA forecast for the next day. Higher means a stronger geomagnetic storm. Click to hear it."></canvas>
+          <div class="sci-sub" id="swEffect"></div>
+          <div class="sci-sub"><strong>Honest limit:</strong> storms disturb radio, GPS, satellites and power grids, and paint the aurora. They do not measurably change Earth's rotation, axis or spin direction — see 8.2.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 8.2 rotation -->
+    <div class="sci-panel" role="region" aria-labelledby="spinTitle">
+      <h3 class="sci-panel-title" id="spinTitle"><b>8.2</b> 🌍 Earth's rotation right now — and what the magnetic field really does</h3>
+      <div class="sci-grid">
+        <div class="sci-card">
+          <h4>Spin &amp; magnetic field at your place</h4>
+          <div class="sky-now">
+            <div><span class="sky-k">Direction of rotation</span><span class="sky-v" id="spinDir">West → east</span></div>
+            <div><span class="sky-k">Sidereal clock</span><span class="sky-v" id="spinSidereal">—</span></div>
+            <div><span class="sky-k">Rotation period</span><span class="sky-v" id="spinRate">—</span></div>
+            <div><span class="sky-k">Spin speed here</span><span class="sky-v" id="spinSpeed">—</span></div>
+            <div><span class="sky-k">Orbital speed around Sun</span><span class="sky-v" id="spinOrbit">—</span></div>
+            <div><span class="sky-k">Magnetic latitude here</span><span class="sky-v" id="spinMagLat">—</span></div>
+            <div><span class="sky-k">Field strength — dipole model</span><span class="sky-v" id="spinMagField">—</span></div>
+            <div><span class="sky-k">Dip angle — dipole model</span><span class="sky-v" id="spinMagInc">—</span></div>
+          </div>
+          <div class="sci-sub" id="spinNote"></div>
+          <div class="sci-sub"><strong>Does the magnetic field steer the spin? No.</strong> Earth turns west → east (counter-clockwise seen from above the North Pole), so the Sun rises in the east everywhere. That angular momentum is left over from the planet's formation. The geomagnetic field is made by the churning iron outer core — it is a product of the rotation, not a motor for it. Tides lengthen the day by roughly 1.7 ms per century, and the atmosphere, oceans and core change the day length by milliseconds. Space weather cannot flip or speed up the planet.</div>
+          <div class="sci-sub"><a href="https://science.nasa.gov/earth/earth-observatory/" target="_blank" rel="noopener noreferrer">NASA Earth Observatory ↗</a> · <a href="https://www.ncei.noaa.gov/products/world-magnetic-model" target="_blank" rel="noopener noreferrer">NOAA World Magnetic Model ↗</a></div>
+        </div>
+        <div class="sci-card">
+          <h4>☀ Sunlight on you, now</h4>
+          <div class="sky-now">
+            <div><span class="sky-k">Solar elevation</span><span class="sky-v" id="sunElevation">—</span></div>
+            <div><span class="sky-k">Solar azimuth</span><span class="sky-v" id="sunAzimuth">—</span></div>
+            <div><span class="sky-k">Sun overhead at</span><span class="sky-v" id="sunSubsolar">—</span></div>
+            <div><span class="sky-k">Direct beam — top of atmosphere</span><span class="sky-v" id="sunBeam">—</span></div>
+            <div><span class="sky-k">On flat ground — clear sky</span><span class="sky-v" id="sunGround">—</span></div>
+            <div><span class="sky-k">Sunrise — approximate</span><span class="sky-v" id="sunRise">—</span></div>
+            <div><span class="sky-k">Sunset — approximate</span><span class="sky-v" id="sunSet">—</span></div>
+            <div><span class="sky-k">Day length</span><span class="sky-v" id="sunDayLen">—</span></div>
+          </div>
+          <div class="sci-sub" id="sunState">Calculating the Sun's position for your place…</div>
+          <div class="sci-sub">The direct beam is what a panel pointed straight at the Sun would receive above the atmosphere (1361 W/m² scaled by the actual Earth–Sun distance). Flat-ground values multiply it by sin(elevation) and ignore clouds. Sunrise and sunset use the standard solar-geometry formula and are usually within a few minutes of official times.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 8.3 planets -->
+    <div class="sci-panel" role="region" aria-labelledby="planetsTitle">
+      <h3 class="sci-panel-title" id="planetsTitle"><b>8.3</b> 🌞 Sunlight on every planet + other planets' pull — computed now</h3>
+      <div class="sci-grid">
+        <div class="sci-card sky-wide">
+          <h4>How much sunlight each planet gets right now</h4>
+          <div class="planet-table" id="planetTable" role="list" aria-label="Sunlight reaching each planet right now"></div>
+          <div class="sci-sub" id="planetNote">Distances are computed from Keplerian elements for this minute.</div>
+          <div class="sci-sub">Irradiance is 1361 W/m² × (1 AU ÷ distance)². Mercury's close orbit means about ten times Earth's sunlight; Neptune, thirty times farther out, gets about a thousandth. Click any row to hear it — closer to the Sun, higher the pitch.</div>
+        </div>
+        <div class="sci-card">
+          <h4>Other planets' pull on Earth</h4>
+          <div class="planet-table" id="pullTable" role="list" aria-label="Tidal pull of the Sun, Moon and planets on Earth"></div>
+          <div class="sci-sub"><strong>Real numbers, honest scale:</strong> bars compare each tidal pull with the Moon's. The Sun manages about half the Moon's tides; Venus and Jupiter are less than a thousandth of a percent. Planetary alignments therefore do not measurably change Earth's rotation, its tides or earthquakes. The computed pulls use today's actual distances.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 8.4 passes -->
+    <div class="sci-panel" role="region" aria-labelledby="passTitle">
+      <h3 class="sci-panel-title" id="passTitle"><b>8.4</b> 🛰️ Satellites passing over your place — click a pass</h3>
+      <div class="sci-grid">
+        <div class="sci-card">
+          <h4>Your place</h4>
+          <div class="sci-value" id="passLoc">Chennai, India · 13.08°, 80.27°</div>
+          <div class="sci-sub" id="passNow">Live position needs the ISS TLE — press Find ISS passes.</div>
+          <div class="sci-actions">
+            <button type="button" class="btn btn-primary" id="passLocBtn">📍 Use my location</button>
+            <button type="button" class="btn" id="passFindBtn">🔭 Find ISS passes (3 days)</button>
+          </div>
+          <div class="sci-sub" id="passStatus" role="status" aria-live="polite">Uses the public ISS two-line element set from api.wheretheiss.at and computes passes in your browser.</div>
+          <div class="sci-sub"><a href="https://spotthestation.nasa.gov/" target="_blank" rel="noopener noreferrer">NASA Spot the Station ↗</a> · <a href="https://celestrak.org/NORAD/elements/" target="_blank" rel="noopener noreferrer">CelesTrak public TLEs ↗</a></div>
+        </div>
+        <div class="sci-card">
+          <h4>Next passes — your device's local time</h4>
+          <div class="pass-list" id="passList" role="list" aria-label="Upcoming satellite passes"></div>
+          <div class="sci-actions">
+            <button type="button" class="btn" id="passIcsBtn">⬇ Add selected pass to calendar</button>
+            <button type="button" class="btn" id="passSonifyBtn">🔊 Hear this pass</button>
+          </div>
+          <div class="sci-sub" id="passNote"></div>
+        </div>
+        <div class="sci-card">
+          <h4>Sky chart — click to cycle passes</h4>
+          <canvas class="sky-plot" id="skyPlot" width="300" height="240"
+            aria-label="Polar sky chart of the selected pass: the horizon is the edge, straight up is the centre. Teal means a dark sky and a sunlit satellite."></canvas>
+          <div class="sci-sub">Centre = straight up (90°), edge = horizon (0°). Teal means the sky should be dark and the satellite sunlit; amber marks maximum elevation; the red dot is the satellite right now.</div>
+        </div>
+      </div>
+      <details class="sky-extra">
+        <summary>Track another satellite — paste any public two-line TLE</summary>
+        <p class="sci-sub">Copy a TLE from CelesTrak (public, no key) and paste it here. Line 1 starts with “1 ”, line 2 with “2 ”; the name line is optional. Passes are then computed for the same place.</p>
+        <textarea id="tleInput" spellcheck="false" placeholder="ISS (ZARYA)&#10;1 25544U 98067A   26318.50000000  .00020000  00000-0  36000-3 0  9990&#10;2 25544  51.6400 200.0000 0003000  90.0000 270.0000 15.50000000123456"></textarea>
+        <div class="sci-actions"><button type="button" class="btn" id="tleBtn">Compute passes for this TLE</button></div>
+        <div class="sci-sub" id="tleStatus" role="status" aria-live="polite"></div>
+      </details>
+    </div>
+  </section>
+
   <div class="info-grid">
     <section class="panel">
       <div class="panel-head"><span class="panel-title">How it works</span></div>
@@ -1562,6 +1784,7 @@
           <li>Still images are swept by a moving scan meridian, so the picture is heard from west to east.</li>
           <li>The 3D globe uses WebGL and an embedded land mask. NASA imagery requires a network connection.</li>
           <li>The <strong>Scientific Lab</strong> adds public measurements next to the art: live air quality, climate and sea-level curves, USGS earthquakes, and a satellite comparison graph — every value also sonified.</li>
+          <li>The <strong>Space weather, planets &amp; satellites</strong> panel reads NOAA SWPC space weather, computes sunlight on every planet and the planets' pull on Earth, and predicts ISS passes over your location from a public TLE — all in the browser.</li>
         </ul>
       </div>
     </section>
@@ -1594,6 +1817,15 @@
           with their published resolutions and refresh times — a catalogue, not live telemetry.
         </p>
         <p class="disclosure">
+          <strong>Space weather, planets and passes:</strong> solar wind, IMF, Kp, Dst and the NOAA storm scale come from
+          NOAA SWPC public JSON; the ISS two-line element set comes from api.wheretheiss.at. Planet positions, sunlight,
+          gravitational pull, sidereal time, solar elevation and satellite passes are computed in your browser from
+          published Keplerian elements and a J2 orbit model — useful approximations, not official ephemerides or
+          navigation data. Space weather does not measurably change Earth's rotation or axis; the geomagnetic field is a
+          product of the core dynamo, not a driver of the spin. Pass times can be a minute or two off; confirm with
+          NASA Spot the Station before travelling.
+        </p>
+        <p class="disclosure">
           Files stay in your browser and are never uploaded. Team <strong>MSB Creative Studios</strong> ·
           NASA Space Apps Challenge 2026 — public NASA data only, no analytics or tracking. Super Intelligence tools assisted with code and documentation;
           mapping logic and creative direction are by the team.
@@ -1605,7 +1837,7 @@
 
 <footer>
   <strong>MSB Creative Studios</strong> · NASA Space Apps Challenge 2026 ·
-  Web Audio API + WebGL + HTML5 Canvas · built for accessible Earth science · <span id="footerLiveCheck">Live data: NASA GIBS + EONET</span> · <span id="footerVersion">v3.7.1</span>
+  Web Audio API + WebGL + HTML5 Canvas · built for accessible Earth science · <span id="footerLiveCheck">Live data: NASA GIBS + EONET</span> · <span id="footerVersion">v3.8.0</span>
 </footer>
 
 <dialog id="helpDialog" aria-labelledby="helpTitle">
@@ -1650,6 +1882,26 @@
         <strong>7.5 Satellite comparison</strong> — a bar chart ranking ten operational free/public missions by
         spatial detail, update speed or openness. Click any bar to hear that mission; the whole catalogue
         exports as CSV.</p>
+    </div>
+    <div>
+      <h3>Space weather, planets &amp; satellites over you</h3>
+      <p>The <strong>8. Space weather, planets &amp; satellites</strong> panel answers questions the rest of the app does not:</p>
+      <ul>
+        <li><strong>8.1 Live magnetosphere</strong> — solar wind speed, IMF Bz and Bt, Kp, Dst and the NOAA G-scale from
+          NOAA SWPC public JSON, refreshed every five minutes. It estimates whether aurora could reach your magnetic
+          latitude and what the storm means for radio, GPS and power grids.</li>
+        <li><strong>8.2 Earth's rotation</strong> — sidereal time, spin speed at your latitude, orbital speed, your magnetic
+          latitude and a dipole estimate of the field. It also states the honest answer: the magnetic field is made by the
+          core and does <em>not</em> steer or change Earth's rotation. Solar elevation, direct sunlight and sunrise/sunset
+          for your place are computed locally.</li>
+        <li><strong>8.3 Planets</strong> — how much sunlight every planet receives right now (in W/m² and as a percentage of
+          Earth's), plus the gravitational and tidal pull each planet has on Earth compared with the Moon. Click any row to
+          hear it.</li>
+        <li><strong>8.4 Over your place</strong> — press <strong>📍 Use my location</strong>, then <strong>🔭 Find ISS passes</strong>.
+          The app fetches the public ISS two-line element set, propagates the orbit in your browser and lists passes for the
+          next three days. Click a pass to draw its sky path, add it to your calendar, or hear it. A public TLE for another
+          satellite can be pasted at the bottom.</li>
+      </ul>
     </div>
     <div>
       <h3>Languages</h3>
@@ -5330,6 +5582,1023 @@
       setTimeout(checkQuakes, 2000);
     })();
 
+    // ---- 8. Space weather, Earth's spin, planet sunlight and local satellite passes ----
+    // Public, key-free sources: NOAA SWPC (CORS-open JSON) and a live ISS TLE from
+    // api.wheretheiss.at. Orbits are propagated locally (J2 secular model); nothing is uploaded.
+    (function () {
+      const panel = $('skyPanel');
+      if (!panel) return;
+
+      const RAD = Math.PI / 180;
+      const DEG = 180 / Math.PI;
+      const AU_KM = 1.495978707e8;
+      const R_EARTH = 6378.137;
+      const MU_EARTH = 398600.4418;
+      const J2 = 1.08262668e-3;
+      const GRAV = 6.6743e-11;
+      const SWPC = 'https://services.swpc.noaa.gov';
+      const EARTH_RADIUS_KM = 6371;
+
+      const skyEl = {
+        speed: $('swSpeed'), bz: $('swBz'), bt: $('swBt'), kp: $('swKp'), dst: $('swDst'),
+        storm: $('swStorm'), updated: $('swUpdated'), refresh: $('swRefreshBtn'), sonify: $('swSonifyBtn'),
+        aurora: $('swAuroraVerdict'), auroraSub: $('swAuroraSub'), effect: $('swEffect'), forecast: $('swForecast'),
+        kpChart: $('kpChart'),
+        sidereal: $('spinSidereal'), rate: $('spinRate'), speedSpin: $('spinSpeed'), magLat: $('spinMagLat'),
+        magField: $('spinMagField'), magInc: $('spinMagInc'), orbit: $('spinOrbit'), spinNote: $('spinNote'),
+        sunEl: $('sunElevation'), sunAz: $('sunAzimuth'), sunSub: $('sunSubsolar'), sunBeam: $('sunBeam'), sunGround: $('sunGround'),
+        sunState: $('sunState'), sunRise: $('sunRise'), sunSet: $('sunSet'), sunDay: $('sunDayLen'),
+        planetTable: $('planetTable'), pullTable: $('pullTable'), planetNote: $('planetNote'),
+        loc: $('passLoc'), locBtn: $('passLocBtn'), findBtn: $('passFindBtn'), status: $('passStatus'),
+        now: $('passNow'), list: $('passList'), ics: $('passIcsBtn'), passSonify: $('passSonifyBtn'),
+        plot: $('skyPlot'), note: $('passNote'), tleInput: $('tleInput'), tleBtn: $('tleBtn'), tleStatus: $('tleStatus')
+      };
+
+      const sky = {
+        loc: { lat: 13.08, lon: 80.27, name: 'Chennai, India' },
+        weather: { speed: null, bz: null, bt: null, kp: null, dst: null, g: 0, gText: 'none', kpAt: null, updatedAt: null, failures: [] },
+        kpSeries: [],
+        orbit: null,
+        orbitName: 'ISS (ZARYA)',
+        tleEpoch: null,
+        tleFetchedAt: 0,
+        passes: [],
+        selected: 0,
+        finding: false
+      };
+
+      // ---------------------------------------------------------------- small helpers
+      function getJSON(url, ms) {
+        const ctrl = new AbortController();
+        const timer = setTimeout(() => ctrl.abort(), ms || 12000);
+        return fetch(url, { signal: ctrl.signal, cache: 'no-store' })
+          .then(r => { if (!r.ok) throw new Error('HTTP ' + r.status); return r.json(); })
+          .finally(() => clearTimeout(timer));
+      }
+      function tone(freq, delay, dur, type, vol) {
+        const ctx = Audio.init();
+        if (!ctx) return false;
+        if (ctx.state === 'suspended') ctx.resume();
+        const t = ctx.currentTime + (delay || 0);
+        const o = ctx.createOscillator();
+        const g = ctx.createGain();
+        o.type = type || 'sine';
+        o.frequency.setValueAtTime(Math.max(40, Math.min(4000, freq)), t);
+        g.gain.setValueAtTime(0.0001, t);
+        g.gain.linearRampToValueAtTime(vol || 0.16, t + 0.04);
+        g.gain.exponentialRampToValueAtTime(0.0001, t + (dur || 0.3));
+        o.connect(g); g.connect(Audio.master || ctx.destination);
+        o.start(t); o.stop(t + (dur || 0.3) + 0.05);
+        return true;
+      }
+      function utcLabel(value) {
+        if (!value) return '—';
+        const d = new Date(/[zZ]|[+\-]\d\d:?\d\d$/.test(value) ? value : value + 'Z');
+        if (isNaN(d)) return String(value);
+        return d.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', timeZone: 'UTC' });
+      }
+      function localClock(ms) {
+        return new Date(ms).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+      }
+      function pct(v, digits) { return v >= 0.01 ? v.toFixed(digits == null ? 2 : digits) + '%' : v.toExponential(1) + '%'; }
+
+      // ---------------------------------------------------------------- astronomy core
+      const PLANETS = [
+        { name: 'Mercury', glyph: '☿', colour: '#b8a99a', mass: 3.3011e23, a: [0.38709927, 0.00000037], e: [0.20563593, 0.00001906], inc: [7.00497902, -0.00594749], L: [252.25032350, 149472.67411175], w: [77.45779628, 0.16047689], node: [48.33076593, -0.12534081] },
+        { name: 'Venus', glyph: '♀', colour: '#e8c07a', mass: 4.8675e24, a: [0.72333566, 0.00000390], e: [0.00677672, -0.00004107], inc: [3.39467605, -0.00078890], L: [181.97909950, 58517.81538729], w: [131.60246718, 0.00268329], node: [76.67984255, -0.27769418] },
+        { name: 'Earth', glyph: '🌍', colour: '#38bdf8', mass: 5.97237e24, a: [1.00000261, 0.00000562], e: [0.01671123, -0.00004392], inc: [-0.00001531, -0.01294668], L: [100.46457166, 35999.37244981], w: [102.93768193, 0.32327364], node: [0, 0] },
+        { name: 'Mars', glyph: '♂', colour: '#e2704a', mass: 6.4171e23, a: [1.52371034, 0.00001847], e: [0.09339410, 0.00007882], inc: [1.84969142, -0.00813131], L: [-4.55343205, 19140.30268499], w: [-23.94362959, 0.44441088], node: [49.55953891, -0.29257343] },
+        { name: 'Jupiter', glyph: '♃', colour: '#d9a066', mass: 1.8982e27, a: [5.20288700, -0.00011607], e: [0.04838624, -0.00013253], inc: [1.30439695, -0.00183714], L: [34.39644051, 3034.74612775], w: [14.72847983, 0.21252668], node: [100.47390909, 0.20469106] },
+        { name: 'Saturn', glyph: '♄', colour: '#e3cf8f', mass: 5.6834e26, a: [9.53667594, -0.00125060], e: [0.05386179, -0.00050991], inc: [2.48599187, 0.00193609], L: [49.95424423, 1222.49362201], w: [92.59887831, -0.41897216], node: [113.66242448, -0.28867794] },
+        { name: 'Uranus', glyph: '♅', colour: '#9ad9e0', mass: 8.6810e25, a: [19.18916464, -0.00196176], e: [0.04725744, -0.00004397], inc: [0.77263783, -0.00242939], L: [313.23810451, 428.48202785], w: [170.95427630, 0.40805281], node: [74.01692503, 0.04240589] },
+        { name: 'Neptune', glyph: '♆', colour: '#6f8cf0', mass: 1.02413e26, a: [30.06992276, 0.00026291], e: [0.00859048, 0.00005105], inc: [1.77004347, 0.00035372], L: [-55.12002969, 218.45945325], w: [44.96476227, -0.32241464], node: [131.78422574, -0.00508664] }
+      ];
+      const MOON = { mass: 7.342e22, distanceKm: 384400 };
+      const SUN_MASS = 1.98847e30;
+
+      const jdOf = (date) => date.getTime() / 86400000 + 2440587.5;
+      function gmstDeg(jd) {
+        const T = (jd - 2451545.0) / 36525;
+        const g = 280.46061837 + 360.98564736629 * (jd - 2451545.0) + 0.000387933 * T * T - (T * T * T) / 38710000;
+        return ((g % 360) + 360) % 360;
+      }
+      function helioOf(p, jd) {
+        const T = (jd - 2451545.0) / 36525;
+        const a = p.a[0] + p.a[1] * T;
+        const e = p.e[0] + p.e[1] * T;
+        const inc = (p.inc[0] + p.inc[1] * T) * RAD;
+        const L = p.L[0] + p.L[1] * T;
+        const w = p.w[0] + p.w[1] * T;
+        const node = (p.node[0] + p.node[1] * T) * RAD;
+        let M = ((L - w) % 360 + 540) % 360 - 180;
+        let E = M * RAD + e * Math.sin(M * RAD);
+        for (let i = 0; i < 8; i++) {
+          const d = (E - e * Math.sin(E) - M * RAD) / (1 - e * Math.cos(E));
+          E -= d;
+          if (Math.abs(d) < 1e-12) break;
+        }
+        const xp = a * (Math.cos(E) - e);
+        const yp = a * Math.sqrt(1 - e * e) * Math.sin(E);
+        const om = w * RAD - node;
+        const cw = Math.cos(om), sw = Math.sin(om), cO = Math.cos(node), sO = Math.sin(node);
+        const cI = Math.cos(inc), sI = Math.sin(inc);
+        return {
+          x: (cw * cO - sw * sO * cI) * xp + (-sw * cO - cw * sO * cI) * yp,
+          y: (cw * sO + sw * cO * cI) * xp + (-sw * sO + cw * cO * cI) * yp,
+          z: (sw * sI) * xp + (cw * sI) * yp
+        };
+      }
+      function norm(v) { return Math.hypot(v.x, v.y, v.z); }
+      function sunEci(jd) {
+        const n = jd - 2451545.0;
+        const L = ((280.460 + 0.9856474 * n) % 360 + 360) % 360;
+        const g = ((357.528 + 0.9856003 * n) % 360 + 360) % 360;
+        const lam = (L + 1.915 * Math.sin(g * RAD) + 0.020 * Math.sin(2 * g * RAD)) * RAD;
+        const eps = (23.439 - 0.0000004 * n) * RAD;
+        return {
+          x: Math.cos(lam),
+          y: Math.cos(eps) * Math.sin(lam),
+          z: Math.sin(eps) * Math.sin(lam),
+          rAU: 1.00014 - 0.01671 * Math.cos(g * RAD) - 0.00014 * Math.cos(2 * g * RAD)
+        };
+      }
+      function sunAltAz(latDeg, lonDeg, jd) {
+        const s = sunEci(jd);
+        const ra = Math.atan2(s.y, s.x);
+        const dec = Math.asin(Math.max(-1, Math.min(1, s.z)));
+        let H = gmstDeg(jd) * RAD + lonDeg * RAD - ra;
+        H = ((H + Math.PI) % (2 * Math.PI) + 2 * Math.PI) % (2 * Math.PI) - Math.PI;
+        const lat = latDeg * RAD;
+        const el = Math.asin(Math.max(-1, Math.min(1, Math.sin(lat) * Math.sin(dec) + Math.cos(lat) * Math.cos(dec) * Math.cos(H))));
+        const az = Math.atan2(-Math.sin(H) * Math.cos(dec), Math.cos(lat) * Math.sin(dec) - Math.sin(lat) * Math.cos(dec) * Math.cos(H));
+        return { el: el * DEG, az: ((az * DEG) + 360) % 360, dec: dec * DEG };
+      }
+      function dayInfo(latDeg, lonDeg, date) {
+        const jd = jdOf(date);
+        const n = jd - 2451545.0;
+        const L = ((280.460 + 0.9856474 * n) % 360 + 360) % 360;
+        const g = ((357.528 + 0.9856003 * n) % 360 + 360) % 360;
+        const lam = (L + 1.915 * Math.sin(g * RAD) + 0.020 * Math.sin(2 * g * RAD)) * RAD;
+        const eps = (23.439 - 0.0000004 * n) * RAD;
+        const dec = Math.asin(Math.sin(eps) * Math.sin(lam));
+        const ra = ((Math.atan2(Math.cos(eps) * Math.sin(lam), Math.cos(lam)) * DEG) + 360) % 360;
+        let eot = 4 * (L - ra);
+        if (eot > 20) eot -= 1440;
+        if (eot < -20) eot += 1440;
+        const cosH = -Math.tan(latDeg * RAD) * Math.tan(dec);
+        const H0 = Math.acos(Math.max(-1, Math.min(1, cosH))) * DEG;
+        const noon = 12 - lonDeg / 15 - eot / 60;
+        return { riseUtc: noon - H0 / 15, setUtc: noon + H0 / 15, dayLen: (2 * H0) / 15, dec: dec * DEG };
+      }
+      function magneticLat(latDeg, lonDeg) {
+        // Dipole pole (WMM-2020): 80.65° N, 72.68° W. Approximate, not IGRF.
+        const lat = latDeg * RAD, lon = lonDeg * RAD;
+        const plat = 80.65 * RAD, plon = -72.68 * RAD;
+        const sinM = Math.sin(lat) * Math.sin(plat) + Math.cos(lat) * Math.cos(plat) * Math.cos(lon - plon);
+        return Math.asin(Math.max(-1, Math.min(1, sinM)));
+      }
+      function magneticFieldHere(latDeg, lonDeg) {
+        const mlat = magneticLat(latDeg, lonDeg);
+        const B0 = 3.12e-5; // tesla at the dipole equator
+        return {
+          lat: mlat * DEG,
+          total: B0 * Math.sqrt(1 + 3 * Math.pow(Math.sin(mlat), 2)),
+          inclination: Math.atan(2 * Math.tan(mlat)) * DEG
+        };
+      }
+
+      // ---------------------------------------------------------------- 8.1 NOAA SWPC
+      function firstRecord(v) {
+        if (Array.isArray(v)) return v.length ? v[v.length - 1] : null;
+        return v || null;
+      }
+      function latestObserved(list) {
+        if (!Array.isArray(list)) return null;
+        for (let i = list.length - 1; i >= 0; i--) {
+          const row = list[i];
+          if (row && (row.observed == null || row.observed !== 'predicted')) return row;
+        }
+        return null;
+      }
+      function stormFromKp(kp) {
+        const k = Math.round(kp || 0);
+        if (k >= 9) return { g: 5, text: 'severe' };
+        if (k >= 8) return { g: 4, text: 'severe' };
+        if (k >= 7) return { g: 3, text: 'strong' };
+        if (k >= 6) return { g: 2, text: 'moderate' };
+        if (k >= 5) return { g: 1, text: 'minor' };
+        return { g: 0, text: 'none' };
+      }
+      function effectText(kp, bz) {
+        if (kp >= 7) return 'Strong geomagnetic storm: aurora may reach mid-latitudes, HF radio and GPS can degrade, satellites feel extra drag.';
+        if (kp >= 5) return 'Geomagnetic storm in progress: aurora at high latitudes, minor radio and navigation disturbances possible.';
+        if (bz != null && bz <= -10) return 'The solar magnetic field points strongly south (Bz ' + bz.toFixed(1) + ' nT) — energy can couple into the magnetosphere even at quiet Kp.';
+        if (kp >= 3) return 'Unsettled: the magnetosphere is slightly disturbed; bright aurora stays polar.';
+        return 'Quiet magnetosphere: solar wind is coupling weakly to Earth. Aurora is confined to the polar oval.';
+      }
+      function paintWeather() {
+        const w = sky.weather;
+        if (skyEl.speed) skyEl.speed.textContent = w.speed != null ? Math.round(w.speed) + ' km/s' : 'unavailable';
+        if (skyEl.bz) {
+          skyEl.bz.textContent = w.bz != null ? (w.bz > 0 ? '+' : '') + w.bz.toFixed(1) + ' nT' : 'unavailable';
+          skyEl.bz.className = 'sky-v' + (w.bz != null && w.bz <= -5 ? ' warn' : w.bz != null ? ' good' : '');
+        }
+        if (skyEl.bt) skyEl.bt.textContent = w.bt != null ? w.bt.toFixed(1) + ' nT' : 'unavailable';
+        if (skyEl.kp) skyEl.kp.textContent = w.kp != null ? w.kp.toFixed(2) + ' / 9' : 'unavailable';
+        if (skyEl.dst) {
+          skyEl.dst.textContent = w.dst != null ? w.dst + ' nT' : 'unavailable';
+          skyEl.dst.className = 'sky-v' + (w.dst != null && w.dst <= -50 ? ' warn' : '');
+        }
+        if (skyEl.storm) {
+          skyEl.storm.textContent = 'G' + w.g + ' · ' + w.gText;
+          skyEl.storm.className = 'sky-v' + (w.g >= 2 ? ' warn' : ' good');
+        }
+        const when = w.updatedAt ? new Date(w.updatedAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', timeZone: 'UTC' }) : '—';
+        if (skyEl.updated) {
+          if (w.updatedAt) {
+            skyEl.updated.textContent = 'NOAA SWPC · latest measurement ' + when + ' UTC'
+              + (w.failures.length ? ' · could not reach: ' + w.failures.join(', ') : ' · refreshed every 5 min');
+          } else {
+            skyEl.updated.textContent = 'NOAA SWPC could not be reached from this browser — press Refresh or open swpc.noaa.gov. Everything else in the app still works.';
+          }
+        }
+        if (skyEl.forecast) {
+          skyEl.forecast.textContent = w.forecastText || '';
+        }
+        if (skyEl.aurora && w.kp != null) {
+          const field = magneticFieldHere(sky.loc.lat, sky.loc.lon);
+          const edge = 66.5 - 2 * w.kp;
+          const mlat = Math.abs(field.lat);
+          let verdict, sub;
+          if (mlat >= edge) { verdict = 'Aurora possible overhead'; sub = 'The auroral oval edge is forecast at about ' + edge.toFixed(0) + '° magnetic latitude; you are at ' + mlat.toFixed(1) + '°.'; }
+          else if (mlat >= edge - 6) { verdict = 'Aurora possibly low on your horizon'; sub = 'Oval edge ≈ ' + edge.toFixed(0) + '° magnetic; you are at ' + mlat.toFixed(1) + '°. Look toward the pole in a dark sky.'; }
+          else { verdict = 'No aurora overhead here'; sub = 'Oval edge ≈ ' + edge.toFixed(0) + '° magnetic; you are at ' + mlat.toFixed(1) + '°. Even at Kp 9 the oval only reaches ~48°, so travel poleward.'; }
+          skyEl.aurora.textContent = verdict;
+          skyEl.auroraSub.textContent = sub;
+        }
+        if (skyEl.aurora && w.kp == null) {
+          skyEl.aurora.textContent = 'Aurora estimate unavailable';
+          skyEl.auroraSub.textContent = 'No Kp value received. Press Refresh or open NOAA SWPC.';
+        }
+        if (skyEl.effect) skyEl.effect.textContent = w.kp != null ? effectText(w.kp, w.bz) : 'Space-weather effects need the NOAA feed; without it the rest of the panel still works.';
+        drawKpChart();
+      }
+      async function loadWeather(manual) {
+        if (skyEl.refresh) { skyEl.refresh.disabled = true; skyEl.refresh.textContent = 'Checking…'; }
+        if (skyEl.updated && manual) skyEl.updated.textContent = 'Contacting NOAA SWPC…';
+        const requests = [
+          ['speed', SWPC + '/products/summary/solar-wind-speed.json'],
+          ['mag', SWPC + '/products/summary/solar-wind-mag-field.json'],
+          ['kp', SWPC + '/products/noaa-planetary-k-index-forecast.json'],
+          ['dst', SWPC + '/products/kyoto-dst.json'],
+          ['scales', SWPC + '/products/noaa-scales.json']
+        ];
+        const results = await Promise.allSettled(requests.map(r => getJSON(r[1])));
+        const w = sky.weather;
+        w.failures = [];
+        const at = {};
+        results.forEach((res, i) => {
+          const key = requests[i][0];
+          if (res.status !== 'fulfilled') { w.failures.push(key === 'mag' ? 'magnetic field' : key === 'kp' ? 'Kp' : key === 'dst' ? 'Dst' : key === 'scales' ? 'scales' : 'solar wind'); return; }
+          at[key] = res.value;
+        });
+        if (at.speed) {
+          const rec = firstRecord(at.speed);
+          if (rec) { w.speed = Number(rec.proton_speed); w.updatedAt = rec.time_tag ? new Date(rec.time_tag).getTime() : Date.now(); }
+        }
+        if (at.mag) {
+          const rec = firstRecord(at.mag);
+          if (rec) { w.bt = Number(rec.bt); w.bz = Number(rec.bz_gsm); w.updatedAt = rec.time_tag ? new Date(rec.time_tag).getTime() : w.updatedAt; }
+        }
+        if (at.kp && Array.isArray(at.kp)) {
+          const obs = latestObserved(at.kp);
+          if (obs && isFinite(obs.kp)) {
+            w.kp = Number(obs.kp);
+            w.kpAt = obs.time_tag || null;
+            w.kpSeries = at.kp
+              .filter(r => r && isFinite(r.kp))
+              .map(r => ({ t: new Date((r.time_tag || '') + (/([zZ]|[+\-]\d\d:?\d\d)$/.test(r.time_tag || '') ? '' : 'Z')).getTime(), kp: Number(r.kp), predicted: r.observed === 'predicted' }));
+          }
+        }
+        if (at.dst && Array.isArray(at.dst) && at.dst.length) {
+          const last = at.dst[at.dst.length - 1];
+          if (last && isFinite(last.dst)) w.dst = Number(last.dst);
+        }
+        if (at.scales && at.scales['0']) {
+          const cur = at.scales['0'];
+          const g = cur.G || {};
+          w.g = Number(g.Scale) || 0;
+          w.gText = (g.Text || 'none').toLowerCase();
+          const days = ['1', '2', '3'].map((k, i) => {
+            const row = at.scales[k];
+            if (!row || !row.G) return null;
+            const val = Number(row.G.Scale) || 0;
+            if (!val) return null;
+            return 'day+' + (i + 1) + ' G' + val;
+          }).filter(Boolean);
+          w.forecastText = days.length ? 'NOAA storm watch: ' + days.join(' · ') : 'NOAA storm watch: no G1+ storm predicted in the next 3 days.';
+        } else if (w.kp != null) {
+          const s = stormFromKp(w.kp);
+          w.g = s.g; w.gText = s.text;
+        }
+        if (w.kp != null && !at.scales) {
+          const s = stormFromKp(w.kp);
+          w.g = s.g; w.gText = s.text;
+        }
+        paintWeather();
+        if (skyEl.refresh) { skyEl.refresh.disabled = false; skyEl.refresh.textContent = '🔄 Refresh now'; }
+        if (w.failures.length) announce('Space weather updated with some sources unavailable: ' + w.failures.join(', ') + '.');
+        else if (manual) announce('Space weather updated: Kp ' + (w.kp != null ? w.kp.toFixed(1) : 'unknown') + ', solar wind ' + (w.speed != null ? Math.round(w.speed) + ' kilometres per second' : 'unknown') + '.');
+      }
+
+      // ---------------------------------------------------------------- Kp chart
+      function drawKpChart() {
+        const c = skyEl.kpChart;
+        if (!c) return;
+        const ctx = c.getContext('2d');
+        if (!ctx) return;
+        const dpr = window.devicePixelRatio || 1;
+        const w = c.clientWidth * dpr, h = c.clientHeight * dpr;
+        if (!w || !h) return;
+        if (c.width !== w || c.height !== h) { c.width = w; c.height = h; }
+        ctx.clearRect(0, 0, w, h);
+        const padL = 18 * dpr, padR = 6 * dpr, padT = 6 * dpr, padB = 14 * dpr;
+        const gw = w - padL - padR, gh = h - padT - padB;
+        const series = sky.kpSeries.slice(-64);
+        const ink = (getComputedStyle(document.documentElement).getPropertyValue('--ink-3') || '#6f83a6').trim();
+        ctx.strokeStyle = 'rgba(126,158,214,0.18)';
+        ctx.fillStyle = ink;
+        ctx.font = (8 * dpr) + 'px ui-monospace, monospace';
+        ctx.lineWidth = 1 * dpr;
+        [0, 3, 5, 7, 9].forEach(v => {
+          const y = padT + gh * (1 - v / 9);
+          ctx.beginPath(); ctx.moveTo(padL, y); ctx.lineTo(w - padR, y); ctx.stroke();
+          ctx.fillText(String(v), 2 * dpr, y + 2.5 * dpr);
+        });
+        if (!series.length) {
+          ctx.fillText('Kp not available — press Refresh', padL + 4 * dpr, h / 2);
+          return;
+        }
+        const xFor = i => padL + (series.length === 1 ? gw / 2 : gw * i / (series.length - 1));
+        const yFor = v => padT + gh * (1 - Math.max(0, Math.min(9, v)) / 9);
+        // area under the observed part
+        ctx.beginPath();
+        ctx.moveTo(xFor(0), padT + gh);
+        series.forEach((p, i) => ctx.lineTo(xFor(i), yFor(p.kp)));
+        ctx.lineTo(xFor(series.length - 1), padT + gh);
+        ctx.closePath();
+        ctx.fillStyle = 'rgba(245,165,36,0.14)';
+        ctx.fill();
+        // observed line
+        ctx.strokeStyle = '#f5a524';
+        ctx.lineWidth = 1.8 * dpr;
+        ctx.beginPath();
+        let started = false;
+        series.forEach((p, i) => {
+          if (p.predicted) return;
+          const x = xFor(i), y = yFor(p.kp);
+          if (!started) { ctx.moveTo(x, y); started = true; } else ctx.lineTo(x, y);
+        });
+        ctx.stroke();
+        // forecast dashed
+        const firstPred = series.findIndex(p => p.predicted);
+        if (firstPred >= 0) {
+          ctx.setLineDash([3 * dpr, 3 * dpr]);
+          ctx.strokeStyle = '#8ab4ff';
+          ctx.beginPath();
+          for (let i = Math.max(0, firstPred - 1); i < series.length; i++) {
+            const x = xFor(i), y = yFor(series[i].kp);
+            if (i === Math.max(0, firstPred - 1)) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+          }
+          ctx.stroke();
+          ctx.setLineDash([]);
+        }
+        // dots
+        series.forEach((p, i) => {
+          ctx.beginPath();
+          ctx.fillStyle = p.predicted ? '#8ab4ff' : p.kp >= 5 ? '#fb7185' : '#f5a524';
+          ctx.arc(xFor(i), yFor(p.kp), 1.7 * dpr, 0, Math.PI * 2);
+          ctx.fill();
+        });
+        ctx.fillStyle = ink;
+        ctx.font = (8 * dpr) + 'px ui-monospace, monospace';
+        ctx.fillText('OBSERVED', padL, h - 3 * dpr);
+        ctx.fillText('DASHED = NOAA FORECAST', w - padR - 128 * dpr, h - 3 * dpr);
+      }
+      if (skyEl.kpChart) {
+        skyEl.kpChart.style.cursor = 'pointer';
+        skyEl.kpChart.title = 'Click to hear the Kp curve — higher pitch means a stronger storm';
+        skyEl.kpChart.addEventListener('click', () => {
+          const series = sky.kpSeries.slice(-32);
+          if (!series.length) { announce('No Kp data yet.'); return; }
+          series.forEach((p, i) => tone(200 + Math.min(9, p.kp) / 9 * 620, i * 0.16, 0.2, p.kp >= 5 ? 'sawtooth' : 'triangle', 0.12));
+          announce('Playing Kp history and forecast. Higher pitch is a stronger geomagnetic storm.');
+        });
+      }
+
+      // ---------------------------------------------------------------- 8.2 spin + local Sun
+      function paintSpin() {
+        const now = new Date();
+        const jd = jdOf(now);
+        const gst = gmstDeg(jd);
+        const lst = ((gst + sky.loc.lon) / 15 + 24) % 24;
+        const hh = Math.floor(lst), mm = Math.floor((lst - hh) * 60), ss = Math.floor(((lst - hh) * 60 - mm) * 60);
+        if (skyEl.sidereal) skyEl.sidereal.textContent = String(hh).padStart(2, '0') + ':' + String(mm).padStart(2, '0') + ':' + String(ss).padStart(2, '0') + ' LST';
+        if (skyEl.rate) skyEl.rate.textContent = '360° / 23 h 56 m 04 s';
+        if (skyEl.speedSpin) skyEl.speedSpin.textContent = (1674.4 * Math.cos(sky.loc.lat * RAD)).toFixed(0) + ' km/h at your latitude';
+
+        const field = magneticFieldHere(sky.loc.lat, sky.loc.lon);
+        if (skyEl.magLat) skyEl.magLat.textContent = field.lat.toFixed(1) + '°';
+        if (skyEl.magField) skyEl.magField.textContent = '≈ ' + (field.total * 1e6).toFixed(0) + ' µT';
+        if (skyEl.magInc) skyEl.magInc.textContent = field.inclination.toFixed(0) + '°';
+
+        const earthPos = helioOf(PLANETS[2], jd);
+        const rAU = norm(earthPos);
+        if (skyEl.orbit) skyEl.orbit.textContent = (29.784 / Math.sqrt(rAU)).toFixed(2) + ' km/s · ' + rAU.toFixed(3) + ' AU from the Sun';
+
+        const sun = sunAltAz(sky.loc.lat, sky.loc.lon, jd);
+        const sunVec = sunEci(jd);
+        const sunR = sunVec.rAU;
+        const beam = 1361.1 / (sunR * sunR);
+        const sunRa = ((Math.atan2(sunVec.y, sunVec.x) * DEG) + 360) % 360;
+        const sunDec = Math.asin(Math.max(-1, Math.min(1, sunVec.z))) * DEG;
+        let subLon = ((sunRa - gst + 540) % 360) - 180;
+        if (skyEl.sunSub) skyEl.sunSub.textContent = sunDec.toFixed(1) + '° ' + (sunDec >= 0 ? 'N' : 'S') + ' · ' + Math.abs(subLon).toFixed(1) + '° ' + (subLon >= 0 ? 'E' : 'W');
+        if (skyEl.sunEl) skyEl.sunEl.textContent = sun.el.toFixed(1) + '°';
+        if (skyEl.sunAz) skyEl.sunAz.textContent = sun.az.toFixed(0) + '°';
+        if (skyEl.sunBeam) skyEl.sunBeam.textContent = beam.toFixed(0) + ' W/m²';
+        if (skyEl.sunGround) skyEl.sunGround.textContent = (beam * Math.max(0, Math.sin(sun.el * RAD))).toFixed(0) + ' W/m²';
+        if (skyEl.sunState) {
+          skyEl.sunState.textContent = sun.el > 0
+            ? 'Daylight — the Sun is ' + sun.el.toFixed(1) + '° above your horizon.'
+            : 'Night — the Sun is ' + Math.abs(sun.el).toFixed(1) + '° below your horizon.';
+        }
+        const info = dayInfo(sky.loc.lat, sky.loc.lon, now);
+        // Use the local solar date at the location so sunrise/sunset belong to the same day there.
+        const locNow = new Date(now.getTime() + (sky.loc.lon / 15) * 3600000);
+        const baseDay = new Date(Date.UTC(locNow.getUTCFullYear(), locNow.getUTCMonth(), locNow.getUTCDate()));
+        const rise = new Date(baseDay.getTime() + info.riseUtc * 3600000);
+        const set = new Date(baseDay.getTime() + info.setUtc * 3600000);
+        if (skyEl.sunRise) skyEl.sunRise.textContent = isFinite(info.riseUtc) ? localClock(rise) : '—';
+        if (skyEl.sunSet) skyEl.sunSet.textContent = isFinite(info.setUtc) ? localClock(set) : '—';
+        if (skyEl.sunDay) skyEl.sunDay.textContent = isFinite(info.dayLen) ? Math.floor(info.dayLen) + ' h ' + Math.round((info.dayLen % 1) * 60) + ' m' : '—';
+        if (skyEl.spinNote) {
+          const tz = (Intl.DateTimeFormat().resolvedOptions().timeZone) || 'your device time zone';
+          skyEl.spinNote.textContent = 'Sunrise, sunset and all pass times are for ' + sky.loc.name + ', shown in ' + tz + ' (your device time zone). Solar geometry is close to official tables but can differ by a few minutes.';
+        }
+      }
+
+      // ---------------------------------------------------------------- 8.3 planets
+      function planetSnapshot() {
+        const jd = jdOf(new Date());
+        const earth = helioOf(PLANETS[2], jd);
+        const out = PLANETS.map(p => {
+          const pos = helioOf(p, jd);
+          const rAU = norm(pos);
+          const dx = (pos.x - earth.x) * AU_KM * 1000;
+          const dy = (pos.y - earth.y) * AU_KM * 1000;
+          const dz = (pos.z - earth.z) * AU_KM * 1000;
+          const dGeo = Math.hypot(dx, dy, dz);
+          return {
+            name: p.name, glyph: p.glyph, colour: p.colour,
+            rAU: rAU,
+            distAU: dGeo / (AU_KM * 1000),
+            flux: 1361.1 / (rAU * rAU),
+            pull: dGeo > 0 ? GRAV * p.mass / (dGeo * dGeo) : 0,
+            tidal: dGeo > 0 ? (2 * GRAV * p.mass * R_EARTH * 1000) / Math.pow(dGeo, 3) : 0
+          };
+        });
+        const moonTidal = (2 * GRAV * MOON.mass * R_EARTH * 1000) / Math.pow(MOON.distanceKm * 1000, 3);
+        const moonPull = GRAV * MOON.mass / Math.pow(MOON.distanceKm * 1000, 2);
+        const sunD = norm(earth) * AU_KM * 1000;
+        out.forEach(o => {
+          o.tidalVsMoon = o.tidal / moonTidal * 100;
+          o.pullVsMoon = o.pull / moonPull * 100;
+        });
+        return { planets: out, moonTidal, moonPull, sunTidalVsMoon: (2 * GRAV * SUN_MASS * R_EARTH * 1000) / Math.pow(sunD, 3) / moonTidal * 100 };
+      }
+      function paintPlanets() {
+        if (!skyEl.planetTable) return;
+        const snap = planetSnapshot();
+        const maxLog = Math.log10(15000), minLog = Math.log10(1);
+        skyEl.planetTable.innerHTML = '';
+        snap.planets.forEach(p => {
+          const btn = document.createElement('button');
+          btn.type = 'button';
+          btn.className = 'planet-row' + (p.name === 'Earth' ? ' is-earth' : '');
+          btn.setAttribute('role', 'listitem');
+          btn.dataset.planet = p.name;
+          const width = Math.max(4, Math.min(100, (Math.log10(Math.max(1, p.flux)) - minLog) / (maxLog - minLog) * 100));
+          const rel = (p.flux / (1361.1 / Math.pow(snap.planets[2].rAU, 2)) * 100);
+          btn.innerHTML = '<span class="p-name" style="color:' + p.colour + '">' + p.glyph + ' ' + p.name + '</span>'
+            + '<span class="p-bar"><i style="width:' + width.toFixed(1) + '%;background:' + p.colour + '"></i></span>'
+            + '<span class="p-val">' + Math.round(p.flux).toLocaleString() + ' W/m² · ' + (rel >= 10 ? rel.toFixed(0) : rel.toFixed(1)) + '%</span>';
+          btn.title = p.name + ': ' + p.rAU.toFixed(3) + ' AU from the Sun, ' + p.distAU.toFixed(2) + ' AU from Earth. Click to hear its sunlight.';
+          btn.addEventListener('click', () => {
+            const f = 110 + Math.min(1, Math.log10(Math.max(1, p.flux)) / 4.2) * 640;
+            tone(f, 0, 0.5, 'triangle', 0.2);
+            announce(p.name + ': ' + Math.round(p.flux).toLocaleString() + ' watts per square metre of sunlight, ' + p.rAU.toFixed(2) + ' astronomical units from the Sun.');
+          });
+          skyEl.planetTable.appendChild(btn);
+        });
+        if (skyEl.planetNote) {
+          skyEl.planetNote.textContent = 'Earth now receives ' + Math.round(snap.planets[2].flux) + ' W/m² at the top of the atmosphere; distances are recomputed from Keplerian elements every minute.';
+        }
+
+        if (!skyEl.pullTable) return;
+        const moonRow = { name: 'Moon', glyph: '🌕', colour: '#cbd5e1', pull: snap.moonPull, tidalVsMoon: 100, distAU: MOON.distanceKm / AU_KM };
+        const sunRow = { name: 'Sun', glyph: '☀', colour: '#f5a524', pull: GRAV * SUN_MASS / Math.pow(norm(helioOf(PLANETS[2], jdOf(new Date()))) * AU_KM * 1000, 2), tidalVsMoon: snap.sunTidalVsMoon, distAU: norm(helioOf(PLANETS[2], jdOf(new Date()))) };
+        const rows = [sunRow, moonRow].concat(snap.planets.filter(p => p.name !== 'Earth'));
+        const maxTidal = Math.max.apply(null, rows.map(r => r.tidalVsMoon));
+        skyEl.pullTable.innerHTML = '';
+        rows.forEach(r => {
+          const btn = document.createElement('button');
+          btn.type = 'button';
+          btn.className = 'planet-row';
+          btn.setAttribute('role', 'listitem');
+          const width = Math.max(3, Math.min(100, Math.log10(Math.max(1e-9, r.tidalVsMoon)) / Math.log10(maxTidal) * 100));
+          const rel = r.tidalVsMoon >= 0.01 ? r.tidalVsMoon.toFixed(r.tidalVsMoon >= 10 ? 0 : 2) + '%' : r.tidalVsMoon.toExponential(1) + '%';
+          btn.innerHTML = '<span class="p-name" style="color:' + r.colour + '">' + r.glyph + ' ' + r.name + '</span>'
+            + '<span class="p-bar"><i style="width:' + width.toFixed(1) + '%;background:' + r.colour + '"></i></span>'
+            + '<span class="p-val">' + rel + ' of Moon</span>';
+          btn.title = r.name + ': tidal pull on Earth is ' + rel + ' of the Moon\'s. Click to hear it.';
+          btn.addEventListener('click', () => {
+            const f = 120 + Math.min(1, Math.log10(Math.max(1e-9, r.tidalVsMoon)) / Math.log10(maxTidal)) * 520;
+            tone(f, 0, 0.4, 'sine', 0.18);
+            announce(r.name + ' tidal pull is ' + rel + ' of the Moon\'s pull on Earth.');
+          });
+          skyEl.pullTable.appendChild(btn);
+        });
+      }
+
+      // ---------------------------------------------------------------- 8.4 satellites & passes
+      function parseTLE(line1, line2) {
+        if (!line1 || !line2) return null;
+        line1 = line1.trim(); line2 = line2.trim();
+        if (line1.indexOf('1 ') !== 0 || line2.indexOf('2 ') !== 0) return null;
+        const yy = parseInt(line1.slice(18, 20), 10);
+        const doy = parseFloat(line1.slice(20, 32));
+        const year = yy < 57 ? 2000 + yy : 1900 + yy;
+        if (!isFinite(yy) || !isFinite(doy)) return null;
+        const epoch = Date.UTC(year, 0, 1) + (doy - 1) * 86400000;
+        const inc = parseFloat(line2.slice(8, 16));
+        const raan = parseFloat(line2.slice(17, 25));
+        const ecc = parseFloat('0.' + line2.slice(26, 33).trim());
+        const argp = parseFloat(line2.slice(34, 42));
+        const M = parseFloat(line2.slice(43, 51));
+        const n = parseFloat(line2.slice(52, 63));
+        const ok = [inc, raan, ecc, argp, M, n].every(isFinite) && inc >= 0 && inc <= 180 && ecc >= 0 && ecc < 1 && n > 0.3 && n < 20;
+        if (!ok) return null;
+        return { epoch, inc: inc * RAD, raan: raan * RAD, ecc, argp: argp * RAD, M: M * RAD, n };
+      }
+      function initOrbit(tle) {
+        const n0 = tle.n * 2 * Math.PI / 86400;
+        const a1 = Math.cbrt(MU_EARTH / (n0 * n0)) / R_EARTH;
+        const k2 = 0.5 * J2;
+        const cosI = Math.cos(tle.inc);
+        const e = tle.ecc;
+        const d1 = 1.5 * k2 * (3 * cosI * cosI - 1) / (a1 * a1 * Math.pow(1 - e * e, 1.5));
+        const a0 = a1 * (1 - d1 / 3 - d1 * d1 - 134 / 81 * d1 * d1 * d1);
+        const d0 = 1.5 * k2 * (3 * cosI * cosI - 1) / (a0 * a0 * Math.pow(1 - e * e, 1.5));
+        const aKm = a0 / (1 - d0) * R_EARTH;
+        const n = Math.sqrt(MU_EARTH / (aKm * aKm * aKm));
+        const p = aKm * (1 - e * e);
+        const fac = 1.5 * J2 * Math.pow(R_EARTH / p, 2) * n;
+        return {
+          inc: tle.inc, raan: tle.raan, ecc: e, argp: tle.argp, M: tle.M, epoch: tle.epoch,
+          aKm, n,
+          raanDot: -fac * cosI,
+          argpDot: 0.5 * fac * (5 * cosI * cosI - 1),
+          mDot: n * (1 + 0.5 * J2 * Math.pow(R_EARTH / p, 2) * Math.sqrt(1 - e * e) * (3 * cosI * cosI - 1))
+        };
+      }
+      function eciAt(o, ms) {
+        const dt = (ms - o.epoch) / 1000;
+        const M = o.M + o.mDot * dt;
+        const raan = o.raan + o.raanDot * dt;
+        const argp = o.argp + o.argpDot * dt;
+        let E = M;
+        for (let i = 0; i < 8; i++) {
+          const d = (E - o.ecc * Math.sin(E) - M) / (1 - o.ecc * Math.cos(E));
+          E -= d;
+          if (Math.abs(d) < 1e-12) break;
+        }
+        const xp = o.aKm * (Math.cos(E) - o.ecc);
+        const yp = o.aKm * Math.sqrt(1 - o.ecc * o.ecc) * Math.sin(E);
+        const cw = Math.cos(argp), sw = Math.sin(argp), cO = Math.cos(raan), sO = Math.sin(raan);
+        const ci = Math.cos(o.inc), si = Math.sin(o.inc);
+        return {
+          x: (cw * cO - sw * sO * ci) * xp + (-sw * cO - cw * sO * ci) * yp,
+          y: (cw * sO + sw * cO * ci) * xp + (-sw * sO + cw * cO * ci) * yp,
+          z: (sw * si) * xp + (cw * si) * yp
+        };
+      }
+      function ecefFromEci(r, jd) {
+        const th = gmstDeg(jd) * RAD, c = Math.cos(th), s = Math.sin(th);
+        return { x: c * r.x + s * r.y, y: -s * r.x + c * r.y, z: r.z };
+      }
+      function observerEcef(latDeg, lonDeg) {
+        const lat = latDeg * RAD, lon = lonDeg * RAD;
+        const f = 1 / 298.257223563, e2 = f * (2 - f);
+        const N = R_EARTH / Math.sqrt(1 - e2 * Math.sin(lat) * Math.sin(lat));
+        return { x: N * Math.cos(lat) * Math.cos(lon), y: N * Math.cos(lat) * Math.sin(lon), z: N * (1 - e2) * Math.sin(lat) };
+      }
+      function lookAngles(satEcef, obs, latDeg, lonDeg) {
+        const lat = latDeg * RAD, lon = lonDeg * RAD;
+        const dx = satEcef.x - obs.x, dy = satEcef.y - obs.y, dz = satEcef.z - obs.z;
+        const east = -Math.sin(lon) * dx + Math.cos(lon) * dy;
+        const north = -Math.sin(lat) * Math.cos(lon) * dx - Math.sin(lat) * Math.sin(lon) * dy + Math.cos(lat) * dz;
+        const up = Math.cos(lat) * Math.cos(lon) * dx + Math.cos(lat) * Math.sin(lon) * dy + Math.sin(lat) * dz;
+        const range = Math.hypot(dx, dy, dz);
+        return { el: Math.asin(up / range) * DEG, az: ((Math.atan2(east, north) * DEG) + 360) % 360, range };
+      }
+      function satSunlit(rEci, jd) {
+        const s = sunEci(jd);
+        const dot = rEci.x * s.x + rEci.y * s.y + rEci.z * s.z;
+        if (dot >= 0) return true;
+        const perp = Math.hypot(rEci.x - dot * s.x, rEci.y - dot * s.y, rEci.z - dot * s.z);
+        return perp > R_EARTH;
+      }
+      function observerSunAlt(jd) {
+        return sunAltAz(sky.loc.lat, sky.loc.lon, jd).el;
+      }
+      function computePasses(orbit, hours, minEl) {
+        const obs = observerEcef(sky.loc.lat, sky.loc.lon);
+        const start = Date.now();
+        const end = start + hours * 3600000;
+        const step = 20000;
+        const passes = [];
+        let rise = null, peak = null, prev = -90, prevMs = start;
+        const sampleAt = (ms) => {
+          const jd = jdOf(new Date(ms));
+          const r = eciAt(orbit, ms);
+          const lk = lookAngles(ecefFromEci(r, jd), obs, sky.loc.lat, sky.loc.lon);
+          return { ...lk, r, jd };
+        };
+        const refine = (lo, hi, above) => {
+          for (let i = 0; i < 14; i++) {
+            const mid = (lo + hi) / 2;
+            if ((sampleAt(mid).el > 0) === above) hi = mid; else lo = mid;
+          }
+          return hi;
+        };
+        for (let ms = start; ms <= end; ms += step) {
+          const s = sampleAt(ms);
+          if (s.el > 0 && prev <= 0) {
+            rise = { ms: refine(prevMs, ms, true), az: s.az };
+            peak = { el: -90, ms, az: s.az };
+          }
+          if (rise && s.el > peak.el) peak = { el: s.el, ms, az: s.az };
+          if (s.el <= 0 && prev > 0 && rise) {
+            const setMs = refine(ms - step, ms, false);
+            if (peak && peak.el >= minEl) {
+              const jdPeak = jdOf(new Date(peak.ms));
+              const sunElObs = observerSunAlt(jdPeak);
+              const lit = satSunlit(eciAt(orbit, peak.ms), jdPeak);
+              // sampled arc for the sky plot
+              const arc = [];
+              const span = setMs - rise.ms;
+              const n = 60;
+              for (let i = 0; i <= n; i++) {
+                const t = rise.ms + span * i / n;
+                const sa = sampleAt(t);
+                arc.push({ t, az: sa.az, el: Math.max(0, sa.el) });
+              }
+              passes.push({
+                rise: rise.ms, set: setMs, peak: { ...peak, el: Math.max(0, peak.el) },
+                duration: (setMs - rise.ms) / 60000,
+                visible: sunElObs < -6 && lit,
+                sunEl: sunElObs, lit, arc,
+                riseAz: arc[0].az, setAz: arc[arc.length - 1].az
+              });
+            }
+            rise = null; peak = null;
+          }
+          prev = s.el; prevMs = ms;
+        }
+        return passes;
+      }
+      function compass(az) {
+        const dirs = ['N', 'NE', 'E', 'SE', 'S', 'SW', 'W', 'NW'];
+        return dirs[Math.round(((az % 360) + 360) % 360 / 45) % 8];
+      }
+      function paintPasses() {
+        const list = skyEl.list;
+        if (!list) return;
+        list.innerHTML = '';
+        if (!sky.passes.length) {
+          list.innerHTML = '<div class="sci-sub">' + (sky.orbit
+            ? 'No passes above 10° in the next 3 days for this location. Try another TLE or check back later.'
+            : 'Press <strong>🔭 Find ISS passes</strong> to compute passes, or paste a public TLE below.') + '</div>';
+          return;
+        }
+        sky.passes.slice(0, 12).forEach((p, i) => {
+          const btn = document.createElement('button');
+          btn.type = 'button';
+          btn.className = 'pass-row' + (i === sky.selected ? ' sel' : '');
+          btn.setAttribute('role', 'listitem');
+          btn.innerHTML = '<span class="pass-time">' + localClock(p.rise) + ' – ' + localClock(p.set) + '</span>'
+            + '<span class="pass-meta">max ' + Math.round(p.peak.el) + '° · ' + compass(p.riseAz) + '→' + compass(p.setAz) + ' · ' + Math.round(p.duration) + ' min</span>'
+            + (p.visible ? '<span class="pass-tag visible">VISIBLE</span>' : '<span class="pass-tag">daylight / low</span>');
+          btn.title = 'Select this pass to draw it in the sky chart';
+          btn.addEventListener('click', () => {
+            sky.selected = i;
+            paintPasses();
+            drawSkyPlot();
+            announce('Selected pass at ' + localClock(p.rise) + ', maximum elevation ' + Math.round(p.peak.el) + ' degrees.');
+          });
+          list.appendChild(btn);
+        });
+        if (skyEl.note) {
+          skyEl.note.textContent = sky.passes.length + ' passes above 10° in the next 3 days'
+            + (sky.passes.length > 12 ? ' (showing the first 12)' : '')
+            + (sky.passes.some(p => p.visible) ? ' · ' + sky.passes.filter(p => p.visible).length + ' should be visible in a dark sky' : '')
+            + '. Predictions use a public TLE and a J2 model — allow a minute or two, and check NASA Spot the Station.';
+        }
+      }
+      function drawSkyPlot() {
+        const c = skyEl.plot;
+        if (!c) return;
+        const ctx = c.getContext('2d');
+        if (!ctx) return;
+        const dpr = window.devicePixelRatio || 1;
+        const w = c.clientWidth * dpr, hh = c.clientHeight * dpr;
+        if (!w || !hh) return;
+        if (c.width !== w || c.height !== hh) { c.width = w; c.height = hh; }
+        ctx.clearRect(0, 0, w, hh);
+        const cx = w / 2, cy = hh / 2, r = Math.min(w, hh) / 2 - 16 * dpr;
+        const ink = (getComputedStyle(document.documentElement).getPropertyValue('--ink-3') || '#6f83a6').trim();
+        // horizon + rings
+        ctx.strokeStyle = 'rgba(126,158,214,0.5)';
+        ctx.lineWidth = 1.2 * dpr;
+        ctx.beginPath(); ctx.arc(cx, cy, r, 0, Math.PI * 2); ctx.stroke();
+        ctx.strokeStyle = 'rgba(126,158,214,0.18)';
+        [60, 30].forEach(el => {
+          ctx.beginPath(); ctx.arc(cx, cy, r * (1 - el / 90), 0, Math.PI * 2); ctx.stroke();
+        });
+        ctx.beginPath(); ctx.moveTo(cx - r, cy); ctx.lineTo(cx + r, cy); ctx.moveTo(cx, cy - r); ctx.lineTo(cx, cy + r); ctx.stroke();
+        ctx.fillStyle = ink;
+        ctx.font = '700 ' + (9 * dpr) + 'px ui-monospace, monospace';
+        ctx.textAlign = 'center';
+        ctx.fillText('N', cx, cy - r - 4 * dpr);
+        ctx.fillText('S', cx, cy + r + 11 * dpr);
+        ctx.fillText('E', cx + r + 8 * dpr, cy + 3 * dpr);
+        ctx.fillText('W', cx - r - 8 * dpr, cy + 3 * dpr);
+        const pass = sky.passes[sky.selected];
+        if (!pass) {
+          ctx.fillStyle = ink;
+          ctx.font = (9 * dpr) + 'px ui-monospace, monospace';
+          ctx.fillText('Find passes to draw the sky path', cx, cy + 18 * dpr);
+          ctx.textAlign = 'left';
+          return;
+        }
+        const xy = (az, el) => {
+          const rr = r * (1 - Math.max(0, Math.min(90, el)) / 90);
+          return { x: cx + rr * Math.sin(az * RAD), y: cy - rr * Math.cos(az * RAD) };
+        };
+        // arc
+        ctx.beginPath();
+        pass.arc.forEach((p, i) => {
+          const q = xy(p.az, p.el);
+          if (i === 0) ctx.moveTo(q.x, q.y); else ctx.lineTo(q.x, q.y);
+        });
+        ctx.strokeStyle = pass.visible ? '#2dd4bf' : '#38bdf8';
+        ctx.lineWidth = 2 * dpr;
+        ctx.stroke();
+        // markers
+        const marks = [pass.arc[0], pass.arc[pass.arc.length - 1], { az: pass.peak.az, el: pass.peak.el }];
+        marks.forEach((p, i) => {
+          const q = xy(p.az, p.el);
+          ctx.beginPath();
+          ctx.fillStyle = i === 2 ? '#f5a524' : 'rgba(234,242,255,0.85)';
+          ctx.arc(q.x, q.y, (i === 2 ? 3.4 : 2.6) * dpr, 0, Math.PI * 2);
+          ctx.fill();
+        });
+        const peakQ = xy(pass.peak.az, pass.peak.el);
+        ctx.fillStyle = '#f5a524';
+        ctx.textAlign = 'left';
+        ctx.font = '700 ' + (8.5 * dpr) + 'px ui-monospace, monospace';
+        ctx.fillText(Math.round(pass.peak.el) + '°', peakQ.x + 6 * dpr, peakQ.y - 4 * dpr);
+        // live position of the tracked satellite if above horizon
+        if (sky.orbit) {
+          const nowMs = Date.now();
+          const jd = jdOf(new Date(nowMs));
+          const lk = lookAngles(ecefFromEci(eciAt(sky.orbit, nowMs), jd), observerEcef(sky.loc.lat, sky.loc.lon), sky.loc.lat, sky.loc.lon);
+          if (lk.el > 0) {
+            const q = xy(lk.az, lk.el);
+            ctx.beginPath();
+            ctx.fillStyle = '#fb7185';
+            ctx.arc(q.x, q.y, 3.4 * dpr, 0, Math.PI * 2);
+            ctx.fill();
+          }
+        }
+        ctx.fillStyle = ink;
+        ctx.font = (8 * dpr) + 'px ui-monospace, monospace';
+        ctx.fillText(localClock(pass.rise) + ' → ' + localClock(pass.set) + ' · ' + compass(pass.riseAz) + ' to ' + compass(pass.setAz), 8 * dpr, hh - 7 * dpr);
+        ctx.textAlign = 'left';
+      }
+      async function loadTLE(force) {
+        if (!force && sky.orbit && Date.now() - sky.tleFetchedAt < 30 * 60000) return sky.orbit;
+        if (skyEl.status) skyEl.status.textContent = 'Getting the live ISS two-line element set from api.wheretheiss.at…';
+        try {
+          const j = await getJSON('https://api.wheretheiss.at/v1/satellites/25544/tles', 12000);
+          const tle = parseTLE(j.line1, j.line2);
+          if (!tle) throw new Error('the TLE could not be read');
+          sky.orbit = initOrbit(tle);
+          sky.orbitName = j.header ? String(j.header).trim() : 'ISS (ZARYA)';
+          sky.tleEpoch = tle.epoch;
+          sky.tleFetchedAt = Date.now();
+          if (skyEl.status) {
+            const ageH = Math.max(0, (Date.now() - tle.epoch) / 3600000);
+            skyEl.status.textContent = 'TLE for ' + sky.orbitName + ' · epoch ' + new Date(tle.epoch).toISOString().slice(0, 16).replace('T', ' ') + ' UTC (' + ageH.toFixed(1) + ' h old) · public, no key.';
+          }
+          return sky.orbit;
+        } catch (err) {
+          sky.orbit = null;
+          if (skyEl.status) {
+            skyEl.status.textContent = 'Could not get a live TLE (' + (err && err.message ? err.message : 'network error') + '). Try again, or paste a public TLE below.';
+          }
+          return null;
+        }
+      }
+      async function findPasses() {
+        if (sky.finding) return;
+        sky.finding = true;
+        if (skyEl.findBtn) { skyEl.findBtn.disabled = true; skyEl.findBtn.textContent = 'Computing…'; }
+        try {
+          const orbit = await loadTLE(false);
+          if (!orbit) { paintPasses(); drawSkyPlot(); return; }
+          sky.passes = computePasses(orbit, 72, 10);
+          sky.selected = 0;
+          paintPasses();
+          paintLivePass();
+          drawSkyPlot();
+          const vis = sky.passes.filter(p => p.visible).length;
+          announce('Found ' + sky.passes.length + ' ISS passes above 10 degrees in the next three days for ' + sky.loc.name + (vis ? ', ' + vis + ' likely visible.' : '.'));
+          if (skyEl.status) {
+            const age = sky.tleEpoch ? Math.max(0, (Date.now() - sky.tleEpoch) / 3600000) : null;
+            skyEl.status.textContent = 'Computed locally for ' + sky.loc.name + ' · ' + sky.passes.length
+              + ' passes above 10° in 3 days' + (age != null ? ' · TLE ' + age.toFixed(1) + ' h old' : '') + '.';
+          }
+        } finally {
+          sky.finding = false;
+          if (skyEl.findBtn) { skyEl.findBtn.disabled = false; skyEl.findBtn.textContent = '🔭 Find ISS passes (3 days)'; }
+        }
+      }
+      function paintLivePass() {
+        if (!skyEl.now) return;
+        if (!sky.orbit) {
+          skyEl.now.textContent = 'Live position needs the ISS TLE — press Find ISS passes.';
+          return;
+        }
+        const nowMs = Date.now();
+        const jd = jdOf(new Date(nowMs));
+        const r = eciAt(sky.orbit, nowMs);
+        const lk = lookAngles(ecefFromEci(r, jd), observerEcef(sky.loc.lat, sky.loc.lon), sky.loc.lat, sky.loc.lon);
+        const lit = satSunlit(r, jd);
+        const sunEl = observerSunAlt(jd);
+        let text;
+        if (lk.el > 0) {
+          text = sky.orbitName + ' is ' + lk.el.toFixed(0) + '° above your horizon at ' + lk.az.toFixed(0) + '° (' + compass(lk.az) + '), ' + Math.round(lk.range) + ' km away · '
+            + (lit ? 'sunlit' : 'in Earth\'s shadow') + (sunEl < -6 ? ' · dark sky here' : ' · daylight here');
+        } else {
+          const next = sky.passes.find(p => p.set > nowMs) || sky.passes.find(p => p.rise > nowMs);
+          text = sky.orbitName + ' is below your horizon' + (next ? ' · next pass ' + localClock(next.rise) + ' (max ' + Math.round(next.peak.el) + '°)' : '') + '.';
+        }
+        skyEl.now.textContent = text;
+      }
+      function selectPassForIcs() {
+        const p = sky.passes[sky.selected];
+        if (!p) { announce('Find a pass first.'); return; }
+        const stamp = (ms) => new Date(ms).toISOString().replace(/[-:]/g, '').replace(/\.\d{3}/, '');
+        const icsText = (v) => String(v).replace(/\\/g, '\\\\').replace(/;/g, '\\;').replace(/,/g, '\\,').replace(/\r?\n/g, '\\n');
+        const fold = (line) => { let out = ''; let rest = line; while (rest.length > 73) { out += rest.slice(0, 73) + '\r\n '; rest = rest.slice(73); } return out + rest; };
+        const title = icsText(sky.orbitName + ' pass - max ' + Math.round(p.peak.el) + ' deg');
+        const desc = icsText('Maximum elevation ' + Math.round(p.peak.el) + ' deg, ' + compass(p.riseAz) + ' to ' + compass(p.setAz)
+          + '. Computed by MSB NASA Earth View from a public TLE. Times can be 1-2 minutes off.');
+        const ics = ['BEGIN:VCALENDAR', 'VERSION:2.0', 'PRODID:-//MSB Creative Studios//MSB NASA Earth View//EN', 'CALSCALE:GREGORIAN',
+          'BEGIN:VEVENT', 'UID:' + Date.now() + '@msb-earth-view', 'DTSTAMP:' + stamp(Date.now()),
+          'DTSTART:' + stamp(p.rise), 'DTEND:' + stamp(p.set), 'SUMMARY:' + title,
+          'DESCRIPTION:' + desc, 'LOCATION:' + sky.loc.lat.toFixed(3) + ',' + sky.loc.lon.toFixed(3),
+          'END:VEVENT', 'END:VCALENDAR'].map(fold).join('\r\n');
+        const blob = new Blob([ics], { type: 'text/calendar' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url; a.download = 'iss-pass-' + new Date(p.rise).toISOString().slice(0, 10) + '.ics'; a.click();
+        URL.revokeObjectURL(url);
+        announce('Calendar file created for the selected pass.');
+      }
+      function sonifyPass() {
+        const p = sky.passes[sky.selected];
+        if (!p) { announce('Find a pass first.'); return; }
+        const arc = p.arc && p.arc.length > 8 ? p.arc : null;
+        const n = 12;
+        for (let i = 0; i < n; i++) {
+          const t = i / (n - 1);
+          const el = arc ? arc[Math.round(t * (arc.length - 1))].el : 90 * Math.sin(Math.PI * t);
+          tone(160 + Math.min(90, Math.max(0, el)) / 90 * 520, i * 0.24, 0.22, 'triangle', 0.14);
+        }
+        announce('Hearing the selected pass: pitch rises with elevation, then falls.');
+      }
+
+      // ---------------------------------------------------------------- wiring
+      function setLocation(lat, lon, name, source) {
+        sky.loc = { lat: Number(lat), lon: Number(lon), name: name };
+        if (skyEl.loc) skyEl.loc.textContent = name + ' · ' + Number(lat).toFixed(2) + '°, ' + Number(lon).toFixed(2) + '°';
+        paintSpin();
+        paintPlanets();
+        if (source === 'geo') {
+          paintWeather();
+          findPasses();
+        }
+      }
+      if (skyEl.locBtn) {
+        skyEl.locBtn.addEventListener('click', () => {
+          if (!navigator.geolocation) { skyEl.status.textContent = 'This browser has no geolocation.'; return; }
+          skyEl.status.textContent = 'Waiting for your location permission…';
+          navigator.geolocation.getCurrentPosition(pos => {
+            setLocation(pos.coords.latitude, pos.coords.longitude, 'Your location', 'geo');
+            skyEl.status.textContent = 'Using your location. Passes and sunlight recomputed.';
+          }, err => {
+            skyEl.status.textContent = 'Location not available (' + (err && err.message ? err.message : 'denied') + '). Still using ' + sky.loc.name + '.';
+          }, { timeout: 10000 });
+        });
+      }
+      if (skyEl.findBtn) skyEl.findBtn.addEventListener('click', findPasses);
+      if (skyEl.refresh) skyEl.refresh.addEventListener('click', () => loadWeather(true));
+      if (skyEl.sonify) {
+        skyEl.sonify.addEventListener('click', () => {
+          const w = sky.weather;
+          tone(140 + Math.min(9, w.kp || 0) / 9 * 620, 0, 0.5, (w.kp || 0) >= 5 ? 'sawtooth' : 'sine', 0.18);
+          tone(120 + Math.min(800, w.speed || 300) / 800 * 300, 0.5, 0.4, 'triangle', 0.14);
+          tone(w.bz != null && w.bz < 0 ? 160 : 420, 1.0, 0.5, 'sine', 0.16);
+          announce('Space weather sonified: Kp sets the first pitch, solar wind speed the second, and southward Bz the low third.');
+        });
+      }
+      if (skyEl.ics) skyEl.ics.addEventListener('click', selectPassForIcs);
+      if (skyEl.passSonify) skyEl.passSonify.addEventListener('click', sonifyPass);
+      if (skyEl.plot) {
+        skyEl.plot.addEventListener('click', () => {
+          if (sky.passes.length) {
+            sky.selected = (sky.selected + 1) % Math.min(12, sky.passes.length);
+            paintPasses(); drawSkyPlot();
+          }
+        });
+      }
+      if (skyEl.tleBtn) {
+        skyEl.tleBtn.addEventListener('click', async () => {
+          const raw = (skyEl.tleInput && skyEl.tleInput.value) || '';
+          const lines = raw.split(/\r?\n/).map(s => s.trim()).filter(Boolean);
+          let name = 'Custom satellite';
+          let l1 = null, l2 = null;
+          if (lines.length >= 3) { name = lines[0].replace(/^0 /, ''); l1 = lines[1]; l2 = lines[2]; }
+          else if (lines.length === 2) { l1 = lines[0]; l2 = lines[1]; }
+          const tle = parseTLE(l1, l2);
+          if (!tle) {
+            skyEl.tleStatus.textContent = 'That does not look like a valid two-line TLE. Paste the two lines starting with 1 and 2 (optionally preceded by the satellite name).';
+            return;
+          }
+          sky.orbit = initOrbit(tle);
+          sky.orbitName = name;
+          sky.tleEpoch = tle.epoch;
+          sky.tleFetchedAt = Date.now();
+          skyEl.tleStatus.textContent = 'Loaded ' + name + ' · epoch ' + new Date(tle.epoch).toISOString().slice(0, 16).replace('T', ' ') + ' UTC. Computing passes…';
+          sky.passes = computePasses(sky.orbit, 72, 10);
+          sky.selected = 0;
+          paintPasses(); drawSkyPlot(); paintLivePass();
+          skyEl.tleStatus.textContent = 'Loaded ' + name + ' · ' + sky.passes.length + ' passes above 10° in 3 days for ' + sky.loc.name + '.';
+          announce('Custom TLE loaded for ' + name + '. ' + sky.passes.length + ' passes found.');
+        });
+      }
+
+      // first paint + periodic refresh
+      if (skyEl.loc) skyEl.loc.textContent = sky.loc.name + ' · ' + sky.loc.lat.toFixed(2) + '°, ' + sky.loc.lon.toFixed(2) + '°';
+      paintSpin();
+      paintPlanets();
+      drawKpChart();
+      drawSkyPlot();
+      loadWeather(false);
+      if (window.MutationObserver) {
+        new MutationObserver(() => { drawKpChart(); drawSkyPlot(); })
+          .observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme', 'data-contrast'] });
+      }
+      setTimeout(() => { if (skyEl.findBtn) findPasses(); }, 6000);
+      setInterval(() => {
+        if (document.visibilityState !== 'visible') return;
+        paintSpin();
+        paintLivePass();
+        drawSkyPlot();
+      }, 1000);
+      setInterval(() => {
+        if (document.visibilityState !== 'visible') return;
+        paintPlanets();
+      }, 5 * 60000);
+      setInterval(() => {
+        if (document.visibilityState !== 'visible') return;
+        loadWeather(false);
+      }, 5 * 60000);
+    })();
+
     // drag, pinch and wheel on the stage
     el.stage.addEventListener('pointerdown', (e) => {
       if (state.mode !== '3d') return;
@@ -5596,7 +6865,7 @@
 
   // expose a tiny diagnostics hook for the console / automated smoke tests
   window.MSB_EARTH_VIEW = {
-    version: '3.7.1',
+    version: '3.8.0',
     state: state,
     features: () => ({ warmth: feat.warmth, lum: feat.lum, motion: feat.motion, freq: feat.freq, pan: feat.pan }),
     isBooted: () => booted,
