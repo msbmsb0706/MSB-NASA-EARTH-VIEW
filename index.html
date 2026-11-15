@@ -1701,6 +1701,7 @@
           <div class="sky-now">
             <div><span class="sky-k">Solar elevation</span><span class="sky-v" id="sunElevation">—</span></div>
             <div><span class="sky-k">Solar azimuth</span><span class="sky-v" id="sunAzimuth">—</span></div>
+            <div><span class="sky-k">Sun overhead at</span><span class="sky-v" id="sunSubsolar">—</span></div>
             <div><span class="sky-k">Direct beam — top of atmosphere</span><span class="sky-v" id="sunBeam">—</span></div>
             <div><span class="sky-k">On flat ground — clear sky</span><span class="sky-v" id="sunGround">—</span></div>
             <div><span class="sky-k">Sunrise — approximate</span><span class="sky-v" id="sunRise">—</span></div>
@@ -5605,7 +5606,7 @@
         kpChart: $('kpChart'),
         sidereal: $('spinSidereal'), rate: $('spinRate'), speedSpin: $('spinSpeed'), magLat: $('spinMagLat'),
         magField: $('spinMagField'), magInc: $('spinMagInc'), orbit: $('spinOrbit'), spinNote: $('spinNote'),
-        sunEl: $('sunElevation'), sunAz: $('sunAzimuth'), sunBeam: $('sunBeam'), sunGround: $('sunGround'),
+        sunEl: $('sunElevation'), sunAz: $('sunAzimuth'), sunSub: $('sunSubsolar'), sunBeam: $('sunBeam'), sunGround: $('sunGround'),
         sunState: $('sunState'), sunRise: $('sunRise'), sunSet: $('sunSet'), sunDay: $('sunDayLen'),
         planetTable: $('planetTable'), pullTable: $('pullTable'), planetNote: $('planetNote'),
         loc: $('passLoc'), locBtn: $('passLocBtn'), findBtn: $('passFindBtn'), status: $('passStatus'),
@@ -6002,7 +6003,7 @@
         const gst = gmstDeg(jd);
         const lst = ((gst + sky.loc.lon) / 15 + 24) % 24;
         const hh = Math.floor(lst), mm = Math.floor((lst - hh) * 60), ss = Math.floor(((lst - hh) * 60 - mm) * 60);
-        if (skyEl.sidereal) skyEl.sidereal.textContent = String(hh).padStart(2, '0') + ':' + String(mm).padStart(2, '0') + ':' + String(ss).padStart(2, '0') + ' LMT';
+        if (skyEl.sidereal) skyEl.sidereal.textContent = String(hh).padStart(2, '0') + ':' + String(mm).padStart(2, '0') + ':' + String(ss).padStart(2, '0') + ' LST';
         if (skyEl.rate) skyEl.rate.textContent = '360° / 23 h 56 m 04 s';
         if (skyEl.speedSpin) skyEl.speedSpin.textContent = (1674.4 * Math.cos(sky.loc.lat * RAD)).toFixed(0) + ' km/h at your latitude';
 
@@ -6016,8 +6017,13 @@
         if (skyEl.orbit) skyEl.orbit.textContent = (29.784 / Math.sqrt(rAU)).toFixed(2) + ' km/s · ' + rAU.toFixed(3) + ' AU from the Sun';
 
         const sun = sunAltAz(sky.loc.lat, sky.loc.lon, jd);
-        const sunR = sunEci(jd).rAU;
+        const sunVec = sunEci(jd);
+        const sunR = sunVec.rAU;
         const beam = 1361.1 / (sunR * sunR);
+        const sunRa = ((Math.atan2(sunVec.y, sunVec.x) * DEG) + 360) % 360;
+        const sunDec = Math.asin(Math.max(-1, Math.min(1, sunVec.z))) * DEG;
+        let subLon = ((sunRa - gst + 540) % 360) - 180;
+        if (skyEl.sunSub) skyEl.sunSub.textContent = sunDec.toFixed(1) + '° ' + (sunDec >= 0 ? 'N' : 'S') + ' · ' + Math.abs(subLon).toFixed(1) + '° ' + (subLon >= 0 ? 'E' : 'W');
         if (skyEl.sunEl) skyEl.sunEl.textContent = sun.el.toFixed(1) + '°';
         if (skyEl.sunAz) skyEl.sunAz.textContent = sun.az.toFixed(0) + '°';
         if (skyEl.sunBeam) skyEl.sunBeam.textContent = beam.toFixed(0) + ' W/m²';
@@ -6028,7 +6034,9 @@
             : 'Night — the Sun is ' + Math.abs(sun.el).toFixed(1) + '° below your horizon.';
         }
         const info = dayInfo(sky.loc.lat, sky.loc.lon, now);
-        const baseDay = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate()));
+        // Use the local solar date at the location so sunrise/sunset belong to the same day there.
+        const locNow = new Date(now.getTime() + (sky.loc.lon / 15) * 3600000);
+        const baseDay = new Date(Date.UTC(locNow.getUTCFullYear(), locNow.getUTCMonth(), locNow.getUTCDate()));
         const rise = new Date(baseDay.getTime() + info.riseUtc * 3600000);
         const set = new Date(baseDay.getTime() + info.setUtc * 3600000);
         if (skyEl.sunRise) skyEl.sunRise.textContent = isFinite(info.riseUtc) ? localClock(rise) : '—';
