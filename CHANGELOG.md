@@ -1,0 +1,63 @@
+# Changelog
+
+All notable changes to MSB NASA EARTH VIEW.
+
+## [2.0.0] — 2026-11-15
+
+Full rebuild of the application on top of the original jukebox prototype. The standalone
+*Earth Jukebox* page and the jukebox dashboard have been merged into a single `index.html`.
+
+### Added
+- **Holographic 3D Earth** rendered with hand-written WebGL 1 (no libraries, no CDN):
+  - 5 200-point Fibonacci sphere sampled against an embedded 512 × 256 Natural Earth land mask
+    (1 591 visible land dots), 96 × 64 textured globe mesh.
+  - Three runtime-compiled shader programs: globe (ocean hex grid, continent data texture,
+    day/night shading, fresnel limb, scanning meridian glow), particles/lines, and an
+    atmospheric screen-space halo.
+  - 1 100-star parallax starfield, 15° graticule, great-circle data arcs between eight world
+    hubs with travelling pulses, and an animated scan meridian.
+  - Drag-to-orbit, pinch / ⌘-Ctrl-scroll zoom, auto-orbit, and a graceful 2D fallback when
+    WebGL is unavailable.
+- **Video input**: MP4/WebM files loop and drive the sonification frame by frame.
+- **Flat scan mode** (canvas 2D) retained alongside the globe, with beam, graticule and
+  analysis-window overlays.
+- **Sound design layer**: convolution reverb from a generated impulse, feedback delay, stereo
+  panner, sub-bass, vibrato lead, transient pulses, FM bells, noise hats and kick, all through
+  a dynamics compressor.
+- **Per-scene acoustic signatures**: Lydian / Dorian / pentatonic / minor scales, individual
+  oscillator mixes, filter settings and effect depths.
+- **Auto tour** (12 s per scene), **audio session recording** to `.webm` via MediaRecorder.
+- **Keyboard control** for every action, plus a help dialog.
+- **Accessibility layer**: ARIA live narration, skip link, labelled controls, focus styling,
+  high-contrast mode, `prefers-reduced-motion` support, screen-reader stage description.
+- **Telemetry HUD**: dominant frequency, note name, warmth, luminance, transient delta, stereo
+  position, live spectrum, FPS and engine status pills.
+- **Land mask pipeline**: Natural Earth 1:50m TopoJSON rasterised to a packed bitmap at build
+  time (documented in the README architecture section).
+- `LICENSE` (MIT) and `CHANGELOG.md`.
+
+### Changed
+- Unified data pipeline: one 512 × 256 field canvas drives audio analysis, the flat scanner and
+  the WebGL texture, so audio and visuals can never disagree.
+- Analysis now runs on a 64 × 32 downsample with smoothed features and a gamma-corrected
+  luminance curve, giving a much wider musical dynamic range on dark scenes.
+- Pitch mapping combines thermal warmth with the vertical light centroid.
+- Layout rebuilt as a responsive two-column stage/rail dashboard with a full-width info section.
+- Reduced-motion users start with auto-orbit off.
+
+### Fixed
+- Still images now produce audible rhythm (scan-line delta) instead of a static drone.
+- Globe longitude mapping corrected so east appears to the right when viewed from outside.
+- Model matrix corrected to a true orthonormal rotation (`rotX · rotY`).
+- Reverb/delay switches are respected on first audio initialisation.
+- Wheel zoom no longer traps page scrolling (requires ⌘/Ctrl or a pinch gesture).
+- Uploaded media is revoked and released when clearing or switching scenes.
+
+### Removed
+- Pixel-by-pixel 960 × 540 drawing loop in favour of a 512 × 256 field plus GPU texture.
+
+## [1.0.0] — 2026-11-14
+
+- Initial sonification prototype: four procedural NASA-inspired scenes, real-time column scan,
+  Web Audio synthesis, telemetry HUD and custom image loading.
+- Lite single-file accessible build (*Earth Jukebox*) with pentatonic mapping and ARIA narration.
