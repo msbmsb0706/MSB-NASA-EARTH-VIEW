@@ -58,6 +58,22 @@ python3 -m http.server 8000
 | A11y | ARIA live announcements, labelled controls, reduced-motion support, keyboard access to every action. |
 | Docs | This README, a changelog and an MIT licence. |
 
+### Sound design (merged from the lite build)
+
+The original *Earth Jukebox* lite engine has its own voice, and it is now selectable in the app:
+
+| Voice | What it does |
+| --- | --- |
+| **Holographic** (default) | Scene-defined oscillators, hybrid kick + hat percussion, full reverb. |
+| **Jukebox lite (original)** | Faithful port of the lite engine: detuned saw pad, triangle lead, 0.34 s delay with 0.38 feedback, and its 1800 Hz noise-crack drum with a 140 → 48 Hz body. |
+| **Cinematic drone** | Slow glides, deep reverb and sparse soft percussion for long listening. |
+| **Kinetic storm** | Square lead, short reverb and dense punch percussion, tuned for lightning data. |
+
+Both engines share the same analysis and mapping, so switching voices never changes what the data means.
+Alongside the voices there is a **scale menu** (scene default, the lite build's minor pentatonic, Lydian,
+Dorian, natural minor, whole tone), plus independent **Percussion** and **Bells** mutes.
+The pad now follows the harmonic degree under the melody, exactly as the lite build did.
+
 See [`CHANGELOG.md`](CHANGELOG.md) for the full list.
 
 ---
@@ -89,7 +105,8 @@ See [`CHANGELOG.md`](CHANGELOG.md) for the full list.
 - **Earth at Night: Urban Luminance** — pentatonic bells, 780 city-light clusters sampled from the land mask.
 - **ISS Lightning & Convective Storms** — minor kinetic pulse with random flash/branching-bolt events.
 - **Custom imagery.** Load a NASA EIC/SVS JPG, PNG, WebP, GIF, MP4 or WebM. Images are swept west→east by the
-  scan meridian; videos loop and drive the mapping every frame. Files never leave the device.
+  scan meridian (14 seconds per sweep at 1× speed); videos loop and drive the mapping every frame.
+  Files never leave the device.
 
 ### Performance and comfort
 - Auto tour (12 s per scene), audio session recording to `.webm`, fullscreen, high-contrast theme.
@@ -110,6 +127,8 @@ See [`CHANGELOG.md`](CHANGELOG.md) for the full list.
 | Reset the scan | **↺ Reset** | <kbd>R</kbd> |
 | Nudge the scan | — | <kbd>←</kbd> <kbd>→</kbd> |
 | Master gain | Gain slider | <kbd>↑</kbd> <kbd>↓</kbd> |
+| Sound design voice | **Voice** menu | <kbd>D</kbd> |
+| Musical scale | **Scale** menu | <kbd>S</kbd> |
 | Auto tour | **Auto tour** | <kbd>T</kbd> |
 | Auto-orbit | **Auto-orbit** switch | <kbd>O</kbd> |
 | Fullscreen | **⛶** | <kbd>F</kbd> |
@@ -160,7 +179,8 @@ index.html
     ├── scenes      procedural painters for the four datasets + custom media
     ├── analysis    64 × 32 downsample → warmth / luminance / motion / pan features
     ├── audio       Web Audio graph: pad + sub + lead + percussion → filters,
-    │               pan, delay, convolution reverb, compressor, analyser, recorder tap
+    │               pan, delay, convolution reverb, compressor, analyser, recorder tap;
+    │               4 voices, 6 scale sets, lite-build percussion (noise crack + body)
     ├── renderers   · flat 2D canvas scanner
     │               · WebGL1 globe: 3 programs (earth / particles / atmosphere),
     │                 3 shaders compiled at runtime, 22 buffers
@@ -180,7 +200,7 @@ texture, guaranteeing that what you see is exactly what you hear.
 | File | Purpose |
 | --- | --- |
 | `index.html` | The full application — 3D globe, sonification engine, accessibility layer. |
-| `MSB NASA EARTH VIEW – Earth Jukebox.html` | Lite single-file build: minimal, dependency-free flat-scan variant of the same engine. |
+| `MSB NASA EARTH VIEW – Earth Jukebox.html` | Lite single-file build: minimal, dependency-free flat-scan variant. Its synth voice, percussion, pentatonic mapping and narration are merged into `index.html` and selectable as **Jukebox lite (original)**. |
 | `MSB NASA EARTH VIEW – Earth Jukebox.md` | Documentation for the lite build. |
 | `MSB_NASA_EARTH_VIEW_Master_Guide.pdf` | Submission package: pitch script, deck outline, checklist. |
 | `README.md` | This document. |

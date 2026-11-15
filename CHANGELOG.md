@@ -2,6 +2,32 @@
 
 All notable changes to MSB NASA EARTH VIEW.
 
+## [2.1.0] — 2026-11-15
+
+### Added
+- **Sound design panel** with four selectable synth voices:
+  - *Holographic* (default) — the 2.0 engine.
+  - *Jukebox lite (original)* — faithful port of the lite build's voice: detuned sawtooth pad,
+    triangle lead, 0.34 s delay with 0.38 feedback and 0.3 wet, 1800 Hz noise-crack drum with a
+    140 → 48 Hz sine body, reduced reverb, no bells.
+  - *Cinematic drone* — slower glides, longer delay, deeper reverb, soft kick only.
+  - *Kinetic storm* — square lead, short delay/reverb, dense punch percussion.
+- **Scale sets**: scene default, minor pentatonic (the lite build's `[0,3,5,7,10]`), Lydian, Dorian,
+  natural minor and whole tone, transposed over the active scene root.
+- **Percussion** and **Bells** mute switches.
+- Harmonic pad follower: the drone and sub now glide to the scale degree under the melody
+  (lite-build behaviour) instead of sitting on a fixed root.
+- Keyboard: <kbd>D</kbd> cycles voice, <kbd>S</kbd> cycles scale; both documented in the help dialog.
+
+### Changed
+- Still-image and scene sweeps now take 14 seconds at 1× scan speed (as documented in the lite build).
+- Lead gain, pad level, delay feedback, delay wet and reverb mix are driven by the selected voice.
+- Percussion gating uses the lite build's interval curve: `max(0.14, 0.9 − motion × 1.3)` seconds.
+
+### Fixed
+- `Audio.init` no longer hits a temporal-dead-zone error when the delay/reverb stages are configured
+  from the sound-design record.
+
 ## [2.0.0] — 2026-11-15
 
 Full rebuild of the application on top of the original jukebox prototype. The standalone
