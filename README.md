@@ -1,7 +1,7 @@
 # MSB NASA EARTH VIEW — The Earth Information Jukebox
 
-> **Hear the Earth in real time.** A zero-dependency, single-file web application that turns NASA Earth
-> science imagery into live soundscapes — and renders the planet as an interactive holographic 3D globe.
+> **Hear Earth imagery as it is scanned.** A zero-dependency, single-file web application that turns
+> NASA satellite imagery into synthesized soundscapes and renders an interactive holographic 3D globe.
 
 **NASA Space Apps Challenge 2026 · Mysore, India · Team MSB Creative Studios**
 
@@ -27,9 +27,17 @@ full accessibility layer.
 ## Quick start
 
 1. Open **`index.html`** in any modern browser (Chrome, Edge, Firefox, Safari).
-   No build step, no server, no dependencies, no network requests.
-2. Pick one of the four Earth scenes, or load your own NASA frame (image **or** video).
-3. Press **Start sonification** (or hit <kbd>Space</kbd>) and listen to the scan.
+   No build step or dependencies. A network connection is needed for NASA imagery; demos and local files work offline.
+2. Press **Start near-real-time view + sound** to load the latest available Himawari infrared image and start listening. For the Americas choose GOES-East. Or choose a NASA layer and press **Load selected imagery**, then **Start sonification** (or <kbd>Space</kbd>).
+3. You can also choose a simulated demo or load a local image or video.
+
+### NASA imagery and dates
+
+The app requests imagery via NASA's [GIBS WMS](https://nasa-gibs.github.io/gibs-api-docs/access-basics/) and uses its WMTS DescribeDomains service to check the selected layer's available times. **Follow latest available** looks back 14 days and chooses the latest available frame; it checks every 5 minutes while that same layer is active and reloads when a newer frame appears. Choose a date to turn following off; for a historical 30-minute layer, the last available frame on that UTC day is selected. The status displays the GIBS-listed frame time and retrieval time. GIBS availability does not guarantee complete global coverage.
+
+Himawari and GOES-East infrared imagery has a nominal 10-minute cadence and covers only each satellite's viewing area. NASA's delivery can be delayed and the latest frame can be unavailable or incomplete; the app displays its UTC timestamp and approximate age. These are not continuous video and don't cover the whole world. VIIRS NOAA-20 and MODIS true-color layers are daily mosaics. IMERG's 30-minute layer is a precipitation **estimate**, not ground radar, and arrives with processing delay; the daily layer is an average. None is a live video feed. If NASA's availability or image request fails, the previous source stays active: check your connection, try another date or layer, or use [NASA Worldview](https://worldview.earthdata.nasa.gov/) or a local file. The GIBS service can snap WMS requests to a nearest time, so the app checks the advertised availability before requesting an image rather than assuming a date exists.
+
+The actual displayed image pixels drive live Web Audio synthesis; this is an artistic image-to-sound mapping, not a calibrated reading of temperature, wind, or other measurements. With a still mosaic, changes in sound mainly come from scanning different image columns, not live changes on Earth. The NASA request is made directly from your browser and requires network access and a browser that permits cross-origin pixel reads.
 
 Optional local server (some Safari versions treat `file://` media more strictly):
 
@@ -105,6 +113,7 @@ See [`CHANGELOG.md`](CHANGELOG.md) for the full list.
 - **GEOS Global Aerosols & Dust Plumes** — Dorian sweep, drifting dust plumes and streamers.
 - **Earth at Night: Urban Luminance** — pentatonic bells, 780 city-light clusters sampled from the land mask.
 - **ISS Lightning & Convective Storms** — minor kinetic pulse with random flash/branching-bolt events.
+- **NASA GIBS.** Explore 10-minute Himawari/GOES-East infrared, daily VIIRS/MODIS true-color mosaics and daily or 30-minute IMERG precipitation imagery by UTC date. Check availability, follow recent frames and refresh.
 - **Custom imagery.** Load a NASA EIC/SVS JPG, PNG, WebP, GIF, MP4 or WebM. Images are swept west→east by the
   scan meridian (14 seconds per sweep at 1× speed); videos loop and drive the mapping every frame.
   Files never leave the device.
@@ -121,7 +130,7 @@ See [`CHANGELOG.md`](CHANGELOG.md) for the full list.
 ### Performance and comfort
 - Auto tour (12 s per scene), audio session recording to `.webm`, fullscreen, high-contrast theme.
 - Reduced-motion support (`prefers-reduced-motion`) and adaptive device-pixel-ratio capping.
-- Single request-free document: works offline, on `file://`, and inside locked-down school networks.
+- Single document: demo scenes and local files work offline; NASA GIBS imagery requires network access.
 
 ---
 
@@ -198,8 +207,7 @@ index.html
     └── interaction UI bindings, keyboard map, pointer orbit, tour, recording, loop
 ```
 
-**Why no framework?** The submission must run offline, inside sandboxed judging environments, from a single
-file. Vanilla ES2020 + WebGL1 keeps the payload tiny and removes every supply-chain and CDN dependency.
+**Why no framework?** The demo and local media can run offline from a single file. Vanilla ES2020 + WebGL1 keeps the payload tiny and removes every supply-chain and CDN dependency.
 
 **Data flow.** The same 512 × 256 field canvas feeds the audio analysis, the flat scanner and the WebGL
 texture, guaranteeing that what you see is exactly what you hear.
@@ -224,13 +232,12 @@ texture, guaranteeing that what you see is exactly what you hear.
 
 - The four built-in scenes are **procedurally generated demo visuals inspired by** NASA EIC/SVS datasets
   (sea-surface currents and temperature, GEOS aerosols, night lights, ISS lightning). They are **not raw NASA
-  data**. To hear real data, download frames or animations from the
+  data**. For NASA pixels, use the GIBS option or download frames or animations from the
   [NASA Earth Information Center](https://earth.gov/) or the
   [NASA Scientific Visualization Studio](https://svs.gsfc.nasa.gov/) and load them above.
-- NASA media are credited to NASA. No NASA imagery is bundled with this repository; only a public-domain
+- We acknowledge the use of imagery provided by NASA's Global Imagery Browse Services (GIBS), part of NASA's Earth Science Data and Information System (ESDIS). Himawari imagery is from JMA; GOES imagery is from NOAA. No NASA imagery is bundled with this repository; only a public-domain
   Natural Earth land mask (1:50 m, `world-atlas`) is embedded, as packed coastline bits.
-- **Privacy.** There is no analytics, no telemetry and no network traffic. Uploaded images and videos are
-  decoded locally and never uploaded; they are released as soon as you clear or replace them.
+- **Privacy.** There is no analytics or telemetry. Loading NASA imagery sends a request to NASA GIBS. Uploaded images and videos are decoded locally and never uploaded; they are released when cleared or replaced.
 - **Super Intelligence disclosure.** Super Intelligence (LLM) tools assisted with code and documentation.
   Sonification mapping logic, creative direction and technical integration were designed and executed by
   MSB Creative Studios.
@@ -267,7 +274,7 @@ pass runs on a 64 × 32 buffer, so the application stays smooth on integrated gr
 
 ## Roadmap
 
-- Live API streaming from NASA GIBS / Worldview instead of uploads.
+- Add more NASA GIBS layers and time-series playback when source data are available.
 - Multi-stem export (pads, lead, percussion) and MIDI out for classroom composition.
 - Sonification of additional NASA datasets: GRACE groundwater, ICESat-2 ice loss, precipitation.
 - Configurable mapping curves and a "describe what you hear" tutorial for first-time users.
