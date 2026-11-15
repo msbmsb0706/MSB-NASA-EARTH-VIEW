@@ -821,6 +821,21 @@
   .quake-list { max-height: 200px; overflow-y: auto; display: grid; gap: 6px; }
   .quake-item { border: 1px solid var(--border); border-radius: 8px; padding: 8px 10px; background: rgba(12,20,40,0.5); font-size: 0.78rem; }
   :root[data-theme="light"] .quake-item { background: #f7f9ff; }
+  /* Satellite comparison — public data graph */
+  .sat-toggle { display: flex; flex-wrap: wrap; gap: 6px; }
+  .sat-toggle-btn { padding: 6px 11px; border-radius: 999px; border: 1px solid var(--border); background: rgba(18,30,60,0.7); color: var(--ink-2); font-size: 0.74rem; font-weight: 600; cursor: pointer; }
+  .sat-toggle-btn.active { background: #0B3D91; color: #fff; border-color: #0B3D91; box-shadow: 0 2px 10px rgba(11,61,145,0.4); }
+  :root[data-theme="light"] .sat-toggle-btn { background: #eef4ff; }
+  .sat-chart { height: 300px; cursor: pointer; }
+  .sat-table { display: grid; gap: 6px; max-height: 300px; overflow-y: auto; }
+  .sat-row { display: flex; align-items: center; gap: 8px; border: 1px solid var(--border); border-radius: 8px; padding: 6px 9px; background: rgba(12,20,40,0.5); font-size: 0.76rem; }
+  :root[data-theme="light"] .sat-row { background: #f7f9ff; }
+  .sat-row .dot { width: 8px; height: 8px; border-radius: 50%; flex: 0 0 auto; box-shadow: 0 0 8px currentColor; }
+  .sat-row .name { font-weight: 700; color: var(--ink); }
+  .sat-row .meta { margin-left: auto; color: var(--ink-3); font-size: 0.7rem; white-space: nowrap; text-align: right; }
+  .sat-row a { color: inherit; }
+  .sat-tag { padding: 1px 6px; border-radius: 999px; font-size: 0.64rem; font-weight: 700; background: rgba(34,197,94,0.18); color: #4ade80; border: 1px solid rgba(34,197,94,0.35); }
+  :root[data-theme="light"] .sat-tag { color: #15803d; }
 
   footer {
     border-top: 1px solid var(--border);
@@ -1056,7 +1071,7 @@
         <option value="es">🇪🇸 Español</option>
         <option value="fr">🇫🇷 Français</option>
         <option value="de">🇩🇪 Deutsch</option>
-        <option value="zh">🇨🇳 中文</option>
+        <option value="zh">🇨🇳 中文 (Mandarin)</option>
         <option value="ja">🇯🇵 日本語</option>
         <option value="ar">🇸🇦 العربية</option>
         <option value="kn">🇮🇳 ಕನ್ನಡ (Kannada)</option>
@@ -1387,7 +1402,7 @@
   <section class="panel sci-lab" aria-labelledby="sciTitle">
     <div class="panel-head">
       <span class="panel-title" id="sciTitle"><b>7</b> 🔬 Scientific Lab — analysis &amp; insights</span>
-      <span class="panel-meta" id="sciMeta">NASA + USGS + Open-Meteo · public, no key</span>
+      <span class="panel-meta" id="sciMeta">NASA + ESA + NOAA + JMA + USGS + Open-Meteo · public, no key</span>
     </div>
 
     <!-- Air Quality -->
@@ -1491,6 +1506,36 @@
           <div class="sci-sub"><b>School:</b> magnitude → loudness, depth → pitch. <b>Public:</b> know nearest quake distance. <b>Research:</b> filter M4.5+, get CSV-ready list with lat/lon/time.</div>
           <div class="sci-sub">Combined with EONET above, you have wildfire + storm + quake + volcano coverage — all sonified as motion → rhythm.</div>
           <div class="trend">EONET already shows volcanoes &amp; wildfires — use both panels together.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Satellite comparison — public data -->
+    <div class="sci-panel" id="sciSats" role="region" aria-labelledby="sciSatsTitle">
+      <h3 class="sci-panel-title" id="sciSatsTitle"><b>7.5</b> 🛰️ Satellite comparison — most public data, still running</h3>
+      <div class="sci-grid">
+        <div class="sci-card">
+          <h4>Graph — compare free public missions</h4>
+          <div class="sci-sub" id="satCompareSub">Pick a metric: finer detail, faster refresh, or how open the data is.</div>
+          <div class="sat-toggle" role="group" aria-label="Comparison metric">
+            <button type="button" class="sat-toggle-btn active" data-metric="detail" aria-pressed="true">🔍 Spatial detail</button>
+            <button type="button" class="sat-toggle-btn" data-metric="speed" aria-pressed="false">⏱️ Update speed</button>
+            <button type="button" class="sat-toggle-btn" data-metric="open" aria-pressed="false">🌍 Openness</button>
+          </div>
+          <canvas class="sci-chart sat-chart" id="satChart" width="320" height="300"
+            aria-label="Bar chart comparing operational public Earth-observation satellites by spatial detail, update speed or openness. Click the chart to sonify."></canvas>
+          <div class="sci-sub">Bars are scaled so the best mission is longest. Click the chart to hear the ranking.</div>
+          <div class="sci-actions">
+            <button type="button" class="btn btn-primary" id="satSonifyBtn">🔊 Sonify comparison</button>
+            <button type="button" class="btn" id="satCsvBtn">⬇ Download CSV</button>
+            <button type="button" class="btn" id="satGibsBtn">GIBS layers ↗</button>
+          </div>
+        </div>
+        <div class="sci-card">
+          <h4>Running now — operational &amp; free</h4>
+          <div class="sci-value" id="satRunCount">Loading…</div>
+          <div class="sat-table" id="satTable" role="list" aria-label="Operational public satellites"></div>
+          <div class="sci-sub">Status means: agency-confirmed operational mission with a free public feed (NASA GIBS, Copernicus, NOAA, JMA). It is a catalogue, not live telemetry.</div>
         </div>
       </div>
     </div>
@@ -1944,6 +1989,8 @@
     climateYear: $('climateYear'), climateCompare: $('climateCompare'), climateCompareSub: $('climateCompareSub'),
     co2Chart: $('co2Chart'), climateSonifyBtn: $('climateSonifyBtn'), climateCsvBtn: $('climateCsvBtn'), climateNasaBtn: $('climateNasaBtn'),
     waterSea: $('waterSea'), iceChart: $('iceChart'), waterSonifyBtn: $('waterSonifyBtn'), waterGraceBtn: $('waterGraceBtn'), waterLocalTip: $('waterLocalTip'),
+    satChart: $('satChart'), satTable: $('satTable'), satRunCount: $('satRunCount'), satCompareSub: $('satCompareSub'),
+    satSonifyBtn: $('satSonifyBtn'), satCsvBtn: $('satCsvBtn'), satGibsBtn: $('satGibsBtn'), satToggles: Array.from(document.querySelectorAll('.sat-toggle-btn')),
     quakeCount: $('quakeCount'), quakeList: $('quakeList'), quakeCheckBtn: $('quakeCheckBtn'), quakeSonifyBtn: $('quakeSonifyBtn')
   };
 
@@ -5013,6 +5060,187 @@
       // water local tip from EONET/IMERG context
       if(el.waterLocalTip) el.waterLocalTip.textContent='Chennai monsoon: compare IMERG precipitation above — dry=brown/soft, wet=blue/loud. Use Water & Ice + GIBS together for research.';
 
+      // ---- Satellite comparison — public Earth-observation missions ----
+      (function(){
+        // Curated catalogue: operational missions whose data is free & public.
+        // res = best native resolution in metres, refresh = typical full refresh in minutes.
+        const SATS = [
+          { name:'Sentinel-2 A/B',  agency:'ESA Copernicus', res:10,     refresh:5*1440, open:95,  status:'operational', note:'13 bands · 5-day revisit',        url:'https://dataspace.copernicus.eu/' },
+          { name:'Sentinel-1 A/C',  agency:'ESA Copernicus', res:10,     refresh:6*1440, open:95,  status:'operational', note:'radar · sees through cloud',      url:'https://dataspace.copernicus.eu/' },
+          { name:'Landsat 8/9',     agency:'NASA · USGS',    res:30,     refresh:8*1440, open:100, status:'operational', note:'50-year free archive',            url:'https://landsat.gsfc.nasa.gov/' },
+          { name:'MODIS Terra/Aqua',agency:'NASA',           res:250,    refresh:720,    open:100, status:'operational', note:'daily true colour · in this app', url:'https://modis.gsfc.nasa.gov/' },
+          { name:'VIIRS NOAA-20/21',agency:'NOAA · NASA',    res:375,    refresh:720,    open:100, status:'operational', note:'night lights · active fire',      url:'https://www.earthdata.nasa.gov/data/instruments/viirs' },
+          { name:'Himawari-9 AHI',  agency:'JMA · NASA GIBS',res:500,    refresh:10,     open:90,  status:'operational', note:'10-minute Asia-Pacific',          url:'https://www.eorc.jaxa.jp/ptree/' },
+          { name:'GOES-18 ABI',     agency:'NOAA',           res:500,    refresh:5,      open:95,  status:'operational', note:'5-minute Americas',               url:'https://www.goes.noaa.gov/' },
+          { name:'GPM IMERG',       agency:'NASA · JAXA',    res:2000,   refresh:30,     open:100, status:'operational', note:'global rain every 30 min',        url:'https://gpm.nasa.gov/' },
+          { name:'SMAP',            agency:'NASA',           res:9000,   refresh:1440,   open:95,  status:'operational', note:'soil moisture · drought',         url:'https://smap.jpl.nasa.gov/' },
+          { name:'GRACE-FO',        agency:'NASA · GFZ',     res:300000, refresh:43200,  open:90,  status:'operational', note:'groundwater + ice mass',          url:'https://gracefo.jpl.nasa.gov/' }
+        ];
+
+        const METRICS = {
+          detail: { label:'Spatial detail',  unit:'finer', colour:'#38bdf8', blurb:'Finest ground detail first — the mission that shows the most public detail per pixel.' },
+          speed:  { label:'Update speed',    unit:'faster',colour:'#22c55e', blurb:'Fastest public refresh first — how quickly new free imagery of the whole planet arrives.' },
+          open:   { label:'Openness',        unit:'open',  colour:'#f5a524', blurb:'How completely free and un-restricted the data is to download, reuse and publish.' }
+        };
+        let metric = 'detail';
+
+        const fmtRes = v => v >= 1000 ? (v/1000)+' km' : v+' m';
+        const fmtRefresh = v => v >= 1440 ? Math.round(v/1440)+' d' : v >= 60 ? (v/60)+' h' : v+' min';
+        const fmtValue = (s,m) => m==='detail' ? fmtRes(s.res) : m==='speed' ? fmtRefresh(s.refresh) : s.open+' %';
+
+        const scoreOf = (s,m) => {
+          if (m === 'open') return s.open / 100;
+          const vals = SATS.map(x => m==='detail' ? x.res : x.refresh);
+          const lo = Math.log(Math.min.apply(null, vals));
+          const hi = Math.log(Math.max.apply(null, vals));
+          return hi === lo ? 1 : 1 - (Math.log(m==='detail' ? s.res : s.refresh) - lo) / (hi - lo);
+        };
+        const ranked = m => SATS.slice().sort((a,b) => scoreOf(b,m) - scoreOf(a,m));
+
+        const ink = () => (getComputedStyle(document.documentElement).getPropertyValue('--ink-2') || '#a9bcdb').trim();
+
+        // ---- table: running / operational and free ----
+        (function(){
+          if (el.satTable) {
+            el.satTable.innerHTML = '';
+            ranked('detail').forEach(s => {
+              const row = document.createElement('div');
+              row.className = 'sat-row'; row.setAttribute('role','listitem');
+              row.innerHTML = '<span class="dot" style="color:#22c55e;background:#22c55e"></span>'
+                + '<a class="name" href="'+s.url+'" target="_blank" rel="noopener">'+escapeHtml(s.name)+'</a>'
+                + '<span class="sat-tag">PUBLIC</span>'
+                + '<span class="meta">'+escapeHtml(fmtRes(s.res))+' · '+escapeHtml(fmtRefresh(s.refresh))+'<br>'+escapeHtml(s.note)+'</span>';
+              el.satTable.appendChild(row);
+            });
+          }
+          if (el.satRunCount) {
+            const live = SATS.filter(s => s.status === 'operational').length;
+            const avgOpen = Math.round(SATS.reduce((a,s) => a + s.open, 0) / SATS.length);
+            el.satRunCount.textContent = live+' of '+SATS.length+' running · '+avgOpen+' % open';
+          }
+        })();
+
+        // ---- chart ----
+        const c = el.satChart;
+        let ctx = c && c.getContext('2d');
+        function draw(){
+          if (!ctx) return;
+          const dpr = window.devicePixelRatio || 1;
+          const w = c.clientWidth * dpr, h = c.clientHeight * dpr;
+          if (c.width !== w || c.height !== h) { c.width = w; c.height = h; }
+          ctx.clearRect(0, 0, w, h);
+          const list = ranked(metric), M = METRICS[metric];
+          const padX = 8*dpr, padY = 5*dpr, labelW = 104*dpr, footerH = 13*dpr, valueW = 54*dpr;
+          const barX = padX + labelW;
+          const barW = Math.max(20*dpr, w - barX - padX - valueW);
+          const rowsH = h - padY*2 - footerH;
+          const rowH = rowsH / list.length;
+          const barH = Math.max(6*dpr, rowH * 0.54);
+          ctx.textBaseline = 'middle';
+          list.forEach((s, i) => {
+            const sc = Math.max(0.04, scoreOf(s, metric));
+            const y = padY + rowH*i + rowH/2;
+            // track
+            ctx.fillStyle = 'rgba(126,158,214,0.14)';
+            roundRect(ctx, barX, y - barH/2, barW, barH, barH/2); ctx.fill();
+            // bar
+            const g = ctx.createLinearGradient(barX, 0, barX + barW, 0);
+            g.addColorStop(0, M.colour + '99');
+            g.addColorStop(1, M.colour);
+            ctx.fillStyle = g;
+            roundRect(ctx, barX, y - barH/2, Math.max(barH, barW*sc), barH, barH/2); ctx.fill();
+            // labels
+            ctx.fillStyle = ink();
+            ctx.font = '600 '+(9.5*dpr)+'px ui-monospace, monospace';
+            ctx.fillText(s.name, padX, y);
+            ctx.font = '600 '+(9*dpr)+'px ui-monospace, monospace';
+            ctx.fillStyle = ink();
+            ctx.fillText(fmtValue(s, metric), w - padX - valueW + 2*dpr, y);
+          });
+          ctx.fillStyle = ink();
+          ctx.globalAlpha = 0.75;
+          ctx.font = (8.5*dpr)+'px ui-monospace, monospace';
+          ctx.textBaseline = 'alphabetic';
+          ctx.fillText(M.label.toUpperCase()+' · LONGEST BAR = '+M.unit.toUpperCase()+' PUBLIC DATA', padX, h - 3*dpr);
+          ctx.globalAlpha = 1;
+        }
+        function roundRect(ctx, x, y, w2, h2, r){
+          const rr = Math.min(r, h2/2, w2/2);
+          ctx.beginPath();
+          ctx.moveTo(x+rr, y);
+          ctx.lineTo(x+w2-rr, y);
+          ctx.quadraticCurveTo(x+w2, y, x+w2, y+rr);
+          ctx.lineTo(x+w2, y+h2-rr);
+          ctx.quadraticCurveTo(x+w2, y+h2, x+w2-rr, y+h2);
+          ctx.lineTo(x+rr, y+h2);
+          ctx.quadraticCurveTo(x, y+h2, x, y+h2-rr);
+          ctx.lineTo(x, y+rr);
+          ctx.quadraticCurveTo(x, y, x+rr, y);
+          ctx.closePath();
+        }
+        function setMetric(m){
+          metric = m;
+          el.satToggles.forEach(b => {
+            const on = b.dataset.metric === m;
+            b.classList.toggle('active', on);
+            b.setAttribute('aria-pressed', on ? 'true' : 'false');
+          });
+          if (el.satCompareSub) el.satCompareSub.textContent = METRICS[m].blurb;
+          draw();
+        }
+        el.satToggles.forEach(b => b.addEventListener('click', () => setMetric(b.dataset.metric)));
+        if (c) {
+          draw();
+          window.addEventListener('resize', draw);
+          if (window.MutationObserver) {
+            new MutationObserver(draw).observe(document.documentElement, { attributes:true, attributeFilter:['data-theme','data-contrast'] });
+          }
+          c.addEventListener('click', ev => {
+            const rect = c.getBoundingClientRect();
+            const list = ranked(metric);
+            const i = Math.floor((ev.clientY - rect.top) / (rect.height / list.length));
+            const sat = list[Math.max(0, Math.min(list.length-1, i))];
+            if (!sat) return;
+            playTone(scoreOf(sat, metric), 0);
+            announce(sat.name+': '+fmtValue(sat, metric)+' — '+sat.note);
+          });
+          c.title = 'Click a bar to hear that mission';
+        }
+        setMetric('detail');
+
+        // ---- sonification ----
+        const playTone = (norm, offset) => {
+          const ctxA = Audio.init(); if (!ctxA) return;
+          if (ctxA.state === 'suspended') ctxA.resume();
+          const t = ctxA.currentTime + (offset || 0);
+          const o = ctxA.createOscillator(), g = ctxA.createGain();
+          o.type = 'triangle';
+          o.frequency.value = 180 + Math.max(0, Math.min(1, norm)) * 520;
+          g.gain.setValueAtTime(0.0001, t);
+          g.gain.linearRampToValueAtTime(0.18, t + 0.04);
+          g.gain.exponentialRampToValueAtTime(0.0001, t + 0.26);
+          o.connect(g); g.connect(Audio.master || ctxA.destination);
+          o.start(t); o.stop(t + 0.3);
+        };
+        if (el.satSonifyBtn) el.satSonifyBtn.addEventListener('click', () => {
+          const list = ranked(metric);
+          list.forEach((s, i) => playTone(scoreOf(s, metric), i * 0.24));
+          announce('Sonified '+METRICS[metric].label+' ranking — highest pitch is the most public data');
+        });
+
+        // ---- CSV ----
+        if (el.satCsvBtn) el.satCsvBtn.addEventListener('click', () => {
+          let csv = 'satellite,agency,resolution_m,refresh_minutes,openness_percent,status,note,url\n';
+          SATS.forEach(s => csv += [s.name, s.agency, s.res, s.refresh, s.open, s.status, s.note, s.url]
+            .map(v => '"'+String(v).replace(/"/g,'""')+'"').join(',')+'\n');
+          const blob = new Blob([csv], { type:'text/csv' });
+          const url = URL.createObjectURL(blob);
+          const a = document.createElement('a'); a.href = url; a.download = 'msb-nasa-earth-public-satellites.csv'; a.click();
+          URL.revokeObjectURL(url);
+        });
+        if (el.satGibsBtn) el.satGibsBtn.addEventListener('click', () => window.open('https://www.earthdata.nasa.gov/technology/gibs','_blank','noopener'));
+      })();
+
       // ---- Hazards — USGS earthquakes ----
       async function checkQuakes(){
         const cntEl=el.quakeCount, listEl=el.quakeList;
@@ -5328,7 +5556,7 @@
 
   // expose a tiny diagnostics hook for the console / automated smoke tests
   window.MSB_EARTH_VIEW = {
-    version: '3.6.0',
+    version: '3.7.0',
     state: state,
     features: () => ({ warmth: feat.warmth, lum: feat.lum, motion: feat.motion, freq: feat.freq, pan: feat.pan }),
     isBooted: () => booted,

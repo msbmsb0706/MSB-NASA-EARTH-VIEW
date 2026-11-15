@@ -2,6 +2,17 @@
 
 All notable changes to MSB NASA EARTH VIEW.
 
+## [3.7.0] — 2026-11-15
+
+### Added
+- **Scientific Lab 7.5 — Satellite comparison: most public data, still running.** A new visual block in the merged lab with:
+  - An interactive **bar-chart comparison** of 10 operational free/public missions (Sentinel-2, Sentinel-1, Landsat 8/9, MODIS, VIIRS, Himawari-9, GOES-18, GPM IMERG, SMAP, GRACE-FO), toggleable between **🔍 Spatial detail**, **⏱️ Update speed** and **🌍 Openness**. Bars are log-scaled so the best mission is longest, values are printed in a right-hand column, and the chart is clickable — click any bar to hear that mission.
+  - A **"Running now — operational & free"** list with a status dot, resolution, refresh time, a PUBLIC tag and a link per mission, plus a headline count (`10 of 10 running · 96 % open`).
+  - 🔊 Sonify the ranking, ⬇ CSV export of the whole catalogue, and a GIBS link. Data is a curated open-data catalogue, not live telemetry (stated in the panel), and the chart re-draws automatically on theme / high-contrast switch.
+
+### Changed
+- **中文 is labelled `中文 (Mandarin)`** in the `🌐 LANG` pill so Mandarin is easy to find. All existing languages are kept — the pill still has 20.
+
 ## [3.6.0] — 2026-11-15
 
 ### Changed
