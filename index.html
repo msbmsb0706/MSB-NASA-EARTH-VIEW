@@ -4,8 +4,18 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
 <meta name="color-scheme" content="dark light" />
-<meta name="description" content="MSB NASA EARTH VIEW — The Earth Information Jukebox. A zero-dependency 3D Earth and real-time visual-to-audio sonification engine for NASA Earth Information Center and SVS imagery." />
+<meta name="description" content="MSB NASA EARTH VIEW — The Earth Information Jukebox. A zero-dependency 3D Earth and real-time visual-to-audio sonification engine for NASA Earth Information Center and SVS imagery, with Live Earth checks, a merged Scientific Lab (air quality, climate, water &amp; ice, hazards, satellite comparison) and 20 languages." />
 <meta name="theme-color" content="#05070f" />
+<meta name="author" content="MSB Creative Studios" />
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="MSB NASA EARTH VIEW" />
+<meta property="og:title" content="MSB NASA EARTH VIEW — The Earth Information Jukebox" />
+<meta property="og:description" content="Hear NASA Earth imagery as it is scanned. WebGL globe with live satellites, Live Earth public data checks, a merged Scientific Lab with charts you can click to hear, and a 20-language interface. NASA Space Apps 2026." />
+<meta property="og:url" content="https://msbmsb0706.github.io/MSB-NASA-EARTH-VIEW/" />
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:title" content="MSB NASA EARTH VIEW — The Earth Information Jukebox" />
+<meta name="twitter:description" content="Hear NASA Earth imagery as it is scanned — WebGL globe, live satellites, Scientific Lab charts and 20 languages. NASA Space Apps 2026." />
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🌍</text></svg>" />
 <script>
   /* Resolve the stored theme before first paint so there is no flash. */
   try {
@@ -1551,6 +1561,7 @@
           <li>Sound is synthesised live with the Web Audio API — there are no recorded tracks.</li>
           <li>Still images are swept by a moving scan meridian, so the picture is heard from west to east.</li>
           <li>The 3D globe uses WebGL and an embedded land mask. NASA imagery requires a network connection.</li>
+          <li>The <strong>Scientific Lab</strong> adds public measurements next to the art: live air quality, climate and sea-level curves, USGS earthquakes, and a satellite comparison graph — every value also sonified.</li>
         </ul>
       </div>
     </section>
@@ -1577,6 +1588,12 @@
           Imagery may be delayed, incomplete or unavailable. The globe and sound are artistic representations, not scientific measurements. We acknowledge the use of imagery provided by NASA's Global Imagery Browse Services (GIBS), part of NASA's Earth Science Data and Information System (ESDIS). Himawari imagery is from JMA; GOES imagery is from NOAA.
         </p>
         <p class="disclosure">
+          <strong>Scientific Lab sources:</strong> air quality and pollutants from Open-Meteo (CAMS), earthquakes from
+          USGS, climate and sea-level series from NASA GISS and the Mauna Loa Keeling record, and the satellite
+          comparison is a curated catalogue of operational free-data missions (NASA, ESA Copernicus, NOAA, JMA)
+          with their published resolutions and refresh times — a catalogue, not live telemetry.
+        </p>
+        <p class="disclosure">
           Files stay in your browser and are never uploaded. Team <strong>MSB Creative Studios</strong> ·
           NASA Space Apps Challenge 2026 — public NASA data only, no analytics or tracking. Super Intelligence tools assisted with code and documentation;
           mapping logic and creative direction are by the team.
@@ -1588,7 +1605,7 @@
 
 <footer>
   <strong>MSB Creative Studios</strong> · NASA Space Apps Challenge 2026 ·
-  Web Audio API + WebGL + HTML5 Canvas · built for accessible Earth science · <span id="footerLiveCheck">Live data: NASA GIBS + EONET</span>
+  Web Audio API + WebGL + HTML5 Canvas · built for accessible Earth science · <span id="footerLiveCheck">Live data: NASA GIBS + EONET</span> · <span id="footerVersion">v3.7.1</span>
 </footer>
 
 <dialog id="helpDialog" aria-labelledby="helpTitle">
@@ -1620,6 +1637,27 @@
         <em>Cinematic drone</em> slows the glides and deepens the reverb, and <em>Kinetic storm</em> tightens
         the rhythm. The scale menu can force a minor pentatonic, Lydian, Dorian, natural minor or whole-tone
         set over any scene, and percussion or bells can be muted independently.</p>
+    </div>
+    <div>
+      <h3>Live Earth &amp; Scientific Lab</h3>
+      <p><strong>Live Earth</strong> checks public data straight from your browser — NASA EONET open disasters,
+        NASA GIBS availability and the live ISS position (wheretheiss.at) — and draws the orbiting satellite
+        fleet on the globe. The <strong>Scientific Lab</strong> below it is now one merged page instead of tabs:
+        <strong>7.1 Air Quality</strong> (Open-Meteo AQI, PM2.5 / PM10 / O₃ / NO₂ / CO, “Use my location”),
+        <strong>7.2 Climate Lab</strong> (1880 → 2024 comparison, Keeling CO₂ curve, CSV export),
+        <strong>7.3 Water &amp; Ice</strong> (sea-level curve, GRACE and IMERG tips),
+        <strong>7.4 Hazards</strong> (USGS earthquakes in the last 24 hours) and
+        <strong>7.5 Satellite comparison</strong> — a bar chart ranking ten operational free/public missions by
+        spatial detail, update speed or openness. Click any bar to hear that mission; the whole catalogue
+        exports as CSV.</p>
+    </div>
+    <div>
+      <h3>Languages</h3>
+      <p>The <strong>🌐 LANG</strong> pill in the header switches the main interface labels between 20 languages:
+        English, தமிழ், हिन्दी, ಕನ್ನಡ, తెలుగు, മലയാളം, বাংলা, मराठी, ગુજરાતી, اردو, ਪੰਜਾਬੀ, 한국어,
+        Español, Français, Deutsch, 中文 (Mandarin), 日本語, العربية, Português and Русский. Arabic and Urdu
+        switch the page to right-to-left layout, and your choice is remembered on this device.
+        Scientific values, units and dataset labels stay in English so numbers are never misread.</p>
     </div>
     <div>
       <h3>Keyboard shortcuts</h3>
@@ -4884,6 +4922,7 @@
       if (el.footerLiveCheck && !el.footerLiveCheck.textContent.includes('ISS') && !el.footerLiveCheck.textContent.includes('EONET')) el.footerLiveCheck.textContent = d.footerLive;
       announce(d.announce);
       document.documentElement.lang = state.lang;
+      document.documentElement.dir = (state.lang === 'ar' || state.lang === 'ur') ? 'rtl' : 'ltr';
     }
     if (el.langSelect) {
       el.langSelect.addEventListener('change', (e) => applyLang(e.target.value));
@@ -4891,6 +4930,7 @@
       if (I18N[state.lang]) el.langSelect.value = state.lang;
     }
     // init from saved (any of 20)
+    if (state.lang === 'ar' || state.lang === 'ur') document.documentElement.dir = 'rtl';
     if (state.lang && I18N[state.lang] && state.lang !== 'en') setTimeout(()=>applyLang(state.lang), 400);
 
     // ---- Scientific Lab — merged single view + live data ----
@@ -5556,12 +5596,17 @@
 
   // expose a tiny diagnostics hook for the console / automated smoke tests
   window.MSB_EARTH_VIEW = {
-    version: '3.7.0',
+    version: '3.7.1',
     state: state,
     features: () => ({ warmth: feat.warmth, lum: feat.lum, motion: feat.motion, freq: feat.freq, pan: feat.pan }),
     isBooted: () => booted,
     glReady: () => GL.ok
   };
+  // keep the footer version in sync with the single source of truth
+  (function(){
+    const fv = document.getElementById('footerVersion');
+    if (fv) fv.textContent = 'v' + window.MSB_EARTH_VIEW.version;
+  })();
 })();
 
 </script>

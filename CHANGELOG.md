@@ -2,6 +2,19 @@
 
 All notable changes to MSB NASA EARTH VIEW.
 
+## [3.7.1] — 2026-11-15
+
+### Added
+- **In-app help covers the new features:** a *Live Earth & Scientific Lab* section (EONET, GIBS, live ISS, plus merged blocks 7.1–7.5 and the satellite comparison) and a *Languages* section listing all 20, noting that Arabic and Urdu switch layout direction.
+- **Right-to-left support:** `applyLang()` now sets `dir="rtl"` for العربية and اردو; a saved RTL language is applied before the deferred label pass, so the page never renders LTR first.
+- **Footer version:** `v3.7.1` in the footer, read from the single `MSB_EARTH_VIEW.version` constant.
+- **In-app disclosures:** the *Data & disclosures* panel now names every Scientific Lab source (Open-Meteo/CAMS, USGS, NASA GISS, Mauna Loa Keeling, curated satellite catalogue) and labels the AQI as an indicator, not a regulatory index.
+
+### Docs
+- **README** rewritten around the current app: version line, six-step quick start, a *What's new* history (3.0 → 3.7.1), a full **Scientific Lab** table for 7.1–7.5, a **Languages** section, extra Controls rows, updated architecture tree (sci-lab + i18n modules), refreshed disclosures and roadmap.
+- **Lite-build docs** (`MSB NASA EARTH VIEW – Earth Jukebox.md`) now point at Live Earth, the Scientific Lab and the 20-language pill.
+- GitHub repository description and topics refreshed to match.
+
 ## [3.7.0] — 2026-11-15
 
 ### Added

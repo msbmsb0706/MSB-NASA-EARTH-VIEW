@@ -5,6 +5,10 @@
 
 **NASA Space Apps Challenge 2026 · Team MSB Creative Studios**
 
+`v3.7.1` · single file · zero dependencies · 20 languages · WebGL + Web Audio
+
+**▶ Live app:** <https://msbmsb0706.github.io/MSB-NASA-EARTH-VIEW/> — served straight from `main` with GitHub Pages.
+
 ---
 
 ## Overview
@@ -18,7 +22,7 @@ This application scans Earth imagery in real time and converts **colour, brightn
 motion** into an evolving musical performance. There are no recorded tracks: every note, filter sweep and
 drum pulse is synthesised live in the browser with the Web Audio API.
 
-Version 3.7 adds a hand-written WebGL globe with **1800 twinkling stars**, a **live satellite fleet** (ISS live via wheretheiss.at, Himawari-9, GOES-18, NOAA-20, Terra, Aqua, GPM), great-circle data arcs and scanning meridian — plus video input, session recording, auto tour, keyboard control, a full accessibility layer, **boosted audio**, a **Live Earth** panel that checks public NASA data in real time, a **warming chart you can click to hear**, a **20-language NASA pill** `🌐 LANG`, and a **Scientific Lab** — one merged view with Air Quality, Climate Time Machine, Water & Ice, Hazards and a **satellite comparison graph** (spatial detail / update speed / openness across 10 free public missions) stacked together, all charts visible at once, with CSV export and sonification for school/public/research.
+Version 3.7 adds a hand-written WebGL globe with **1800 twinkling stars**, a **live satellite fleet** (ISS live via wheretheiss.at, Himawari-9, GOES-18, NOAA-20, Terra, Aqua, GPM), great-circle data arcs and a scanning meridian — plus video input, session recording, auto tour, keyboard control, a full accessibility layer, **boosted audio**, a **Live Earth** panel that checks public NASA data in real time, a **warming chart you can click to hear**, a **20-language NASA pill** `🌐 LANG`, and a **Scientific Lab** shown as one merged page: [7.1 Air Quality](#scientific-lab--five-datasets-one-page), 7.2 Climate Lab, 7.3 Water & Ice, 7.4 Hazards and **7.5 Satellite comparison** — a bar chart ranking ten operational free/public missions by spatial detail, update speed or openness, all charts visible at once, with CSV export and sonification for school/public/research.
 
 ---
 
@@ -29,6 +33,11 @@ Version 3.7 adds a hand-written WebGL globe with **1800 twinkling stars**, a **l
 2. Press **Start near-real-time view + sound** to load the latest available Himawari infrared image and start listening. For the Americas choose GOES-East. Or choose a NASA layer and press **Load selected imagery**, then **Start sonification** (or <kbd>Space</kbd>).
 3. You can also choose a simulated demo or load a local image or video.
 4. Scroll to **Live Earth — climate · disasters · satellites** and press **Check live disasters** to fetch open events from NASA EONET (public API).
+5. Keep scrolling to the **Scientific Lab** — all five blocks are on one page. Air quality and USGS earthquakes load
+   themselves; press **🔄 Check air** / **📍 Use my location** to move the AQI to your city, click any chart to hear it,
+   and try the **🔍 Spatial detail / ⏱️ Update speed / 🌍 Openness** switch in **7.5 Satellite comparison**.
+6. Change the interface language any time with the **`🌐 LANG`** pill in the header (20 languages, Arabic and Urdu flip
+   the page to right-to-left).
 
 ### NASA imagery and dates
 
@@ -53,17 +62,46 @@ python3 -m http.server 8000
 
 ---
 
-## What's new in 3.0
+## What's new
 
+### v3.7.1 — documentation and help refresh
+| Area | Change |
+| --- | --- |
+| Help | In-app help now explains **Live Earth**, the five **Scientific Lab** blocks and the **language pill** (including which languages switch to right-to-left). |
+| Language | Arabic and Urdu now set `dir="rtl"` on the page, and a saved RTL language is restored before first paint of the labels. |
+| Disclosures | The in-app *Data & disclosures* panel lists every Scientific Lab source: Open-Meteo (CAMS), USGS, NASA GISS, the Mauna Loa Keeling record and the curated satellite catalogue. |
+| Footer | Shows the live app version (`v3.7.1`), read from the same constant as the diagnostics hook. |
+| Docs | README, lite-build docs, CHANGELOG and the GitHub repository description/topics brought in line with the app. |
+
+### v3.7.0 — satellite comparison
+| Area | Change |
+| --- | --- |
+| Scientific Lab | New **7.5 Satellite comparison** — bar chart of ten operational **free/public** missions (Sentinel-2 A/B, Sentinel-1 A/C, Landsat 8/9, MODIS Terra/Aqua, VIIRS NOAA-20/21, Himawari-9 AHI, GOES-18 ABI, GPM IMERG, SMAP, GRACE-FO) with three toggleable metrics — **🔍 Spatial detail**, **⏱️ Update speed**, **🌍 Openness**. Bars are log-scaled, values sit in a right-hand column, bars are clickable (each plays its mission and announces the value). |
+| Scientific Lab | **“Running now — operational & free”** list: status dot, native resolution, refresh time, a **PUBLIC** tag and a data-portal link per mission, plus a headline count (`10 of 10 running · 96 % open`). |
+| Scientific Lab | **🔊 Sonify comparison** (ranking as rising tones), **⬇ CSV export** of the catalogue, GIBS link, and chart re-draw on theme / high-contrast switch. |
+| Language | `中文` is labelled **`中文 (Mandarin)`**. All 20 languages kept. |
+
+### v3.6.0 — merged Scientific Lab
+| Area | Change |
+| --- | --- |
+| Scientific Lab | The four tab buttons are **gone**. Air Quality, Climate Lab, Water & Ice and Hazards are **stacked in one merged page** with numbered headings 7.1–7.4, so every chart and value is visible together on one scroll. Air quality and USGS quakes still auto-load. |
+| Language | `اردو (Urdu)` shows 🇮🇳 (Urdu is an Indian language too) — the language itself is unchanged. |
+
+### v3.5.0 — Scientific Lab and extra languages
+| Area | Change |
+| --- | --- |
+| Scientific Lab | First release: 🌫️ Air Quality (Open-Meteo PM2.5 / PM10 / O₃ / NO₂ / CO, AQI badge, *Use my location*, sonify), 🌡️ Climate Lab (1880 → 2024 comparison, Keeling CO₂ curve, CSV), 🌊 Water & Ice (sea-level curve, GRACE + IMERG tips), ⚠️ Hazards (USGS earthquakes, M4.5+ count, sonify by magnitude). |
+| Language | বাংলা, मराठी, ગુજરાતી, اردو, ਪੰਜਾਬੀ and 한국어 added — 20 languages. |
+
+### v3.0 — globe, satellites, Live Earth
 | Area | Change |
 | --- | --- |
 | 3D | Enhanced starfield: **1800 stars** (was 1100) with twinkle, warm/blue variants, brighter giants. New **live satellite fleet** — ISS, Himawari-9 (140.7°E GEO), GOES-18 (75.2°W GEO), NOAA-20 polar, Terra, Aqua, GPM-Core — each with colored trailing dots orbiting in real time. |
 | Live Earth | New **Live Earth — climate · disasters · satellites** panel: global warming (+1.2 °C), CO₂/sea-level vital signs, active disaster count from **NASA EONET public API** (auto-checks on load + every 10 min), satellite legend and links to NASA Climate, EONET, Worldview. |
 | Audio | **Louder master gain** — 1.15× (was 0.9×) with gentler compressor (−16 dB) so quiet/dark images are audible. |
 | UI | Removed location-specific footer; now shows live data status `Live: EONET n events · GIBS timestamp`. Theme + high-contrast still supported. |
-| Docs | README and lite docs updated with public real-time check instructions. |
 
-See [`CHANGELOG.md`](CHANGELOG.md) for the full list.
+See [`CHANGELOG.md`](CHANGELOG.md) for the full list back to v1.0.
 
 ### Sound design (merged from the lite build)
 
@@ -111,6 +149,36 @@ The pad now follows the harmonic degree under the melody, exactly as the lite bu
 - **Satellite legend** explains each colored dot on the globe.
 - All checks run **directly from your browser to public NASA APIs** — no backend, no key, no account.
 
+### Scientific Lab — five datasets, one page
+Everything lives in **one merged panel** (section 7) — no tabs, no clicking to reveal content. Each block keeps
+its own numbered heading, buttons and sonification.
+
+| Block | Data | What you can do |
+| --- | --- | --- |
+| **7.1 🌫️ Air Quality** | Open-Meteo Air Quality API (CAMS): PM2.5, PM10, O₃, NO₂, CO | Live AQI with colour badge, *Use my location*, **🔊 Sonify AQI** (clean air = pure tone, polluted = noisy/detuned), raw pollutant badges, API docs link |
+| **7.2 🌡️ Climate Lab** | NASA GISS surface temperature, Mauna Loa Keeling CO₂ | Compare any year 1880 → 2024 (+1.47 °C baseline), CO₂ curve canvas (*click to hear 315 → 421 ppm*), **⬇ CSV**, **🔊 Sonify warming** |
+| **7.3 🌊 Water & Ice** | NASA sea-level altimetry, GRACE, GPM IMERG | +21 cm since 1993 with a clickable rise curve, **🔊 Sonify sea rise**, GRACE link and a Chennai-monsoon IMERG tip |
+| **7.4 ⚠️ Hazards Live** | USGS earthquakes, last 24 h | Live quake count + M4.5+ count, eight most recent events with magnitude, depth, lat/lon and USGS links, **🔊 Sonify by magnitude** (magnitude → loudness, depth → pitch) |
+| **7.5 🛰️ Satellite comparison** | Curated catalogue of operational free-data missions | Bar-chart ranking of ten public missions by **spatial detail**, **update speed** or **openness**; click a bar to hear that mission; *Running now — operational & free* list; **🔊 Sonify comparison**; **⬇ CSV** |
+
+**7.5 in detail.** Ten missions are compared — Sentinel-2 A/B (10 m), Sentinel-1 A/C radar (10 m), Landsat 8/9
+(30 m), MODIS Terra/Aqua (250 m), VIIRS NOAA-20/21 (375 m), Himawari-9 AHI (500 m), GOES-18 ABI (500 m),
+GPM IMERG (2 km), SMAP (9 km) and GRACE-FO (300 km). Scores are log-scaled, so 10 m → 300 km is readable on one
+chart; the best mission for the chosen metric is always the longest bar, and values are printed in a right-hand
+column. The chart re-draws when you switch theme or high-contrast mode.
+
+> The 7.5 catalogue is **not live telemetry**. It lists agency-confirmed operational missions whose data is free
+> and public, with their published resolutions and refresh times; the panel says so on screen.
+
+### Languages — 20, with right-to-left support
+- The header’s **`🌐 LANG`** pill switches the main interface labels between **20 languages**:
+  English, தமிழ் (Tamil), हिन्दी (Hindi), ಕನ್ನಡ (Kannada), తెలుగు (Telugu), മലയാളം (Malayalam), বাংলা (Bengali),
+  मराठी (Marathi), ગુજરાતી (Gujarati), اردو (Urdu), ਪੰਜਾਬੀ (Punjabi), 한국어 (Korean), Español, Français, Deutsch,
+  中文 (Mandarin), 日本語 (Japanese), العربية (Arabic), Português and Русский.
+- **Arabic and Urdu switch the page to `dir="rtl"`**, and a saved RTL language is applied before the labels render.
+- Your choice is stored in `localStorage` (`msb-lang`) and restored on the next visit.
+- Scientific values, units and dataset labels deliberately stay in English so numbers are never misread.
+
 ### Scenes and input
 - **Global Sea Surface Currents & Temp** — Lydian harmonic, flowing current ribbons and warm Gulf Stream eddies.
 - **GEOS Global Aerosols & Dust Plumes** — Dorian sweep, drifting dust plumes and streamers.
@@ -154,6 +222,11 @@ The pad now follows the harmonic degree under the melody, exactly as the lite bu
 | Auto tour | **Auto tour** | <kbd>T</kbd> |
 | Auto-orbit | **Auto-orbit** switch | <kbd>O</kbd> |
 | Check live disasters | **🔄 Check live disasters** | — |
+| Language (20) | **🌐 LANG** pill | — |
+| Check air quality / locate | **🔄 Check air**, **📍 Use my location** in 7.1 | — |
+| Hear a chart | Click the CO₂, sea-level, warming or satellite bar chart | — |
+| Satellite comparison metric | **🔍 Spatial detail** / **⏱️ Update speed** / **🌍 Openness** in 7.5 | — |
+| Export data | **⬇ Download CSV** in 7.2 and 7.5 | — |
 | Fullscreen | **⛶** | <kbd>F</kbd> |
 | Daylight / dark theme | **☀ / ☾** | <kbd>L</kbd> |
 | Help | **?** | <kbd>H</kbd> |
@@ -196,13 +269,14 @@ Public disaster data (EONET) supplements the audio: when many wildfires/storms a
 
 ## Architecture
 
-Everything lives in **one HTML file** (≈200 kB) with three clearly separated layers:
+Everything lives in **one HTML file** (≈270 kB, ≈5 600 lines) with three clearly separated layers:
 
 ```
 index.html
 ├── <style>   design system, layout, high-contrast theme, reduced-motion rules, Live Earth cards
-├── markup    header · stage · transport · jukebox rail · telemetry · Live Earth panel · info-grid · help dialog
-└── <script>  IIFE, ~3 000 lines (app) + a 10-line theme bootstrap in <head>
+├── markup    header (incl. 🌐 LANG pill) · stage · transport · jukebox rail · telemetry ·
+│             Live Earth panel · merged Scientific Lab 7.1–7.5 · info-grid · help dialog
+└── <script>  IIFE, ~4 300 lines (app) + a 10-line theme bootstrap in <head>
     ├── utilities + embedded land mask (base64, 512 × 256 packed bitmap)
     ├── scenes      procedural painters for the four datasets + custom media
     ├── analysis    64 × 32 downsample → warmth / luminance / motion / pan features
@@ -213,7 +287,11 @@ index.html
     │               · WebGL1 globe: 3 programs (earth / particles / atmosphere),
     │                 3 shaders compiled at runtime, 22 buffers + satellite/trail buffers
     │               · starfield (1800), satellite fleet, arcs, graticule, meridian
-    ├── live-earth  EONET fetch (public, no key) → disaster counts + list; GIBS 5-min poll
+    ├── live-earth  EONET fetch (public, no key) → disaster counts + list; GIBS 5-min poll; ISS position
+    ├── sci-lab     Open-Meteo air quality · GISS/Keeling climate + sea-level canvases ·
+    │               USGS quakes · satellite comparison chart (log-scaled bars, 3 metrics,
+    │               click-to-sonify, CSV) · all charts redraw on theme change
+    ├── i18n        20-language dictionary, localStorage persistence, RTL switch for ar/ur
     └── interaction UI bindings, keyboard map, pointer orbit, tour, recording, loop
 ```
 
@@ -230,7 +308,7 @@ texture, guaranteeing that what you see is exactly what you hear. Live checks ad
 | --- | --- |
 | `index.html` | The full application — 3D globe, satellite fleet, live disaster checks, sonification engine, accessibility layer. |
 | `MSB NASA EARTH VIEW – Earth Jukebox.html` | Lite single-file build: minimal, dependency-free flat-scan variant. Its synth voice, percussion, pentatonic mapping and narration are merged into `index.html` and selectable as **Jukebox lite (original)**. |
-| `MSB NASA EARTH VIEW – Earth Jukebox.md` | Documentation for the lite build. |
+| `MSB NASA EARTH VIEW – Earth Jukebox.md` | Documentation for the lite build, with a pointer to the full app’s Live Earth and Scientific Lab features. |
 | `README.md` | This document. |
 | `CHANGELOG.md` | Version history. |
 | `LICENSE` | MIT licence. |
@@ -248,6 +326,8 @@ texture, guaranteeing that what you see is exactly what you hear. Live checks ad
   Natural Earth land mask (1:50 m, `world-atlas`) is embedded, as packed coastline bits.
 - **Live disasters** are from **NASA EONET** (`eonet.gsfc.nasa.gov`), a public API with no key required. The app fetches directly from your browser; no proxy or tracking.
 - **Climate indicators** link to `climate.nasa.gov/vital-signs` — global temperature, CO₂, sea level, ice. Values shown are educational summaries; follow the links for the latest peer-reviewed datasets.
+- **Scientific Lab sources.** Air quality and pollutants: **Open-Meteo Air Quality API** (CAMS), fetched directly from the browser. Earthquakes: **USGS** `all_day.geojson` summary feed. Climate curves: **NASA GISS** surface-temperature series and the **Mauna Loa Keeling** CO₂ record. Sea level/ice: NASA vital signs and GRACE. Satellite comparison (7.5): a **curated catalogue** of operational mission specifications compiled from NASA, ESA Copernicus, NOAA and JMA published product pages — a catalogue, not live telemetry, and not a measurement of what any satellite is doing right now. Every one of these APIs is public and keyless; nothing is proxied and nothing is stored.
+- **A note on scale.** Air-quality AQI in 7.1 is derived from Open-Meteo PM2.5 with a simple linear approximation for demonstration; treat it as an indicator, not a regulatory AQI. CSV exports contain exactly the numbers shown on screen.
 - **Privacy.** There is no analytics or telemetry. Loading NASA imagery sends a request to NASA GIBS; checking disasters sends a request to NASA EONET. Uploaded images and videos are decoded locally and never uploaded; they are released when cleared or replaced.
 - **Super Intelligence disclosure.** Super Intelligence (LLM) tools assisted with code and documentation.
   Sonification mapping logic, creative direction and technical integration were designed and executed by
@@ -285,14 +365,17 @@ pass runs on a 64 × 32 buffer, so the application stays smooth on integrated gr
 
 ## Roadmap
 
-- Add more NASA GIBS layers and time-series playback when source data are available.
-- Multi-stem export (pads, lead, percussion) and MIDI out for classroom composition.
-- Sonification of additional NASA datasets: GRACE groundwater, ICESat-2 ice loss, precipitation.
-- Configurable mapping curves and a "describe what you hear" tutorial for first-time users.
-- WebMIDI controller support and spatial (HRTF) audio.
-- Live ISS position via `api.wheretheiss.at` or TLE propagation for true real-time ground track.
+Done: merged Scientific Lab (3.6), satellite comparison graph (3.7), 20-language pill with RTL support, Live Earth
+public checks, live ISS position.
 
----
+Next:
+- Add more NASA GIBS layers and time-series playback when source data are available.
+- Extend the satellite comparison with a live “data availability now” column driven by GIBS DescribeDomains.
+- Multi-stem export (pads, lead, percussion) and MIDI out for classroom composition.
+- Sonification of additional NASA datasets: ICESat-2 ice loss, SMAP soil moisture, GRACE groundwater.
+- Configurable mapping curves and a “describe what you hear” tutorial for first-time users.
+- WebMIDI controller support and spatial (HRTF) audio.
+- Translate the Scientific Lab strings, keeping numbers and units in English.
 
 ## Team and credits
 
