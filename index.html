@@ -791,7 +791,13 @@
   .eonet-item .meta { color: var(--ink-3); font-size: 0.72rem; }
   .warm-chart { width: 100%; height: 72px; display: block; margin-top: 6px; border-radius: 8px; background: rgba(0,0,0,0.25); border: 1px solid var(--border); }
   :root[data-theme="light"] .warm-chart { background: #eaf1ff; }
-  .lang-btn { font-family: var(--mono); font-size: 0.72rem; letter-spacing: 0.08em; }
+  .lang-wrap { display: flex; align-items: center; gap: 6px; background: rgba(11,61,145,0.18); border: 1px solid rgba(11,61,145,0.35); border-radius: 999px; padding: 4px 8px 4px 10px; }
+  :root[data-theme="light"] .lang-wrap { background: rgba(11,61,145,0.08); }
+  .lang-wrap label { font-family: var(--mono); font-size: 0.68rem; color: #7ec8ff; letter-spacing: 0.1em; text-transform: uppercase; white-space: nowrap; }
+  :root[data-theme="light"] .lang-wrap label { color: #0B3D91; }
+  .lang-select { appearance: none; -webkit-appearance: none; background: rgba(5,10,25,0.9); color: #e6f0ff; border: 1px solid rgba(120,160,220,0.35); border-radius: 999px; padding: 5px 28px 5px 10px; font-size: 0.78rem; font-weight: 600; cursor: pointer; min-width: 110px; }
+  :root[data-theme="light"] .lang-select { background: #fff; color: #0B3D91; border-color: rgba(11,61,145,0.25); }
+  .lang-wrap i { font-style: normal; font-size: 1rem; }
 
   footer {
     border-top: 1px solid var(--border);
@@ -1018,7 +1024,22 @@
     </div>
     <button class="btn" id="tourBtn" aria-pressed="false" title="Auto tour — cycle the four Earth scenes (T)">Auto tour</button>
     <button class="btn" id="recordBtn" aria-pressed="false" title="Record the sonification as a .webm file">Record</button>
-    <button class="btn lang-btn" id="langBtn" title="Switch language / மொழி மாற்று">EN · தமிழ்</button>
+    <div class="lang-wrap" title="Language — NASA international">
+      <i aria-hidden="true">🌐</i><label for="langSelect">LANG</label>
+      <select id="langSelect" class="lang-select" aria-label="Select language">
+        <option value="en">🇺🇸 English</option>
+        <option value="ta">🇮🇳 தமிழ் (Tamil)</option>
+        <option value="hi">🇮🇳 हिन्दी (Hindi)</option>
+        <option value="es">🇪🇸 Español</option>
+        <option value="fr">🇫🇷 Français</option>
+        <option value="de">🇩🇪 Deutsch</option>
+        <option value="zh">🇨🇳 中文</option>
+        <option value="ja">🇯🇵 日本語</option>
+        <option value="ar">🇸🇦 العربية</option>
+        <option value="pt">🇧🇷 Português</option>
+        <option value="ru">🇷🇺 Русский</option>
+      </select>
+    </div>
     <button class="btn icon" id="themeBtn" title="Light / dark theme (L)" aria-label="Switch to light theme">☀</button>
     <button class="btn icon" id="contrastBtn" aria-pressed="false" title="High contrast mode" aria-label="Toggle high contrast mode">◐</button>
     <button class="btn icon" id="helpBtn" title="Help and keyboard shortcuts (H)" aria-label="Open help">?</button>
@@ -1771,7 +1792,7 @@
     liveIssPos: $('liveIssPos'),
     liveIssBtn: $('liveIssBtn'),
     liveSatCount: $('liveSatCount'),
-    langBtn: $('langBtn')
+    langSelect: $('langSelect')
   };
 
   const flatCtx = el.flatCanvas.getContext('2d');
@@ -4623,40 +4644,46 @@
       c.style.cursor = 'pointer'; c.title = 'Click to hear warming — rising pitch 1880→2024';
     })();
 
-    // ---- Tamil / English toggle ----
+    // ---- International NASA language — 11 languages ----
     const I18N = {
-      en: {
-        tour: 'Auto tour', record: 'Record', liveTitle: 'Live Earth — climate · disasters · satellites',
-        check: '🔄 Check live disasters', openEonet: 'Open NASA EONET', openClimate: 'Open NASA Climate', openWorldview: 'Open NASA Worldview',
-        warming: 'Global warming', disasters: 'Active disasters — EONET', satellites: 'Satellite fleet — live orbits',
-        footerLive: 'Live data: NASA GIBS + EONET'
-      },
-      ta: {
-        tour: 'தானியங்கி சுற்றுப்பயணம்', record: 'பதிவு', liveTitle: 'நேரடி பூமி — காலநிலை · பேரிடர் · செயற்கைக்கோள்கள்',
-        check: '🔄 நேரடி பேரிடர்களைச் சரிபார்', openEonet: 'EONET திற', openClimate: 'காலநிலை திற', openWorldview: 'Worldview திற',
-        warming: 'புவி வெப்பமயமாதல்', disasters: 'செயலில் பேரிடர்கள் — EONET', satellites: 'செயற்கைக்கோள் குழு — நேரடி சுற்றுப்பாதைகள்',
-        footerLive: 'நேரடி தரவு: NASA GIBS + EONET'
-      }
+      en: { tour: 'Auto tour', record: 'Record', liveTitle: 'Live Earth — climate · disasters · satellites', check: '🔄 Check live disasters', openEonet: 'Open NASA EONET', openClimate: 'Open NASA Climate', openWorldview: 'Open NASA Worldview', warming: 'Global warming', disasters: 'Active disasters — EONET', satellites: 'Satellite fleet — live orbits', footerLive: 'Live data: NASA GIBS + EONET', announce: 'English selected' },
+      ta: { tour: 'தானியங்கி சுற்றுப்பயணம்', record: 'பதிவு', liveTitle: 'நேரடி பூமி — காலநிலை · பேரிடர் · செயற்கைக்கோள்கள்', check: '🔄 நேரடி பேரிடர்களைச் சரிபார்', openEonet: 'EONET திற', openClimate: 'காலநிலை திற', openWorldview: 'Worldview திற', warming: 'புவி வெப்பமயமாதல்', disasters: 'செயலில் பேரிடர்கள் — EONET', satellites: 'செயற்கைக்கோள் குழு — நேரடி சுற்றுப்பாதைகள்', footerLive: 'நேரடி தரவு: NASA GIBS + EONET', announce: 'தமிழ் தேர்ந்தெடுக்கப்பட்டது' },
+      hi: { tour: 'ऑटो टूर', record: 'रिकॉर्ड', liveTitle: 'लाइव अर्थ — जलवायु · आपदा · उपग्रह', check: '🔄 लाइव आपदा जाँचें', openEonet: 'NASA EONET खोलें', openClimate: 'NASA Climate खोलें', openWorldview: 'Worldview खोलें', warming: 'ग्लोबल वार्मिंग', disasters: 'सक्रिय आपदाएँ — EONET', satellites: 'उपग्रह बेड़ा — लाइव कक्षाएँ', footerLive: 'लाइव डेटा: NASA GIBS + EONET', announce: 'हिन्दी चुनी गई' },
+      es: { tour: 'Tour auto', record: 'Grabar', liveTitle: 'Tierra en vivo — clima · desastres · satélites', check: '🔄 Ver desastres en vivo', openEonet: 'Abrir NASA EONET', openClimate: 'Abrir NASA Climate', openWorldview: 'Abrir Worldview', warming: 'Calentamiento global', disasters: 'Desastres activos — EONET', satellites: 'Flota de satélites — órbitas en vivo', footerLive: 'Datos en vivo: NASA GIBS + EONET', announce: 'Español seleccionado' },
+      fr: { tour: 'Visite auto', record: 'Enregistrer', liveTitle: 'Terre en direct — climat · catastrophes · satellites', check: '🔄 Vérifier catastrophes', openEonet: 'Ouvrir NASA EONET', openClimate: 'Ouvrir NASA Climate', openWorldview: 'Ouvrir Worldview', warming: 'Réchauffement climatique', disasters: 'Catastrophes actives — EONET', satellites: 'Flotte satellites — orbites en direct', footerLive: 'Données en direct: NASA GIBS + EONET', announce: 'Français sélectionné' },
+      de: { tour: 'Auto-Tour', record: 'Aufnehmen', liveTitle: 'Live Erde — Klima · Katastrophen · Satelliten', check: '🔄 Live-Katastrophen prüfen', openEonet: 'NASA EONET öffnen', openClimate: 'NASA Climate öffnen', openWorldview: 'Worldview öffnen', warming: 'Globale Erwärmung', disasters: 'Aktive Katastrophen — EONET', satellites: 'Satellitenflotte — Live-Umlaufbahnen', footerLive: 'Live-Daten: NASA GIBS + EONET', announce: 'Deutsch ausgewählt' },
+      zh: { tour: '自动导览', record: '录制', liveTitle: '实时地球 — 气候 · 灾害 · 卫星', check: '🔄 查看实时灾害', openEonet: '打开 NASA EONET', openClimate: '打开 NASA 气候', openWorldview: '打开 Worldview', warming: '全球变暖', disasters: '活跃灾害 — EONET', satellites: '卫星群 — 实时轨道', footerLive: '实时数据: NASA GIBS + EONET', announce: '已选择中文' },
+      ja: { tour: 'オートツアー', record: '録画', liveTitle: 'ライブ地球 — 気候 · 災害 · 衛星', check: '🔄 ライブ災害を確認', openEonet: 'NASA EONETを開く', openClimate: 'NASA Climateを開く', openWorldview: 'Worldviewを開く', warming: '地球温暖化', disasters: '活発な災害 — EONET', satellites: '衛星群 — ライブ軌道', footerLive: 'ライブデータ: NASA GIBS + EONET', announce: '日本語が選択されました' },
+      ar: { tour: 'جولة تلقائية', record: 'تسجيل', liveTitle: 'الأرض مباشر — المناخ · الكوارث · الأقمار', check: '🔄 تحقق من الكوارث المباشرة', openEonet: 'افتح NASA EONET', openClimate: 'افتح NASA Climate', openWorldview: 'افتح Worldview', warming: 'الاحتباس الحراري', disasters: 'الكوارث النشطة — EONET', satellites: 'أسطول الأقمار — مدارات مباشرة', footerLive: 'بيانات مباشرة: NASA GIBS + EONET', announce: 'تم اختيار العربية' },
+      pt: { tour: 'Tour automático', record: 'Gravar', liveTitle: 'Terra ao vivo — clima · desastres · satélites', check: '🔄 Ver desastres ao vivo', openEonet: 'Abrir NASA EONET', openClimate: 'Abrir NASA Climate', openWorldview: 'Abrir Worldview', warming: 'Aquecimento global', disasters: 'Desastres ativos — EONET', satellites: 'Frota de satélites — órbitas ao vivo', footerLive: 'Dados ao vivo: NASA GIBS + EONET', announce: 'Português selecionado' },
+      ru: { tour: 'Авто-тур', record: 'Запись', liveTitle: 'Земля онлайн — климат · бедствия · спутники', check: '🔄 Проверить бедствия', openEonet: 'Открыть NASA EONET', openClimate: 'Открыть NASA Climate', openWorldview: 'Открыть Worldview', warming: 'Глобальное потепление', disasters: 'Активные бедствия — EONET', satellites: 'Спутниковая группировка — онлайн орбиты', footerLive: 'Данные онлайн: NASA GIBS + EONET', announce: 'Русский выбран' }
     };
     function applyLang(lang){
-      state.lang = (lang === 'ta' ? 'ta' : 'en');
+      if (!I18N[lang]) lang = 'en';
+      state.lang = lang;
       try{ localStorage.setItem('msb-lang', state.lang); }catch{}
       const d = I18N[state.lang];
       if (el.tourBtn) el.tourBtn.textContent = d.tour;
-      if (el.recordBtn) el.recordBtn.textContent = state.tour ? 'Stop rec' : d.record;
+      if (el.recordBtn) el.recordBtn.textContent = d.record;
       const lt = document.getElementById('liveTitle');
       if (lt) lt.textContent = d.liveTitle;
       if (el.liveCheckBtn) el.liveCheckBtn.textContent = d.check;
       if (el.liveEonetBtn) el.liveEonetBtn.textContent = d.openEonet;
       if (el.liveClimateBtn) el.liveClimateBtn.textContent = d.openClimate;
       if (el.liveGibsBtn) el.liveGibsBtn.textContent = d.openWorldview;
-      if (el.langBtn) el.langBtn.textContent = state.lang === 'ta' ? 'தமிழ் · EN' : 'EN · தமிழ்';
-      // announce
-      announce(state.lang === 'ta' ? 'தமிழ் மொழி தேர்ந்தெடுக்கப்பட்டது' : 'English selected');
+      if (el.langSelect) el.langSelect.value = state.lang;
+      // update NASA footer live hint if not already showing counts
+      if (el.footerLiveCheck && !el.footerLiveCheck.textContent.includes('ISS') && !el.footerLiveCheck.textContent.includes('EONET')) el.footerLiveCheck.textContent = d.footerLive;
+      announce(d.announce);
+      document.documentElement.lang = state.lang;
     }
-    if (el.langBtn) el.langBtn.addEventListener('click', () => applyLang(state.lang === 'en' ? 'ta' : 'en'));
-    // init from saved
-    if (state.lang === 'ta') setTimeout(()=>applyLang('ta'), 500);
+    if (el.langSelect) {
+      el.langSelect.addEventListener('change', (e) => applyLang(e.target.value));
+      // set initial value from saved
+      if (I18N[state.lang]) el.langSelect.value = state.lang;
+    }
+    // init from saved (any of 11)
+    if (state.lang && I18N[state.lang] && state.lang !== 'en') setTimeout(()=>applyLang(state.lang), 400);
 
     // drag, pinch and wheel on the stage
     el.stage.addEventListener('pointerdown', (e) => {
@@ -4924,7 +4951,7 @@
 
   // expose a tiny diagnostics hook for the console / automated smoke tests
   window.MSB_EARTH_VIEW = {
-    version: '3.1.0',
+    version: '3.2.0',
     state: state,
     features: () => ({ warmth: feat.warmth, lum: feat.lum, motion: feat.motion, freq: feat.freq, pan: feat.pan }),
     isBooted: () => booted,

@@ -2,6 +2,12 @@
 
 All notable changes to MSB NASA EARTH VIEW.
 
+## [3.2.0] — 2026-11-15
+
+### Added
+- **International NASA language — 11 languages:** NASA-style pill selector `🌐 LANG` in header (EN, தமிழ், हिन्दी, Español, Français, Deutsch, 中文, 日本語, العربية, Português, Русский). All Live Earth labels, header buttons and announcements translate instantly, saved to `localStorage`, with `html[lang]` update.
+- NASA look: language pill in NASA blue `#0B3D91`, rounded, globe icon, light/dark adaptive.
+
 ## [3.1.0] — 2026-11-15
 
 ### Added
