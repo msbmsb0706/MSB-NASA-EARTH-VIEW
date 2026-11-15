@@ -34,4 +34,8 @@ Change triggers percussion
 
 The four built-in scenes (sea surface, aerosols, night lights, lightning) are procedurally generated demo visuals, not NASA data. To hear real data, download frames or animations from the NASA Earth Information Center or the NASA Scientific Visualization Studio and load them above — or use `index.html` to load NASA GIBS imagery directly. NASA media are credited to NASA. Live disaster data in `index.html` comes from NASA EONET (public API, no key). Your files stay in your browser and are not uploaded. Team MSB Creative Studios. Super Intelligence tools were used to help write and debug code and documentation; mapping logic and creative direction are by the team. Sonification approach inspired by NASA’s data sonification work.
 
-**Full instructions:** see `README.md` → *Live Earth science — public real-time checks*, *Scientific Lab — five datasets, one page* and *Languages — 20, with right-to-left support*, then open `index.html` to hear it.
+**Full instructions:** see `README.md` → *What is on the screen* (Command Center + Panels 1-8), *Languages and accessibility* (full-app real-time 20-language switching), then open `index.html` (v4.0.0) to hear it.
+
+## Languages — real-time 20-language switching (v4.0.0)
+
+Both builds now switch **every** label in real time between **20 languages** (English, Tamil, Hindi, Kannada, Telugu, Malayalam, Bengali, Marathi, Gujarati, Urdu, Punjabi, Korean, Spanish, French, German, Chinese, Japanese, Arabic, Portuguese, Russian). The full app has a header **LANG** select plus a visual **LIVE 20-LANG** pill bar in the Command Center (two-way synced, saved in `localStorage`, Arabic/Urdu RTL); the lite build has its own select + pill bar covering the lead, Play/Load/Volume controls, meters, How-it-works, disclosures and scene names. Numbers and units stay in English so values are never misread.

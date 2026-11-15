@@ -2,6 +2,17 @@
 
 All notable changes to MSB NASA EARTH VIEW.
 
+## [4.0.0] — 2026-11-15
+
+### Added
+- **Real-Time Visual Events & Alerts Command Center** (above the fold, `#rtVisualPanel`): live tactical world radar with pulsing event rings, four radial gauges (USGS seismic, EONET disasters, NOAA magnetosphere, air & ISS) with rolling 60-second sparklines, a visual event-card stream with filters (All / Alerts / EONET / Quakes / Space & ISS), a 60 FPS 3D-globe HUD callout overlay (`#stageHudCanvas`), alert toasts with chime, and one-click **Sync All Live Feeds** (NASA EONET, USGS, NOAA SWPC, ISS, Open-Meteo).
+- **Full-app real-time 20-language switching.** The header **LANG** select and a new visual **LIVE 20-LANG** pill bar (`#rtLangBar`, two-way synced) now translate *every* label instantly in all 20 languages (English, Tamil, Hindi, Kannada, Telugu, Malayalam, Bengali, Marathi, Gujarati, Urdu, Punjabi, Korean, Spanish, French, German, Chinese, Japanese, Arabic, Portuguese, Russian): brand subtitle, Auto tour / Record, the whole Command Center (title, meta, stream state, Simulate / Auto-Stream / Chime / Sync, gauge titles, radar + stream headings, filter buttons), Panels 1-5, Panel 6 Live Earth (title, meta, 4 climate cards, Check / EONET / Climate / Worldview), Panel 7 Scientific Lab 7.1-7.5, Panel 8 Space Weather Lab 8.1-8.4, and the footer hint. Toggle buttons (Auto-Stream, Chime, Play/Pause) re-translate on press; the choice persists in `localStorage` (`msb-lang`); Arabic and Urdu keep RTL layout.
+- **Lite build parity:** `MSB NASA EARTH VIEW – Earth Jukebox.html` gains the same real-time 20-language bar (select + pills) covering its lead, controls, meters, How-it-works, disclosures and scene names.
+
+### Changed
+- **Version 4.0.0** in the diagnostics hook (`window.MSB_EARTH_VIEW.version`) and the footer (read from that single constant).
+- **Documentation:** README documents the Command Center, the two-way language controls and the full translation coverage; the lite-build notes point at v4.0.0.
+
 ## [3.8.0] — 2026-11-15
 
 ### Added

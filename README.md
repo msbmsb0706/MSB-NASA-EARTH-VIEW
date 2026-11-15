@@ -7,7 +7,7 @@ in orbit, and adds public real-time data you can read, click and listen to.
 
 **▶ Open the app:** <https://msbmsb0706.github.io/MSB-NASA-EARTH-VIEW/>
 
-Current version **3.8.0** · works in a normal browser · no account, no installation, no tracking.
+Current version **4.0.0** · works in a normal browser · no account, no installation, no tracking.
 
 ---
 
@@ -74,6 +74,7 @@ There are no wrong buttons. Everything can be stopped, reset or replayed.
 
 | Section | What it is | What you can do |
 | --- | --- | --- |
+| **⚡ Real-Time Visual Events & Alerts Command Center** *(above the fold)* | Live radar, radial gauges, 60s sparklines, 3D globe fly-to and alert toasts for every feed | Click any pulsing radar ring to fly the 3D globe + sonify, filter the event stream, sync all feeds, or simulate an alert |
 | **1 · EIC dataset jukebox** | NASA satellite imagery (Himawari, GOES, VIIRS, MODIS, GPM rain) plus four demo scenes and your own photo/video | Pick a layer and a date, load it, or drop in any image or video. Sound follows whatever is on screen |
 | **2 · Frame scanner & acoustic engine** | The big stage with the 3D globe or the flat scan | Play/pause, change scan speed and volume, turn reverb and auto-orbit on/off, drag to spin the globe |
 | **3 · Sound design** | Four instrument characters and six musical scales | Change the mood without changing the data: holographic, jukebox lite, cinematic or kinetic |
@@ -84,7 +85,7 @@ There are no wrong buttons. Everything can be stopped, reset or replayed.
 | **8 · Space weather, planets & satellites over you** | 8.1 solar wind and storms · 8.2 Earth's rotation · 8.3 sunlight on every planet · 8.4 ISS passes over you | Refresh space weather, hear the storm curve, click a planet, or find the next pass over your town |
 
 At the top of the page you also get an **Auto tour**, a **Record** button (saves a video of what you hear),
-a **🌐 LANG** menu with 20 languages, light/dark theme, high contrast, help and fullscreen.
+a **🌐 LANG** menu with 20 languages, light/dark theme, high contrast, help and fullscreen. Inside the Command Center there is a second **🌐 LIVE 20-LANG** pill bar — both controls are synced two-way and switch **every** label in the app instantly (see *Languages and accessibility* below).
 
 ---
 
@@ -220,9 +221,19 @@ project, not an official NASA product.
 
 ## Languages and accessibility
 
-- The **🌐 LANG** menu switches the main labels between **20 languages**: English, தமிழ், हिन्दी, ಕನ್ನಡ, తెలుగు,
+- The **🌐 LANG** menu (header) and the **🌐 LIVE 20-LANG** pill bar (Command Center) switch **every** label in the app
+  in real time between **20 languages**: English, தமிழ், हिन्दी, ಕನ್ನಡ, తెలుగు,
   മലയാളം, বাংলা, मराठी, ગુજરાતી, اردو, ਪੰਜਾਬੀ, 한국어, Español, Français, Deutsch, 中文, 日本語, العربية,
   Português and Русский. Arabic and Urdu switch the page to right-to-left.
+- What translates: the brand subtitle, Auto tour / Record, the full Command Center (title, meta, stream state,
+  Simulate / Auto-Stream / Chime / Sync buttons, all four gauge titles, radar + stream headings, all five filter
+  buttons), Panels 1–5 (stage, mode, play/pause, reset, jukebox, NASA imagery, sound design, telemetry, mapping),
+  Panel 6 Live Earth (title, meta, all four climate cards, Check / EONET / Climate / Worldview), Panel 7
+  Scientific Lab (7.1–7.5 titles and every Check / Location / Sonify / CSV button), Panel 8 Space Weather Lab
+  (8.1–8.4 titles and every Refresh / Sonify / Location / Find / Calendar button), and the footer live hint.
+  Toggle buttons (Auto-Stream, Chime, Play/Pause) stay translated after you press them, and the choice is saved
+  in `localStorage` (`msb-lang`) and restored on reload. The lite *Earth Jukebox* build has the same 20-language
+  bar for its own labels and scene names.
 - Numbers and units stay in English on purpose, so a value is never misread.
 - Everything works by keyboard. Press **H** in the app for the full list.
 - Screen-reader announcements describe the scene, the sound and every live update.
@@ -283,12 +294,12 @@ Released under the **MIT licence** — see [`LICENSE`](LICENSE). Use it, remix i
 
 ## For developers (optional reading)
 
-The whole application is a single file, `index.html` (about 340 kB), with no build step and no dependencies.
+The whole application is a single file, `index.html` (about 510 kB), with no build step and no dependencies.
 
 | File | What it is |
 | --- | --- |
 | `index.html` | The full app: WebGL globe, Web Audio engine, all live-data panels |
-| `MSB NASA EARTH VIEW – Earth Jukebox.html` | A smaller flat-scan version; its sound is included in the full app as **Jukebox lite** |
+| `MSB NASA EARTH VIEW – Earth Jukebox.html` | A smaller flat-scan version with its own real-time 20-language bar; its sound is included in the full app as **Jukebox lite** |
 | `MSB NASA EARTH VIEW – Earth Jukebox.md` | Notes for that smaller version |
 | `CHANGELOG.md` | Version history |
 | `LICENSE` | MIT licence |
