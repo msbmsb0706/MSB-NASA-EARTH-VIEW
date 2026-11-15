@@ -179,13 +179,13 @@ own acoustic signature:
 
 ## Architecture
 
-Everything lives in **one HTML file** (≈148 kB) with three clearly separated layers:
+Everything lives in **one HTML file** (≈169 kB) with three clearly separated layers:
 
 ```
 index.html
 ├── <style>   design system, layout, high-contrast theme, reduced-motion rules
 ├── markup    header · stage · transport · jukebox rail · telemetry · help dialog
-└── <script>  IIFE, ~2 600 lines
+└── <script>  IIFE, ~2 830 lines (app) + a 10-line theme bootstrap in <head>
     ├── utilities + embedded land mask (base64, 512 × 256 packed bitmap)
     ├── scenes      procedural painters for the four datasets + custom media
     ├── analysis    64 × 32 downsample → warmth / luminance / motion / pan features
