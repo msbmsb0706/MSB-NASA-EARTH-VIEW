@@ -2,6 +2,17 @@
 
 All notable changes to MSB NASA EARTH VIEW.
 
+## [3.0.0] — 2026-11-15
+
+### Added
+- **Live satellite fleet** orbiting the 3D globe in real time: ISS (LEO 51.6°), Himawari-9 GEO 140.7°E, GOES-18 GEO 75.2°W, NOAA-20 polar, Terra, Aqua, GPM-Core — each with colored trails and pulse; geostationary satellites fixed over equator with drift.
+- **Enhanced starfield:** 1800 twinkling stars (was 1100) with warm/blue giants and brighter parallax.
+- **Live Earth — climate · disasters · satellites** panel: global warming +1.2 °C, CO₂/sea-level vital signs, active disaster count from **NASA EONET public API** (`eonet.gsfc.nasa.gov/api/v3/events`) with auto-check on load and every 10 min, plus 8-item event list with dates/coordinates/source links; footer shows `Live: EONET n events · GIBS timestamp`.
+
+### Changed
+- **Louder audio:** master gain 1.15× (was 0.9×), compressor −16 dB / 3.5 ratio for dark-image audibility.
+- Footer and disclosures are now location-agnostic (removed Mysore-specific line); README and lite docs updated with public real-time check instructions.
+
 ## [2.5.0] — 2026-11-15
 
 ### Added

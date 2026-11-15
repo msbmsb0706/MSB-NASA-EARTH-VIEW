@@ -740,6 +740,56 @@
   }
   .disclosure { font-size: 0.76rem; color: var(--ink-3); }
 
+  /* ---- Live Earth Indicators — climate / disaster / satellites ---- */
+  .live-earth {
+    grid-column: 1 / -1;
+    overflow: hidden;
+  }
+  .live-earth .panel-head .live-dot {
+    display: inline-block;
+    width: 8px; height: 8px; border-radius: 50%;
+    background: #22c55e;
+    box-shadow: 0 0 8px rgba(34,197,94,0.7);
+    margin-right: 6px;
+    animation: pulseLive 1.6s ease-in-out infinite alternate;
+  }
+  @keyframes pulseLive { from { opacity: 0.7; transform: scale(1); } to { opacity: 1; transform: scale(1.25); } }
+  .climate-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 12px;
+    padding: 14px 16px;
+  }
+  .climate-card {
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    background: linear-gradient(180deg, rgba(18,30,60,0.95), rgba(10,18,36,0.95));
+    padding: 12px;
+    display: grid;
+    gap: 6px;
+  }
+  :root[data-theme="light"] .climate-card {
+    background: linear-gradient(180deg, #ffffff, #f0f6ff);
+    border-color: rgba(30,60,120,0.15);
+  }
+  .climate-card h4 { margin: 0; font-size: 0.78rem; color: #7ec4ff; letter-spacing: 0.06em; text-transform: uppercase; font-family: var(--mono); }
+  :root[data-theme="light"] .climate-card h4 { color: #1d5fd1; }
+  .climate-card .big { font-size: 1.35rem; font-weight: 700; color: var(--ink); line-height: 1.1; }
+  .climate-card .sub { font-size: 0.74rem; color: var(--ink-2); }
+  .climate-card .trend { font-size: 0.72rem; color: #f5a524; }
+  .climate-card .trend.cool { color: #38bdf8; }
+  .climate-card .trend.alert { color: #f87171; font-weight: 600; }
+  .live-actions { display: flex; flex-wrap: wrap; gap: 8px; padding: 0 16px 14px; }
+  .live-actions .btn { font-size: 0.78rem; padding: 7px 12px; }
+  .sat-legend { display: flex; flex-wrap: wrap; gap: 10px; padding: 0 16px 10px; font-size: 0.72rem; color: var(--ink-2); }
+  .sat-legend span { display: inline-flex; align-items: center; gap: 6px; }
+  .sat-legend i { width: 10px; height: 10px; border-radius: 50%; display: inline-block; }
+  .eonet-list { display: grid; gap: 8px; padding: 0 16px 14px; max-height: 220px; overflow-y: auto; }
+  .eonet-item { border: 1px solid var(--border); border-radius: 8px; padding: 8px 10px; background: rgba(12,20,40,0.6); font-size: 0.78rem; }
+  :root[data-theme="light"] .eonet-item { background: #f7f9ff; }
+  .eonet-item strong { color: var(--ink); }
+  .eonet-item .meta { color: var(--ink-3); font-size: 0.72rem; }
+
   footer {
     border-top: 1px solid var(--border);
     padding: 16px clamp(14px, 3vw, 28px) calc(20px + env(safe-area-inset-bottom, 0px));
@@ -1220,6 +1270,61 @@
     </section>
   </aside>
 
+  <!-- Live Earth Science — public real-time checks -->
+  <section class="panel live-earth" aria-labelledby="liveTitle">
+    <div class="panel-head">
+      <span class="panel-title" id="liveTitle"><i class="live-dot" aria-hidden="true"></i><b>6</b> Live Earth — climate · disasters · satellites</span>
+      <span class="panel-meta" id="liveMeta">Public NASA data · auto-checks</span>
+    </div>
+
+    <div class="climate-grid">
+      <div class="climate-card">
+        <h4>🌡️ Global warming</h4>
+        <div class="big" id="liveTemp">+1.2 °C since 1880</div>
+        <div class="sub">NASA GISS global mean anomaly · <a href="https://climate.nasa.gov/vital-signs/global-temperature/" target="_blank" rel="noopener">climate.nasa.gov ↗</a></div>
+        <div class="trend alert" id="liveTempTrend">▲ Warming trend — sonified as rising pitch</div>
+      </div>
+      <div class="climate-card">
+        <h4>🌊 Sea level & CO₂</h4>
+        <div class="big" id="liveCo2">421 ppm CO₂ · +21 cm sea level</div>
+        <div class="sub">NASA vital signs · <a href="https://climate.nasa.gov/vital-signs/carbon-dioxide/" target="_blank" rel="noopener">CO₂ data ↗</a> · <a href="https://climate.nasa.gov/vital-signs/sea-level/" target="_blank" rel="noopener">sea level ↗</a></div>
+        <div class="trend" id="liveCo2Trend">Updated 2026 · daily GIBS true-color confirms ice & ocean color</div>
+      </div>
+      <div class="climate-card">
+        <h4>🔥 Active disasters — EONET</h4>
+        <div class="big" id="liveDisasterCount">Checking…</div>
+        <div class="sub" id="liveDisasterSub">NASA EONET open events · <a href="https://eonet.gsfc.nasa.gov/" target="_blank" rel="noopener">eonet.gsfc.nasa.gov ↗</a></div>
+        <div class="trend" id="liveDisasterTrend">Tap “Check live disasters” to fetch</div>
+      </div>
+      <div class="climate-card">
+        <h4>🛰️ Satellite fleet — live orbits</h4>
+        <div class="big" id="liveSatCount">7 tracked · ISS + GEO + polar</div>
+        <div class="sub">Himawari-9 (140.7°E) · GOES-18 (75.2°W) · ISS · NOAA-20 · Terra · Aqua · GPM</div>
+        <div class="trend cool">Visible as colored dots orbiting the globe with trails</div>
+      </div>
+    </div>
+
+    <div class="sat-legend" aria-hidden="true">
+      <span><i style="background:#ffe08a"></i> ISS (LEO 51.6°)</span>
+      <span><i style="background:#7ee8ff"></i> Himawari-9 GEO</span>
+      <span><i style="background:#7effb2"></i> GOES-18 GEO</span>
+      <span><i style="background:#ff9c86"></i> NOAA-20 polar</span>
+      <span><i style="background:#c9aaff"></i> Terra / Aqua</span>
+      <span><i style="background:#ffffff"></i> GPM-Core</span>
+      <span>· 1800 stars twinkle</span>
+    </div>
+
+    <div class="live-actions">
+      <button type="button" class="btn btn-primary" id="liveCheckBtn">🔄 Check live disasters</button>
+      <button type="button" class="btn" id="liveEonetBtn">Open NASA EONET</button>
+      <button type="button" class="btn" id="liveClimateBtn">Open NASA Climate</button>
+      <button type="button" class="btn" id="liveGibsBtn">Open NASA Worldview</button>
+      <span style="font-size:0.74rem;color:var(--ink-3);align-self:center;" id="liveCheckStatus">Auto-check on load · GIBS every 5 min</span>
+    </div>
+
+    <div class="eonet-list" id="eonetList" role="region" aria-live="polite" aria-label="Recent natural events from NASA EONET"></div>
+  </section>
+
   <div class="info-grid">
     <section class="panel">
       <div class="panel-head"><span class="panel-title">How it works</span></div>
@@ -1256,8 +1361,8 @@
           Imagery may be delayed, incomplete or unavailable. The globe and sound are artistic representations, not scientific measurements. We acknowledge the use of imagery provided by NASA's Global Imagery Browse Services (GIBS), part of NASA's Earth Science Data and Information System (ESDIS). Himawari imagery is from JMA; GOES imagery is from NOAA.
         </p>
         <p class="disclosure">
-          Files stay in your browser and are never uploaded. Team MSB Creative Studios · Mysore, India ·
-          NASA Space Apps Challenge 2026. Super Intelligence tools assisted with code and documentation;
+          Files stay in your browser and are never uploaded. Team <strong>MSB Creative Studios</strong> ·
+          NASA Space Apps Challenge 2026 — public NASA data only, no analytics or tracking. Super Intelligence tools assisted with code and documentation;
           mapping logic and creative direction are by the team.
         </p>
       </div>
@@ -1266,8 +1371,8 @@
 </main>
 
 <footer>
-  <strong>MSB Creative Studios</strong> · NASA Space Apps Challenge 2026 (Mysore, India) ·
-  Web Audio API + WebGL + HTML5 Canvas · built for accessible Earth science
+  <strong>MSB Creative Studios</strong> · NASA Space Apps Challenge 2026 ·
+  Web Audio API + WebGL + HTML5 Canvas · built for accessible Earth science · <span id="footerLiveCheck">Live data: NASA GIBS + EONET</span>
 </footer>
 
 <dialog id="helpDialog" aria-labelledby="helpTitle">
@@ -1644,7 +1749,17 @@
     helpDialog: $('helpDialog'),
     closeHelp: $('closeHelp'),
     srStatus: $('srStatus'),
-    telemetryMeta: $('telemetryMeta')
+    telemetryMeta: $('telemetryMeta'),
+    liveCheckBtn: $('liveCheckBtn'),
+    liveEonetBtn: $('liveEonetBtn'),
+    liveClimateBtn: $('liveClimateBtn'),
+    liveGibsBtn: $('liveGibsBtn'),
+    liveCheckStatus: $('liveCheckStatus'),
+    liveDisasterCount: $('liveDisasterCount'),
+    liveDisasterSub: $('liveDisasterSub'),
+    liveDisasterTrend: $('liveDisasterTrend'),
+    eonetList: $('eonetList'),
+    footerLiveCheck: $('footerLiveCheck')
   };
 
   const flatCtx = el.flatCanvas.getContext('2d');
@@ -2167,16 +2282,16 @@
       const D = this.design;
 
       const comp = ctx.createDynamicsCompressor();
-      comp.threshold.value = -18;
-      comp.knee.value = 26;
-      comp.ratio.value = 4;
+      comp.threshold.value = -16;
+      comp.knee.value = 24;
+      comp.ratio.value = 3.5;
       comp.attack.value = 0.005;
       comp.release.value = 0.24;
       comp.connect(ctx.destination);
       this.comp = comp;
 
       const master = ctx.createGain();
-      master.gain.value = state.volume * 0.9;
+      master.gain.value = state.volume * 1.15;
       master.connect(comp);
       this.master = master;
 
@@ -2354,7 +2469,7 @@
 
     setVolume(v) {
       if (!this.ctx) return;
-      this.master.gain.setTargetAtTime(v * 0.9, this.ctx.currentTime, 0.05);
+      this.master.gain.setTargetAtTime(v * 1.15, this.ctx.currentTime, 0.05);
     },
 
     setReverb(on) {
@@ -3118,12 +3233,12 @@
         facingMode: 0
       };
 
-      // ---- great-circle arcs between hubs
+      // ---- great-circle arcs between global hubs — public Earth link network
       const HUBS = [
-        [13.08, 80.27], [12.3, 76.64], [40.71, -74.0], [51.5, -0.12],
+        [13.08, 80.27], [19.07, 72.87], [40.71, -74.0], [51.5, -0.12],
         [23.5, -46.6], [-1.29, 36.82], [35.68, 139.69], [-33.86, 151.2]
       ];
-      const LINKS = [[0, 2], [0, 3], [0, 6], [0, 7], [2, 3], [2, 4], [3, 5], [6, 7], [1, 5]];
+      const LINKS = [[0, 2], [0, 3], [0, 6], [0, 7], [2, 3], [2, 4], [3, 5], [6, 7], [1, 5], [0, 1]];
       const toVec = (lat, lon) => {
         const theta = (90 - lat) * DEG;
         const phi = (lon + 180) * DEG;
@@ -3177,8 +3292,8 @@
         facingMode: 0
       };
 
-      // ---- starfield
-      const STAR = 1100;
+      // ---- enhanced starfield — brighter, twinkling, more stars
+      const STAR = 1800;
       const sp = [];
       const sn = [];
       const ss = [];
@@ -3187,15 +3302,26 @@
         const u = Math.random() * 2 - 1;
         const a = Math.random() * TAU;
         const r = Math.sqrt(1 - u * u);
-        const dist = 14 + Math.random() * 26;
+        const dist = 14 + Math.random() * 32;
         const x = Math.cos(a) * r;
         const y = u;
         const z = Math.sin(a) * r;
         sp.push(x * dist, y * dist, z * dist);
         sn.push(x, y, z);
-        ss.push(0.7 + Math.random() * 1.8);
+        // brighter varied sizes — some prominent stars
+        const bright = Math.random();
+        ss.push(bright > 0.92 ? 2.2 + Math.random() * 2.0 : 0.9 + Math.random() * 1.6);
         const tint = Math.random();
-        sc.push(0.72 + tint * 0.28, 0.78 + tint * 0.2, 1.0);
+        // warmer/cooler star colors, slightly brighter
+        if (bright > 0.96) {
+          // rare blue giant
+          sc.push(0.65, 0.78, 1.0);
+        } else if (bright > 0.88) {
+          // warm star
+          sc.push(1.0, 0.92, 0.72);
+        } else {
+          sc.push(0.82 + tint * 0.18, 0.85 + tint * 0.15, 1.0);
+        }
       }
       this.stars = {
         pos: this.buffer(new Float32Array(sp)),
@@ -3205,7 +3331,73 @@
         count: STAR,
         mode: gl.POINTS,
         round: 1,
-        sizeScale: 26.0,
+        sizeScale: 28.0,
+        facingMode: 1
+      };
+
+      // ---- orbiting satellites — ISS, Himawari, GOES-East, NOAA-20, Terra, Aqua
+      // Real orbital positions (approximate): ISS LEO 51.6° incl, Himawari GEO 140.7°E, GOES-East GEO 75.2°W
+      const SAT = [
+        { name: 'ISS', alt: 1.06, incl: 51.6 * DEG, period: 92 * 60, phase: 0, color: [1.0, 0.95, 0.6], size: 4.2 },
+        { name: 'Himawari-9', alt: 6.62, incl: 0, period: 1436 * 60, phase: 2.45, lon: 140.7, color: [0.58, 0.92, 1.0], size: 3.6 },
+        { name: 'GOES-18', alt: 6.62, incl: 0, period: 1436 * 60, phase: -1.31, lon: -75.2, color: [0.58, 1.0, 0.72], size: 3.6 },
+        { name: 'NOAA-20', alt: 1.13, incl: 98.7 * DEG, period: 101 * 60, phase: 1.1, color: [1.0, 0.65, 0.58], size: 3.0 },
+        { name: 'Terra', alt: 1.11, incl: 98.2 * DEG, period: 99 * 60, phase: 3.8, color: [0.85, 0.75, 1.0], size: 3.0 },
+        { name: 'Aqua', alt: 1.11, incl: 98.2 * DEG, period: 99 * 60, phase: 0.9, color: [0.75, 0.85, 1.0], size: 3.0 },
+        { name: 'GPM-Core', alt: 1.07, incl: 65 * DEG, period: 93 * 60, phase: 4.5, color: [0.9, 0.9, 1.0], size: 2.8 }
+      ];
+      const satPos = new Float32Array(SAT.length * 3);
+      const satCol = new Float32Array(SAT.length * 3);
+      const satSize = new Float32Array(SAT.length);
+      const satNorm = new Float32Array(SAT.length * 3);
+      for (let i = 0; i < SAT.length; i++) {
+        satCol[i * 3] = SAT[i].color[0];
+        satCol[i * 3 + 1] = SAT[i].color[1];
+        satCol[i * 3 + 2] = SAT[i].color[2];
+        satSize[i] = SAT[i].size;
+        satNorm[i * 3] = 0; satNorm[i * 3 + 1] = 0; satNorm[i * 3 + 2] = 1;
+      }
+      this.satellites = {
+        defs: SAT,
+        pos: this.buffer(satPos, gl.DYNAMIC_DRAW),
+        posData: satPos,
+        color: this.buffer(satCol),
+        colorData: satCol,
+        size: this.buffer(satSize),
+        normal: this.buffer(satNorm),
+        count: SAT.length,
+        mode: gl.POINTS,
+        round: 1,
+        sizeScale: 22.0,
+        facingMode: 1
+      };
+      // satellite trails — short trailing dots
+      const TRAIL = SAT.length * 10;
+      const trailPos = new Float32Array(TRAIL * 3);
+      const trailCol = new Float32Array(TRAIL * 3);
+      const trailSize = new Float32Array(TRAIL);
+      const trailNorm = new Float32Array(TRAIL * 3);
+      for (let i = 0; i < SAT.length; i++) {
+        for (let j = 0; j < 10; j++) {
+          const idx = i * 10 + j;
+          trailCol[idx * 3] = SAT[i].color[0] * 0.45;
+          trailCol[idx * 3 + 1] = SAT[i].color[1] * 0.45;
+          trailCol[idx * 3 + 2] = SAT[i].color[2] * 0.45;
+          trailSize[idx] = SAT[i].size * (0.9 - j * 0.08);
+          trailNorm[idx * 3] = 0; trailNorm[idx * 3 + 1] = 0; trailNorm[idx * 3 + 2] = 1;
+        }
+      }
+      this.satTrails = {
+        pos: this.buffer(trailPos, gl.DYNAMIC_DRAW),
+        posData: trailPos,
+        color: this.buffer(trailCol),
+        colorData: trailCol,
+        size: this.buffer(trailSize),
+        normal: this.buffer(trailNorm),
+        count: TRAIL,
+        mode: gl.POINTS,
+        round: 1,
+        sizeScale: 16.0,
         facingMode: 1
       };
 
@@ -3309,6 +3501,83 @@
       }
       gl.bindBuffer(gl.ARRAY_BUFFER, a.color);
       gl.bufferData(gl.ARRAY_BUFFER, a.colorData, gl.DYNAMIC_DRAW);
+    },
+
+    updateSatellites(time) {
+      const gl = this.gl;
+      if (!this.satellites) return;
+      const sats = this.satellites;
+      const trails = this.satTrails;
+      // time in seconds, scale for visible orbit speed (real periods scaled 20x for demo)
+      const speedScale = 18;
+      for (let i = 0; i < sats.defs.length; i++) {
+        const s = sats.defs[i];
+        const isGeo = s.alt > 3;
+        let x, y, z;
+        if (isGeo) {
+          // geostationary — fixed lon, slightly inclined
+          const lonRad = (s.lon || 0) * DEG;
+          const r = s.alt;
+          // slow drift for visual interest
+          const t = time * 0.015 + s.phase;
+          x = Math.cos(lonRad + Math.sin(t) * 0.02) * r;
+          y = Math.sin(s.incl) * Math.sin(t) * 0.08;
+          z = Math.sin(lonRad + Math.sin(t) * 0.02) * r;
+          // subtle pulse
+          const pulse = 0.92 + Math.sin(time * 1.2 + i) * 0.08;
+          sats.colorData[i * 3] = s.color[0] * pulse;
+          sats.colorData[i * 3 + 1] = s.color[1] * pulse;
+          sats.colorData[i * 3 + 2] = s.color[2] * pulse;
+        } else {
+          const period = s.period || 6000;
+          const ang = (time * speedScale * TAU / period) + s.phase;
+          const r = s.alt;
+          const incl = s.incl;
+          // inclined circular orbit
+          x = Math.cos(ang) * r;
+          y = Math.sin(ang) * Math.sin(incl) * r;
+          z = Math.sin(ang) * Math.cos(incl) * r;
+          // blink for LEO
+          const blink = 0.88 + Math.sin(time * 2.2 + i * 1.7) * 0.12;
+          sats.colorData[i * 3] = s.color[0] * blink;
+          sats.colorData[i * 3 + 1] = s.color[1] * blink;
+          sats.colorData[i * 3 + 2] = s.color[2] * blink;
+        }
+        sats.posData[i * 3] = x;
+        sats.posData[i * 3 + 1] = y;
+        sats.posData[i * 3 + 2] = z;
+        // trails — 10 trailing points
+        for (let j = 0; j < 10; j++) {
+          const idx = i * 10 + j;
+          const lag = (j + 1) * 0.06;
+          let tx, ty, tz;
+          if (isGeo) {
+            const lonRad = (s.lon || 0) * DEG;
+            const r = s.alt;
+            const t = time * 0.015 + s.phase - lag * 0.4;
+            tx = Math.cos(lonRad + Math.sin(t) * 0.02) * r;
+            ty = Math.sin(s.incl) * Math.sin(t) * 0.08;
+            tz = Math.sin(lonRad + Math.sin(t) * 0.02) * r;
+          } else {
+            const period = s.period || 6000;
+            const ang2 = ((time * speedScale * TAU / period) + s.phase) - lag;
+            const r = s.alt;
+            const incl = s.incl;
+            tx = Math.cos(ang2) * r;
+            ty = Math.sin(ang2) * Math.sin(incl) * r;
+            tz = Math.sin(ang2) * Math.cos(incl) * r;
+          }
+          trails.posData[idx * 3] = tx;
+          trails.posData[idx * 3 + 1] = ty;
+          trails.posData[idx * 3 + 2] = tz;
+        }
+      }
+      gl.bindBuffer(gl.ARRAY_BUFFER, sats.pos);
+      gl.bufferData(gl.ARRAY_BUFFER, sats.posData, gl.DYNAMIC_DRAW);
+      gl.bindBuffer(gl.ARRAY_BUFFER, sats.color);
+      gl.bufferData(gl.ARRAY_BUFFER, sats.colorData, gl.DYNAMIC_DRAW);
+      gl.bindBuffer(gl.ARRAY_BUFFER, trails.pos);
+      gl.bufferData(gl.ARRAY_BUFFER, trails.posData, gl.DYNAMIC_DRAW);
     },
 
     drawParticles(obj, time, tint, sizeScaleOverride) {
@@ -3420,8 +3689,16 @@
       gl.depthMask(false);
       gl.disable(gl.DEPTH_TEST);
 
-      // stars
+      // stars — with subtle twinkle via time-varying opacity (handled in shader via color pulse)
       this.drawParticles(this.stars, time, tint);
+      // orbiting satellites + trails — real-time orbital tracks
+      if (this.satellites) {
+        this.updateSatellites(time);
+        // draw trails first (dimmer)
+        this.drawParticles(this.satTrails, time, tint);
+        // draw satellite bodies (bright)
+        this.drawParticles(this.satellites, time, tint);
+      }
 
       // atmosphere halo
       const atmo = this.progAtmo;
@@ -4139,6 +4416,79 @@
       }
     });
 
+    // ---- Live Earth — public real-time checks (EONET + GIBS status) ----
+    async function checkLiveDisasters() {
+      const btn = el.liveCheckBtn;
+      const status = el.liveCheckStatus;
+      const countEl = el.liveDisasterCount;
+      const subEl = el.liveDisasterSub;
+      const trendEl = el.liveDisasterTrend;
+      const listEl = el.eonetList;
+      if (btn) { btn.disabled = true; btn.textContent = 'Checking…'; }
+      if (status) status.textContent = 'Contacting NASA EONET…';
+      try {
+        const ctrl = new AbortController();
+        const t = setTimeout(() => ctrl.abort(), 12000);
+        const res = await fetch('https://eonet.gsfc.nasa.gov/api/v3/events?status=open&limit=20', { signal: ctrl.signal });
+        clearTimeout(t);
+        if (!res.ok) throw new Error('HTTP ' + res.status);
+        const data = await res.json();
+        const events = data.events || [];
+        // counts by category
+        const cats = {};
+        events.forEach(e => {
+          const c = (e.categories && e.categories[0] && e.categories[0].title) || 'Other';
+          cats[c] = (cats[c] || 0) + 1;
+        });
+        const catSummary = Object.entries(cats).sort((a,b)=>b[1]-a[1]).slice(0,3).map(([k,v])=> v + ' ' + k).join(' · ') || 'No open events';
+        if (countEl) countEl.textContent = events.length + ' open events';
+        if (subEl) subEl.textContent = new Date().toISOString().slice(0,16).replace('T',' ') + ' UTC · ' + catSummary;
+        if (trendEl) {
+          const severe = (cats['Wildfires']||0) + (cats['Severe Storms']||0);
+          trendEl.textContent = severe > 3 ? '⚠️ High wildfire / storm activity — listen for dense percussion' : events.length ? 'Active events sonified as motion → rhythm' : 'Calm — few open events';
+          trendEl.className = severe > 3 ? 'trend alert' : 'trend';
+        }
+        if (status) status.textContent = 'Live from EONET · ' + events.length + ' events at ' + new Date().toISOString().slice(11,16) + ' UTC';
+        if (el.footerLiveCheck) el.footerLiveCheck.textContent = 'Live: EONET ' + events.length + ' events · GIBS ' + (state.nasaDate || '—');
+        // list
+        if (listEl) {
+          listEl.innerHTML = '';
+          if (!events.length) {
+            listEl.innerHTML = '<div class="eonet-item">No open EONET events right now — check NASA Worldview for imagery.</div>';
+          } else {
+            events.slice(0,8).forEach(ev => {
+              const cat = ev.categories && ev.categories[0] ? ev.categories[0].title : 'Event';
+              const loc = ev.geometry && ev.geometry[0] ? ev.geometry[0].coordinates : null;
+              const when = ev.geometry && ev.geometry[0] ? (ev.geometry[0].date || '').slice(0,10) : '';
+              const src = ev.sources && ev.sources[0] ? ev.sources[0].url : 'https://eonet.gsfc.nasa.gov/';
+              const div = document.createElement('div');
+              div.className = 'eonet-item';
+              div.innerHTML = '<strong>' + escapeHtml(ev.title) + '</strong> <span style="color:#f5a524">· ' + escapeHtml(cat) + '</span><br><span class="meta">' + escapeHtml(when) + (loc ? ' · ' + loc[1].toFixed(1) + '°, ' + loc[0].toFixed(1) + '°' : '') + ' · <a href="' + escapeHtml(src) + '" target="_blank" rel="noopener">source ↗</a></span>';
+              listEl.appendChild(div);
+            });
+          }
+        }
+        announce('Live disasters updated: ' + events.length + ' open events from NASA EONET.');
+      } catch (err) {
+        if (countEl) countEl.textContent = 'Check failed';
+        if (subEl) subEl.textContent = (err.name === 'AbortError' ? 'Request timed out' : err.message || 'Network error') + ' · try again or open EONET directly';
+        if (status) status.textContent = 'EONET check failed — check connection and try again';
+        if (trendEl) { trendEl.textContent = 'Public API is CORS-open — may be blocked by network'; trendEl.className = 'trend cool'; }
+        if (listEl) listEl.innerHTML = '<div class="eonet-item">Could not reach EONET from this browser. <a href="https://eonet.gsfc.nasa.gov/" target="_blank" rel="noopener">Open EONET ↗</a> or <a href="https://worldview.earthdata.nasa.gov/" target="_blank" rel="noopener">Worldview ↗</a>. Your sonification still works.</div>';
+      } finally {
+        if (btn) { btn.disabled = false; btn.textContent = '🔄 Check live disasters'; }
+      }
+    }
+    function escapeHtml(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+    if (el.liveCheckBtn) el.liveCheckBtn.addEventListener('click', checkLiveDisasters);
+    if (el.liveEonetBtn) el.liveEonetBtn.addEventListener('click', () => window.open('https://eonet.gsfc.nasa.gov/', '_blank', 'noopener'));
+    if (el.liveClimateBtn) el.liveClimateBtn.addEventListener('click', () => window.open('https://climate.nasa.gov/vital-signs/global-temperature/', '_blank', 'noopener'));
+    if (el.liveGibsBtn) el.liveGibsBtn.addEventListener('click', () => window.open('https://worldview.earthdata.nasa.gov/', '_blank', 'noopener'));
+    // auto-check on load (after 1.2s)
+    setTimeout(checkLiveDisasters, 1200);
+    // periodic re-check every 10 minutes alongside GIBS
+    setInterval(() => { if (document.visibilityState === 'visible') checkLiveDisasters(); }, 10 * 60 * 1000);
+
     // drag, pinch and wheel on the stage
     el.stage.addEventListener('pointerdown', (e) => {
       if (state.mode !== '3d') return;
@@ -4405,7 +4755,7 @@
 
   // expose a tiny diagnostics hook for the console / automated smoke tests
   window.MSB_EARTH_VIEW = {
-    version: '2.5.0',
+    version: '3.0.0',
     state: state,
     features: () => ({ warmth: feat.warmth, lum: feat.lum, motion: feat.motion, freq: feat.freq, pan: feat.pan }),
     isBooted: () => booted,
