@@ -13,7 +13,8 @@ All notable changes to MSB NASA EARTH VIEW.
 
 ### Changed
 - **Version 3.8.0** in the footer and the diagnostics hook.
-- **Documentation:** in-app help gains a *Space weather, planets & satellites* section; the *Data & disclosures* panel now names NOAA SWPC and wheretheiss.at and states which numbers are computed approximations; README gains a full 8.1–8.4 feature table, quick-start step and disclosures; meta/OG/Twitter descriptions mention the new panel.
+- **Documentation:** in-app help gains a *Space weather, planets & satellites* section; the *Data & disclosures* panel now names NOAA SWPC and wheretheiss.at and states which numbers are computed approximations; meta/OG/Twitter descriptions mention the new panel.
+- **README rewritten as a user guide.** It now explains the app in plain language: what it is, how to open it, a two-minute first run, a section-by-section walkthrough, five things to try, what is live versus demo, honest answers (including why the magnetic field does not change Earth's rotation), classroom ideas, troubleshooting, credits and a short developer appendix. It no longer reads as a log of internal repository work.
 
 ### Notes
 - Deliberately honest framing: space weather does not measurably change Earth's rotation or axis, planetary tides are dominated by the Sun and Moon, and local pass predictions can be a minute or two off and are not navigation data.
