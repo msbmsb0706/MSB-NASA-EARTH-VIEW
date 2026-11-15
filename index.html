@@ -1036,6 +1036,9 @@
         <option value="zh">🇨🇳 中文</option>
         <option value="ja">🇯🇵 日本語</option>
         <option value="ar">🇸🇦 العربية</option>
+        <option value="kn">🇮🇳 ಕನ್ನಡ (Kannada)</option>
+        <option value="te">🇮🇳 తెలుగు (Telugu)</option>
+        <option value="ml">🇮🇳 മലയാളം (Malayalam)</option>
         <option value="pt">🇧🇷 Português</option>
         <option value="ru">🇷🇺 Русский</option>
       </select>
@@ -4644,7 +4647,7 @@
       c.style.cursor = 'pointer'; c.title = 'Click to hear warming — rising pitch 1880→2024';
     })();
 
-    // ---- International NASA language — 11 languages ----
+    // ---- International NASA language — 14 languages ----
     const I18N = {
       en: { tour: 'Auto tour', record: 'Record', liveTitle: 'Live Earth — climate · disasters · satellites', check: '🔄 Check live disasters', openEonet: 'Open NASA EONET', openClimate: 'Open NASA Climate', openWorldview: 'Open NASA Worldview', warming: 'Global warming', disasters: 'Active disasters — EONET', satellites: 'Satellite fleet — live orbits', footerLive: 'Live data: NASA GIBS + EONET', announce: 'English selected' },
       ta: { tour: 'தானியங்கி சுற்றுப்பயணம்', record: 'பதிவு', liveTitle: 'நேரடி பூமி — காலநிலை · பேரிடர் · செயற்கைக்கோள்கள்', check: '🔄 நேரடி பேரிடர்களைச் சரிபார்', openEonet: 'EONET திற', openClimate: 'காலநிலை திற', openWorldview: 'Worldview திற', warming: 'புவி வெப்பமயமாதல்', disasters: 'செயலில் பேரிடர்கள் — EONET', satellites: 'செயற்கைக்கோள் குழு — நேரடி சுற்றுப்பாதைகள்', footerLive: 'நேரடி தரவு: NASA GIBS + EONET', announce: 'தமிழ் தேர்ந்தெடுக்கப்பட்டது' },
@@ -4656,7 +4659,10 @@
       ja: { tour: 'オートツアー', record: '録画', liveTitle: 'ライブ地球 — 気候 · 災害 · 衛星', check: '🔄 ライブ災害を確認', openEonet: 'NASA EONETを開く', openClimate: 'NASA Climateを開く', openWorldview: 'Worldviewを開く', warming: '地球温暖化', disasters: '活発な災害 — EONET', satellites: '衛星群 — ライブ軌道', footerLive: 'ライブデータ: NASA GIBS + EONET', announce: '日本語が選択されました' },
       ar: { tour: 'جولة تلقائية', record: 'تسجيل', liveTitle: 'الأرض مباشر — المناخ · الكوارث · الأقمار', check: '🔄 تحقق من الكوارث المباشرة', openEonet: 'افتح NASA EONET', openClimate: 'افتح NASA Climate', openWorldview: 'افتح Worldview', warming: 'الاحتباس الحراري', disasters: 'الكوارث النشطة — EONET', satellites: 'أسطول الأقمار — مدارات مباشرة', footerLive: 'بيانات مباشرة: NASA GIBS + EONET', announce: 'تم اختيار العربية' },
       pt: { tour: 'Tour automático', record: 'Gravar', liveTitle: 'Terra ao vivo — clima · desastres · satélites', check: '🔄 Ver desastres ao vivo', openEonet: 'Abrir NASA EONET', openClimate: 'Abrir NASA Climate', openWorldview: 'Abrir Worldview', warming: 'Aquecimento global', disasters: 'Desastres ativos — EONET', satellites: 'Frota de satélites — órbitas ao vivo', footerLive: 'Dados ao vivo: NASA GIBS + EONET', announce: 'Português selecionado' },
-      ru: { tour: 'Авто-тур', record: 'Запись', liveTitle: 'Земля онлайн — климат · бедствия · спутники', check: '🔄 Проверить бедствия', openEonet: 'Открыть NASA EONET', openClimate: 'Открыть NASA Climate', openWorldview: 'Открыть Worldview', warming: 'Глобальное потепление', disasters: 'Активные бедствия — EONET', satellites: 'Спутниковая группировка — онлайн орбиты', footerLive: 'Данные онлайн: NASA GIBS + EONET', announce: 'Русский выбран' }
+      ru: { tour: 'Авто-тур', record: 'Запись', liveTitle: 'Земля онлайн — климат · бедствия · спутники', check: '🔄 Проверить бедствия', openEonet: 'Открыть NASA EONET', openClimate: 'Открыть NASA Climate', openWorldview: 'Открыть Worldview', warming: 'Глобальное потепление', disasters: 'Активные бедствия — EONET', satellites: 'Спутниковая группировка — онлайн орбиты', footerLive: 'Данные онлайн: NASA GIBS + EONET', announce: 'Русский выбран' },
+      kn: { tour: 'ಆಟೋ ಪ್ರವಾಸ', record: 'ರೆಕಾರ್ಡ್', liveTitle: 'ಲೈವ್ ಭೂಮಿ — ಹವಾಮಾನ · ವಿಪತ್ತು · ಉಪಗ್ರಹಗಳು', check: '🔄 ಲೈವ್ ವಿಪತ್ತು ಪರಿಶೀಲಿಸಿ', openEonet: 'NASA EONET ತೆರೆಯಿರಿ', openClimate: 'NASA Climate ತೆರೆಯಿರಿ', openWorldview: 'Worldview ತೆರೆಯಿರಿ', warming: 'ಜಾಗತಿಕ ತಾಪಮಾನ', disasters: 'ಸಕ್ರಿಯ ವಿಪತ್ತುಗಳು — EONET', satellites: 'ಉಪಗ್ರಹ ಪಡೆ — ಲೈವ್ ಕಕ್ಷೆಗಳು', footerLive: 'ಲೈವ್ ಡೇಟಾ: NASA GIBS + EONET', announce: 'ಕನ್ನಡ ಆಯ್ಕೆ ಮಾಡಲಾಗಿದೆ' },
+      te: { tour: 'ఆటో టూర్', record: 'రికార్డ్', liveTitle: 'లైవ్ భూమి — వాతావరణం · విపత్తులు · ఉపగ్రహాలు', check: '🔄 లైవ్ విపత్తులు తనిఖీ చేయండి', openEonet: 'NASA EONET తెరవండి', openClimate: 'NASA Climate తెరవండి', openWorldview: 'Worldview తెరవండి', warming: 'గ్లోబల్ వార్మింగ్', disasters: 'క్రియాశీల విపత్తులు — EONET', satellites: 'ఉపగ్రహ సముదాయం — లైవ్ కక్ష్యలు', footerLive: 'లైవ్ డేటా: NASA GIBS + EONET', announce: 'తెలుగు ఎంపిక చేయబడింది' },
+      ml: { tour: 'ഓട്ടോ ടൂർ', record: 'റെക്കോർഡ്', liveTitle: 'ലൈവ് ഭൂമി — കാലാവസ്ഥ · ദുരന്തങ്ങൾ · ഉപഗ്രഹങ്ങൾ', check: '🔄 ലൈവ് ദുരന്തങ്ങൾ പരിശോധിക്കുക', openEonet: 'NASA EONET തുറക്കുക', openClimate: 'NASA Climate തുറക്കുക', openWorldview: 'Worldview തുറക്കുക', warming: 'ആഗോളതാപനം', disasters: 'സജീവ ദുരന്തങ്ങൾ — EONET', satellites: 'ഉപഗ്രഹ നിര — ലൈവ് ഭ്രമണപഥങ്ങൾ', footerLive: 'ലൈവ് ഡാറ്റ: NASA GIBS + EONET', announce: 'മലയാളം തിരഞ്ഞെടുത്തു' }
     };
     function applyLang(lang){
       if (!I18N[lang]) lang = 'en';
@@ -4951,7 +4957,7 @@
 
   // expose a tiny diagnostics hook for the console / automated smoke tests
   window.MSB_EARTH_VIEW = {
-    version: '3.2.0',
+    version: '3.3.0',
     state: state,
     features: () => ({ warmth: feat.warmth, lum: feat.lum, motion: feat.motion, freq: feat.freq, pan: feat.pan }),
     isBooted: () => booted,

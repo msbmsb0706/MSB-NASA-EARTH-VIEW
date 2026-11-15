@@ -2,6 +2,11 @@
 
 All notable changes to MSB NASA EARTH VIEW.
 
+## [3.3.0] — 2026-11-15
+
+### Added
+- **South Indian languages:** added ಕನ್ನಡ (Kannada), తెలుగు (Telugu), മലയാളം (Malayalam) to NASA LANG pill — now **14 languages** total (EN, தமிழ், हिन्दी, ಕನ್ನಡ, తెలుగు, മലയാളം, Español, Français, Deutsch, 中文, 日本語, العربية, Português, Русский).
+
 ## [3.2.0] — 2026-11-15
 
 ### Added
