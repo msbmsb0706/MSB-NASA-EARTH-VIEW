@@ -1,5 +1,7 @@
 NASA Space Apps Challenge 2026 · The Earth Information Jukebox
 
+> **Note:** this is the *lite* single-file build. The full application — holographic 3D globe, video input, auto tour and session recording — is `index.html` in this repository.
+
 # MSB NASA EARTH VIEW
 
 Hear the Earth. Pick a scene or load a NASA Earth image or video, and the colours, brightness and motion become live sound: cool blues sound low and deep, warm reds sound high and bright.
