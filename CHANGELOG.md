@@ -2,6 +2,26 @@
 
 All notable changes to MSB NASA EARTH VIEW.
 
+## [2.5.0] — 2026-11-15
+
+### Added
+- A one-click near-real-time view and sonification, with Himawari Asia-Pacific and GOES-East Americas infrared layers at a nominal 10-minute cadence.
+- Available frame timestamp, approximate age and five-minute checks for newer imagery. Satellite coverage and publication delays are disclosed.
+
+## [2.4.0] — 2026-11-15
+
+### Added
+- NASA VIIRS NOAA-20 imagery and daily / 30-minute GPM IMERG precipitation visualizations with explanations, limitations, and links to NASA science sources.
+- GIBS availability lookup chooses an advertised frame time and reports missing frames or connection errors instead of assuming a recent date is available.
+- Clear pixel-analysis labels distinguish image color from physical temperature and precipitation measurements.
+
+## [2.3.0] — 2026-11-15
+
+### Added
+- NASA GIBS daily MODIS Terra and Aqua true-color imagery with a UTC date selector, recent-date following, periodic refresh, and accessible loading/error status.
+- The satellite image feeds the existing scanner, globe and real-time audio synthesis. Failed requests retain the previous source.
+- Clear disclosures distinguish requested dates and daily satellite mosaics from live video and simulated demos.
+
 ## [2.2.0] — 2026-11-15
 
 ### Added

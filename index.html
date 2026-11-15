@@ -587,6 +587,13 @@
   .track .name { font-size: 0.9rem; font-weight: 650; color: #e6efff; }
   .track .desc { font-size: 0.74rem; color: var(--ink-2); line-height: 1.42; }
 
+  .nasa-source { display: grid; gap: 10px; padding: 12px; border-bottom: 1px solid var(--border); }
+  .nasa-source h3 { margin: 0; font-size: 0.88rem; color: var(--ink); }
+  .nasa-source p { margin: 0; font-size: 0.73rem; line-height: 1.5; color: var(--ink-3); }
+  .nasa-source input[type="date"] { width: 100%; min-height: 38px; padding: 6px 10px; border-radius: 10px; border: 1px solid var(--border-strong); background: var(--panel); color: var(--ink); color-scheme: dark light; }
+  .nasa-actions { display: flex; flex-wrap: wrap; gap: 8px; }
+  .science-guide { display: grid; gap: 6px; padding: 10px; border: 1px solid var(--border-strong); border-radius: 10px; }
+  .nasa-source .nasa-status { overflow-wrap: anywhere; color: var(--ink-2); }
   .upload-zone { padding: 0 12px 12px; }
 
   .upload-box {
@@ -1036,24 +1043,61 @@
         <span class="panel-meta">NASA EIC / SVS</span>
       </div>
 
+      <div class="nasa-source" aria-labelledby="nasaTitle">
+        <h3 id="nasaTitle">NASA satellite imagery</h3>
+        <p>Explore NASA satellite imagery or precipitation estimates. The scan turns the displayed pixels into sound as you listen.</p>
+        <label class="field" for="nasaLayer"><span>Satellite layer</span>
+          <select id="nasaLayer">
+            <optgroup label="Near-real-time satellite views">
+              <option value="Himawari_AHI_Band13_Clean_Infrared">Himawari infrared · Asia &amp; Pacific · 10-minute</option>
+              <option value="GOES-East_ABI_Band13_Clean_Infrared">GOES-East infrared · Americas · 10-minute</option>
+            </optgroup>
+            <optgroup label="Daily satellite images">
+              <option value="VIIRS_NOAA20_CorrectedReflectance_TrueColor">VIIRS NOAA-20 · true color</option>
+              <option value="MODIS_Terra_CorrectedReflectance_TrueColor">MODIS Terra · true color</option>
+              <option value="MODIS_Aqua_CorrectedReflectance_TrueColor">MODIS Aqua · true color</option>
+            </optgroup>
+            <optgroup label="Precipitation estimates">
+              <option value="IMERG_Precipitation_Rate_30min">GPM IMERG · 30-minute precipitation</option>
+              <option value="IMERG_Precipitation_Rate">GPM IMERG · daily precipitation</option>
+            </optgroup>
+          </select>
+        </label>
+        <label class="field" for="nasaDate"><span>Requested date (UTC)</span>
+          <input type="date" id="nasaDate" min="2000-06-01" />
+        </label>
+        <label class="switch"><input type="checkbox" id="nasaFollow" checked /><span>Follow latest available and check every 5 minutes</span></label>
+        <div class="nasa-actions"><button type="button" class="btn btn-primary" id="nasaLive">Start near-real-time view + sound</button>
+          <button type="button" class="btn" id="nasaLoad">Load selected imagery</button>
+          <a class="link-btn" href="https://worldview.earthdata.nasa.gov/" target="_blank" rel="noopener noreferrer">NASA Worldview ↗</a></div>
+        <p>Near-real-time infrared updates about every 10 minutes over a satellite’s viewing region. NASA processing and delivery add delay; this is not live video. Daily mosaics and IMERG update less often, and coverage may be incomplete.</p>
+        <div class="science-guide" aria-labelledby="scienceTitle">
+          <h3 id="scienceTitle">Selected layer guide</h3>
+          <p id="scienceDescription"></p>
+          <p id="scienceLimit"></p>
+          <p><a id="scienceLink" href="https://www.earthdata.nasa.gov/data/instruments/viirs/land-near-real-time-data" target="_blank" rel="noopener noreferrer">NASA science information ↗</a> · <a href="https://earth.gov/themes/water-resources" target="_blank" rel="noopener noreferrer">Earth.gov water resources ↗</a></p>
+        </div>
+        <p class="nasa-status" id="nasaStatus" role="status" aria-live="polite">NASA imagery not loaded. The scenes below are simulated demos.</p>
+      </div>
+      <div class="panel-head"><span class="panel-title">Simulated demo scenes</span><span class="panel-meta">Not NASA observations</span></div>
       <div class="track-list" id="trackList" role="group" aria-label="Choose an Earth scene">
         <button type="button" class="track" data-preset="oceans" aria-pressed="true">
-          <span class="tag">SVS-004812 · hydrosphere</span>
+          <span class="tag">DEMO · hydrosphere</span>
           <span class="name">Global Sea Surface Currents &amp; Temp</span>
           <span class="desc">Cool ocean currents become deep sine harmonics; warm Gulf Stream eddies shimmer in the mid register.</span>
         </button>
         <button type="button" class="track" data-preset="aerosols" aria-pressed="false">
-          <span class="tag">SVS-005104 · atmosphere</span>
+          <span class="tag">DEMO · atmosphere</span>
           <span class="name">GEOS Global Aerosols &amp; Dust Plumes</span>
           <span class="desc">Saharan dust and smoke plumes drive Dorian chord sweeps and wind-filtered textures.</span>
         </button>
         <button type="button" class="track" data-preset="nightlights" aria-pressed="false">
-          <span class="tag">EIC-2023 · anthroposphere</span>
+          <span class="tag">DEMO · anthroposphere</span>
           <span class="name">Earth at Night: Urban Luminance</span>
           <span class="desc">City light clusters trigger crystalline bell arpeggios scaled by pixel luminance.</span>
         </button>
         <button type="button" class="track" data-preset="lightning" aria-pressed="false">
-          <span class="tag">ISS-LIS · severe weather</span>
+          <span class="tag">DEMO · severe weather</span>
           <span class="name">ISS Lightning &amp; Convective Storms</span>
           <span class="desc">Flash spikes become percussive pulses over a low atmospheric drone.</span>
         </button>
@@ -1068,7 +1112,7 @@
       </div>
 
       <div class="link-row">
-        <button type="button" class="link-btn" id="clearMedia" disabled>Clear loaded media</button>
+        <button type="button" class="link-btn" id="clearMedia" disabled>Clear loaded imagery</button>
         <a class="link-btn" href="https://earth.gov/" target="_blank" rel="noopener noreferrer">NASA EIC ↗</a>
         <a class="link-btn" href="https://svs.gsfc.nasa.gov/" target="_blank" rel="noopener noreferrer">NASA SVS ↗</a>
       </div>
@@ -1122,7 +1166,7 @@
         <div class="metric">
           <div class="label">Dominant frequency</div>
           <div class="value" id="metricFreq">261.6 Hz</div>
-          <div class="sub" id="metricNote">Note C4 · thermal hue</div>
+          <div class="sub" id="metricNote">Note C4 · image color</div>
         </div>
         <div class="metric">
           <div class="label">Pixel luminance</div>
@@ -1130,9 +1174,9 @@
           <div class="sub">Mapped to amplitude</div>
         </div>
         <div class="metric">
-          <div class="label">Thermal warmth</div>
+          <div class="label">Color warmth</div>
           <div class="value" id="metricWarmth">0.38</div>
-          <div class="sub">Red / blue ratio</div>
+          <div class="sub">Red / blue contrast</div>
         </div>
         <div class="metric">
           <div class="label">Transient delta</div>
@@ -1185,7 +1229,7 @@
           <li>Warmth picks the note on the scene scale, brightness sets loudness and filter opening, position sets stereo pan, and motion fires the percussion.</li>
           <li>Sound is synthesised live with the Web Audio API — there are no recorded tracks.</li>
           <li>Still images are swept by a moving scan meridian, so the picture is heard from west to east.</li>
-          <li>The 3D globe is drawn with a hand-written WebGL renderer and an embedded Natural Earth land mask — no libraries, no network calls.</li>
+          <li>The 3D globe uses WebGL and an embedded land mask. NASA imagery requires a network connection.</li>
         </ul>
       </div>
     </section>
@@ -1208,8 +1252,8 @@
         <p class="disclosure">
           The four built-in scenes are procedurally generated demo visuals inspired by NASA EIC / SVS datasets
           (sea surface currents, GEOS aerosols, night lights, ISS lightning) — they are not raw NASA data.
-          Load real frames or animations from the NASA Earth Information Center or the Scientific Visualization Studio
-          above to hear the actual pixels. NASA media are credited to NASA.
+          NASA GIBS supplies satellite imagery and precipitation visualizations on request; their pixels, not raw scientific measurements, drive the sound.
+          Imagery may be delayed, incomplete or unavailable. The globe and sound are artistic representations, not scientific measurements. We acknowledge the use of imagery provided by NASA's Global Imagery Browse Services (GIBS), part of NASA's Earth Science Data and Information System (ESDIS). Himawari imagery is from JMA; GOES imagery is from NOAA.
         </p>
         <p class="disclosure">
           Files stay in your browser and are never uploaded. Team MSB Creative Studios · Mysore, India ·
@@ -1234,7 +1278,7 @@
   <div class="dialog-body">
     <div>
       <h3>Quick start</h3>
-      <p>Pick one of the four Earth scenes (or load your own NASA image or video), then press
+      <p>Load a NASA GIBS satellite or precipitation image, pick a simulated demo, or load your own image or video, then press
         <strong>Start sonification</strong>. The scanning meridian sweeps across the globe and the colours,
         brightness and motion underneath it become sound.</p>
     </div>
@@ -1285,8 +1329,8 @@
     </div>
     <div>
       <h3>Privacy</h3>
-      <p>No analytics, no CDN, no network requests. Uploaded images and videos are decoded locally with
-        <code>FileReader</code> and never leave the device.</p>
+      <p>No analytics or CDN. NASA imagery is requested directly from NASA GIBS. Local images and videos
+        are decoded in your browser and never leave the device.</p>
     </div>
   </div>
 </dialog>
@@ -1516,6 +1560,8 @@
     media: null,
     mediaKind: null,
     mediaName: '',
+    nasaDate: null,
+    nasaLayer: null,
     glOk: false
   };
 
@@ -1561,6 +1607,15 @@
     fileUpload: $('fileUpload'),
     uploadBox: $('uploadBox'),
     clearMedia: $('clearMedia'),
+    nasaLayer: $('nasaLayer'),
+    nasaDate: $('nasaDate'),
+    nasaFollow: $('nasaFollow'),
+    nasaLoad: $('nasaLoad'),
+    nasaLive: $('nasaLive'),
+    nasaStatus: $('nasaStatus'),
+    scienceDescription: $('scienceDescription'),
+    scienceLimit: $('scienceLimit'),
+    scienceLink: $('scienceLink'),
     metricFreq: $('metricFreq'),
     metricNote: $('metricNote'),
     metricLum: $('metricLum'),
@@ -3516,7 +3571,9 @@
     el.stageHint.textContent = mode === '2d' ? 'Scanning left → right' : 'Drag to orbit · scroll to zoom';
   }
 
+  let playbackGeneration = 0;
   function setPlaying(next) {
+    playbackGeneration++;
     if (next) {
       const started = Audio.start();
       if (!started) {
@@ -3534,7 +3591,7 @@
     el.pillAudio.classList.toggle('live', state.playing);
     el.audioStatusText.textContent = state.playing ? 'Audio: live synthesis' : 'Audio: paused';
     announce(state.playing
-      ? 'Sonification playing. Scene ' + PRESETS[state.preset].dataset + ', scale ' + PRESETS[state.preset].scaleName + '.'
+      ? 'Sonification playing. ' + (state.mediaKind === 'nasa' ? 'NASA imagery for ' + state.nasaDate : state.media ? 'Custom media' : 'Simulated scene ' + PRESETS[state.preset].dataset) + ', scale ' + PRESETS[state.preset].scaleName + '.'
       : 'Sonification paused.');
     if (state.playing) el.stageHint.classList.add('hide');
     else el.stageHint.classList.remove('hide');
@@ -3566,7 +3623,7 @@
       b.setAttribute('aria-pressed', String(b.dataset.preset === preset));
     });
     const P = PRESETS[preset];
-    el.hudDataset.textContent = 'Dataset: ' + P.dataset;
+    el.hudDataset.textContent = 'Demo: ' + P.dataset;
     el.hudScale.textContent = 'Scale: ' + P.scaleName;
     el.clearMedia.disabled = true;
     if (GL.ok) GL.recolor();
@@ -3575,7 +3632,13 @@
     announce('Scene: ' + P.dataset + '. Scale ' + P.scaleName + '.');
   }
 
+  let nasaRequest = 0;
   function releaseMedia(clearUi) {
+    // Invalidate pending NASA responses whenever the user changes sources.
+    nasaRequest++;
+    state.nasaDate = null;
+    state.nasaLayer = null;
+    el.nasaStatus.textContent = 'NASA imagery not active. Choose a date and load it to listen.';
     if (state.mediaUrl) {
       URL.revokeObjectURL(state.mediaUrl);
       state.mediaUrl = null;
@@ -3594,7 +3657,7 @@
       el.fileUpload.value = '';
       el.clearMedia.disabled = true;
       const P = PRESETS[state.preset];
-      el.hudDataset.textContent = 'Dataset: ' + P.dataset;
+      el.hudDataset.textContent = 'Demo: ' + P.dataset;
       el.hudScale.textContent = 'Scale: ' + P.scaleName;
     }
   }
@@ -3622,6 +3685,7 @@
       return;
     }
     releaseMedia(false);
+    const request = nasaRequest;
     const url = URL.createObjectURL(file);
     state.mediaUrl = url;
 
@@ -3634,6 +3698,7 @@
       video.setAttribute('playsinline', '');
       video.preload = 'auto';
       video.addEventListener('loadeddata', () => {
+        if (request !== nasaRequest) return;
         state.media = video;
         state.mediaKind = 'video';
         state.mediaName = file.name;
@@ -3642,20 +3707,207 @@
         onMediaReady(file.name, 'video');
       }, { once: true });
       video.addEventListener('error', () => {
+        if (request !== nasaRequest) return;
         announce('That video could not be decoded. Try an MP4 (H.264) or WebM file.');
       }, { once: true });
       video.load();
     } else {
       const img = new Image();
       img.onload = () => {
+        if (request !== nasaRequest) return;
         state.media = img;
         state.mediaKind = 'image';
         state.mediaName = file.name;
         onMediaReady(file.name, 'image');
       };
-      img.onerror = () => announce('That image could not be decoded.');
+      img.onerror = () => { if (request === nasaRequest) announce('That image could not be decoded.'); };
       img.src = url;
     }
+  }
+
+  // GIBS DescribeDomains prevents WMS silently snapping to a different time.
+  const NASA_LAYERS = {
+    Himawari_AHI_Band13_Clean_Infrared: {
+      label: 'Himawari infrared · Asia and Pacific', matrix: '2km', cadence: '10-minute',
+      description: 'The Japanese Himawari satellite observes infrared radiation from clouds and the surface over the Asia-Pacific region. NASA GIBS distributes its imagery in approximately 10-minute intervals.',
+      limit: 'This is infrared, not a natural-color camera. It covers only the satellite viewing region, not the whole Earth. Frames are delayed, may be missing, and image colors are not numerical temperature readings.',
+      url: 'https://wiki.earthdata.nasa.gov/display/GIBS/GIBS+Available+Imagery+Products'
+    },
+    'GOES-East_ABI_Band13_Clean_Infrared': {
+      label: 'GOES-East infrared · Americas', matrix: '2km', cadence: '10-minute',
+      description: 'NOAA GOES-East observes infrared radiation from clouds and the surface over the Americas and nearby oceans. NASA GIBS distributes imagery in approximately 10-minute intervals.',
+      limit: 'This is infrared, not a natural-color camera. It covers only the satellite viewing region, not the whole Earth. Frames are delayed, may be missing, and image colors are not numerical temperature readings.',
+      url: 'https://wiki.earthdata.nasa.gov/display/GIBS/GIBS+Available+Imagery+Products'
+    },
+    VIIRS_NOAA20_CorrectedReflectance_TrueColor: {
+      label: 'VIIRS NOAA-20 true color', matrix: '250m', cadence: 'daily',
+      description: 'VIIRS observes Earth in visible and infrared bands. This daily natural-color mosaic can show clouds, land and oceans.',
+      limit: 'Clouds, nighttime and acquisition gaps can hide the surface. This is imagery, not a direct measurement of air quality or temperature.',
+      url: 'https://www.earthdata.nasa.gov/data/instruments/viirs/land-near-real-time-data'
+    },
+    MODIS_Terra_CorrectedReflectance_TrueColor: {
+      label: 'MODIS Terra true color', matrix: '250m', cadence: 'daily',
+      description: 'MODIS on Terra observes clouds, land and oceans. This is a daily corrected-reflectance true-color mosaic.',
+      limit: 'Coverage can be incomplete and may be affected by clouds, darkness and changes to the spacecraft orbit. This image is not a temperature map.',
+      url: 'https://www.earthdata.nasa.gov/data/instruments/modis/near-real-time-data'
+    },
+    MODIS_Aqua_CorrectedReflectance_TrueColor: {
+      label: 'MODIS Aqua true color', matrix: '250m', cadence: 'daily',
+      description: 'MODIS on Aqua observes clouds, land and oceans. This is a daily corrected-reflectance true-color mosaic.',
+      limit: 'Coverage can be incomplete and may be affected by clouds, darkness and changes to the spacecraft orbit. This image is not a temperature map.',
+      url: 'https://www.earthdata.nasa.gov/data/instruments/modis/near-real-time-data'
+    },
+    IMERG_Precipitation_Rate_30min: {
+      label: 'GPM IMERG 30-minute precipitation', matrix: '2km', cadence: '30-minute',
+      description: 'NASA IMERG combines satellite observations to estimate precipitation rate, including rain and snow, for a 30-minute period. The source rate is expressed in millimeters per hour.',
+      limit: 'This is an estimate, not ground radar. Processing takes time; blank areas may mean little precipitation or missing data. Sound analyzes image colors, not rainfall values.',
+      url: 'https://gpm.nasa.gov/data/articles/globalRainfallAtYourFingertips'
+    },
+    IMERG_Precipitation_Rate: {
+      label: 'GPM IMERG daily precipitation', matrix: '2km', cadence: 'daily',
+      description: 'NASA IMERG combines satellite observations to estimate daily average precipitation rate, including rain and snow. The source rate is expressed in millimeters per hour.',
+      limit: 'The daily estimate is not ground radar and can be delayed. Blank areas can mean little precipitation or missing data. Sound analyzes image colors, not rainfall values.',
+      url: 'https://gpm.nasa.gov/data/articles/globalRainfallAtYourFingertips'
+    }
+  };
+
+  function showScienceGuide() {
+    const info = NASA_LAYERS[el.nasaLayer.value];
+    if (!info) return;
+    el.scienceDescription.textContent = info.description;
+    el.scienceLimit.textContent = info.limit;
+    el.scienceLink.href = info.url;
+  }
+
+  function recentNasaDate() {
+    return new Date(Date.now() - 2 * 86400000).toISOString().slice(0, 10);
+  }
+
+  async function loadNasaImagery(options) {
+    const startAudio = !!(options && options.startAudio);
+    const startPlaybackGeneration = playbackGeneration;
+    const date = el.nasaDate.value;
+    const layer = el.nasaLayer.value;
+    const info = NASA_LAYERS[layer];
+    const follow = el.nasaFollow.checked;
+    const today = new Date().toISOString().slice(0, 10);
+    el.nasaDate.max = today;
+    if (!info || (!follow && (!date || date > today || date < el.nasaDate.min || !el.nasaDate.validity.valid))) {
+      el.nasaStatus.textContent = 'Choose a valid UTC date between 2000-06-01 and today.';
+      return;
+    }
+    const request = ++nasaRequest;
+    el.nasaStatus.textContent = 'Checking NASA availability for ' + info.label + '… The current source remains active.';
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), 20000);
+    let timestamp;
+    try {
+      // Keep '/' and ':' literal: the GIBS DescribeDomains endpoint expects this format.
+      const start = follow ? new Date(Date.now() - 14 * 86400000).toISOString().slice(0, 10) : date;
+      const end = follow ? today : date;
+      const bounds = info.cadence !== 'daily'
+        ? start + 'T00:00:00Z/' + end + 'T23:59:59Z' : start + '/' + end;
+      const url = 'https://gibs.earthdata.nasa.gov/wmts/epsg4326/best/wmts.cgi?SERVICE=WMTS&REQUEST=DescribeDomains&VERSION=1.0.0&LAYER='
+        + layer + '&TILEMATRIXSET=' + info.matrix + '&TIME=' + bounds;
+      const response = await fetch(url, { signal: controller.signal });
+      if (!response.ok) throw new Error('NASA availability service returned HTTP ' + response.status + '.');
+      const xml = new DOMParser().parseFromString(await response.text(), 'application/xml');
+      if (xml.getElementsByTagName('parsererror').length || xml.getElementsByTagNameNS('*', 'Exception').length) {
+        throw new Error('NASA could not check availability for that date.');
+      }
+      const domains = Array.from(xml.getElementsByTagNameNS('*', 'Domain'));
+      const values = domains.flatMap(node => node.textContent.split(',')).map(part => part.trim()).filter(Boolean);
+      // Domain entries are start/end/period. Use only an explicitly available endpoint.
+      const endpoints = values.map(part => part.split('/')[1] || part.split('/')[0])
+        .filter(value => /^\d{4}-\d{2}-\d{2}(?:T\d{2}:\d{2}:\d{2}Z)?$/.test(value))
+        .filter(value => value.slice(0, 10) >= start && value.slice(0, 10) <= end)
+        .filter(value => info.cadence === 'daily' || value.includes('T'))
+        .sort();
+      timestamp = endpoints[endpoints.length - 1];
+      if (!timestamp) throw new Error('No available NASA ' + info.cadence + ' frame was found for ' + (follow ? 'the last 14 days' : date) + '. Try another date or layer.');
+    } catch (error) {
+      clearTimeout(timeout);
+      if (request !== nasaRequest) return;
+      el.nasaStatus.textContent = (error.name === 'AbortError' ? 'NASA availability check timed out.' : error.message === 'Failed to fetch' ? 'Cannot reach NASA GIBS from this browser.' : error.message || 'NASA availability check failed.') + ' Check your connection, open NASA Worldview, or try again. The previous source remains active.';
+      announce(el.nasaStatus.textContent);
+      return;
+    }
+    clearTimeout(timeout);
+    if (request !== nasaRequest) return;
+    el.nasaDate.value = timestamp.slice(0, 10);
+    if (options && options.autoRefresh && state.mediaKind === 'nasa' && state.nasaLayer === layer && state.nasaDate === timestamp) {
+      el.nasaStatus.textContent = 'No newer frame yet. ' + info.label + ' frame: ' + timestamp + ' UTC; checked ' + new Date().toISOString().replace('T', ' ').slice(0, 19) + ' UTC. Data delivery can be delayed.';
+      return;
+    }
+    el.nasaStatus.textContent = 'NASA lists ' + timestamp + ' UTC for ' + info.label + '. Loading image…';
+    // Values are from the layer allowlist and parsed GIBS time domain.
+    const imageUrl = 'https://gibs.earthdata.nasa.gov/wms/epsg4326/best/wms.cgi?service=WMS&version=1.1.1&request=GetMap&layers='
+      + layer + '&styles=&format=image/png&transparent=true&srs=EPSG:4326&width=1024&height=512&bbox=-180,-90,180,90&time='
+      + timestamp + '&_=' + Date.now();
+    const image = new Image();
+    image.crossOrigin = 'anonymous';
+    const imageTimeout = setTimeout(() => {
+      if (request !== nasaRequest) return;
+      nasaRequest++;
+      el.nasaStatus.textContent = 'NASA image request timed out. Check your connection and try again. The previous source remains active.';
+      announce(el.nasaStatus.textContent);
+    }, 20000);
+    image.onload = () => {
+      clearTimeout(imageTimeout);
+      if (request !== nasaRequest) return;
+      try {
+        const probe = document.createElement('canvas');
+        probe.width = 64;
+        probe.height = 32;
+        const ctx = probe.getContext('2d');
+        ctx.drawImage(image, 0, 0, probe.width, probe.height);
+        const pixels = ctx.getImageData(0, 0, probe.width, probe.height).data;
+        // A newly advertised geostationary slot may not yet have imagery.
+        // Do not call an empty frame live. Rain maps can legitimately be sparse.
+        if (info.cadence === '10-minute') {
+          let visible = 0;
+          for (let i = 0; i < pixels.length; i += 4) {
+            if (pixels[i + 3] > 0 && pixels[i] + pixels[i + 1] + pixels[i + 2] > 15) visible++;
+          }
+          if (visible < 4) {
+            el.nasaStatus.textContent = 'NASA lists this frame, but the returned satellite image appears empty. It may still be processing; try again shortly. The previous source remains active.';
+            announce(el.nasaStatus.textContent);
+            return;
+          }
+        }
+      } catch (err) {
+        el.nasaStatus.textContent = 'NASA image cannot be read for sound due to browser or network restrictions. The previous source remains active.';
+        announce(el.nasaStatus.textContent);
+        return;
+      }
+      if (state.tour) setTour(false);
+      releaseMedia(false);
+      state.media = image;
+      state.mediaKind = 'nasa';
+      state.mediaName = info.label;
+      state.nasaDate = timestamp;
+      state.nasaLayer = layer;
+      Array.prototype.forEach.call(document.querySelectorAll('.track'), (b) => b.setAttribute('aria-pressed', 'false'));
+      el.clearMedia.disabled = false;
+      el.hudDataset.textContent = 'NASA ' + info.label + ' · ' + timestamp + ' UTC';
+      const ageMinutes = Math.max(0, Math.floor((Date.now() - Date.parse(timestamp.length === 10 ? timestamp + 'T00:00:00Z' : timestamp)) / 60000));
+      const age = ageMinutes >= 60 ? Math.floor(ageMinutes / 60) + 'h ' + (ageMinutes % 60) + 'm' : ageMinutes + 'm';
+      el.nasaStatus.textContent = 'NASA GIBS ' + info.label + ' loaded. Frame: ' + timestamp + ' UTC (about ' + age + ' old). Checked: ' + new Date().toISOString().replace('T', ' ').slice(0, 19) + ' UTC. Coverage can be incomplete.';
+      scanU = 0;
+      prevPixels = null;
+      prevColLum = 0;
+      if (startAudio && playbackGeneration === startPlaybackGeneration) {
+        setPlaying(true);
+        if (!state.playing) el.nasaStatus.textContent += ' Audio could not start; try the Start sonification button or another browser.';
+      } else announce('NASA ' + info.label + ' loaded for ' + timestamp + ' UTC. Press Start sonification to hear the image.');
+    };
+    image.onerror = () => {
+      clearTimeout(imageTimeout);
+      if (request !== nasaRequest) return;
+      el.nasaStatus.textContent = 'NASA image could not be loaded. Check your connection, try another date or layer, or open NASA Worldview. The previous source remains active.';
+      announce(el.nasaStatus.textContent);
+    };
+    image.src = imageUrl;
   }
 
   // ---------------------------------------------------------------- tour + record
@@ -3750,7 +4002,7 @@
     el.hudFreq.textContent = freq.toFixed(1) + ' Hz';
     el.hudNote.textContent = note + ' · ' + warmWord;
     el.metricFreq.textContent = freq.toFixed(1) + ' Hz';
-    el.metricNote.textContent = 'Note ' + note + ' · thermal hue';
+    el.metricNote.textContent = 'Note ' + note + ' · image color';
     el.metricLum.textContent = Math.round(feat.lum * 100) + '%';
     el.metricWarmth.textContent = feat.warmth.toFixed(2);
     el.metricDelta.textContent = feat.transient.toFixed(2);
@@ -3810,11 +4062,46 @@
       card.addEventListener('click', () => setPreset(card.dataset.preset));
     });
 
+    el.nasaDate.max = new Date().toISOString().slice(0, 10);
+    el.nasaDate.value = recentNasaDate();
+    function nasaSelectionChanged() {
+      nasaRequest++;
+      el.nasaStatus.textContent = 'Selection changed. Press Load NASA imagery to apply it; the current source remains active.';
+    }
+    el.nasaDate.addEventListener('change', () => { el.nasaFollow.checked = false; nasaSelectionChanged(); });
+    el.nasaFollow.addEventListener('change', () => {
+      if (el.nasaFollow.checked) el.nasaDate.value = recentNasaDate();
+      nasaSelectionChanged();
+    });
+    el.nasaLayer.addEventListener('change', () => { nasaSelectionChanged(); showScienceGuide(); });
+    showScienceGuide();
+    el.nasaLoad.addEventListener('click', () => loadNasaImagery());
+    el.nasaLive.addEventListener('click', () => {
+      // Audio must be unlocked by this user gesture, not by the later network callback.
+      if (state.playing) setPlaying(false);
+      const ctx = Audio.init();
+      if (ctx && ctx.state === 'suspended') {
+        const resume = ctx.resume();
+        if (resume && resume.catch) resume.catch(() => {});
+      }
+      if (NASA_LAYERS[el.nasaLayer.value].cadence === 'daily') {
+        el.nasaLayer.value = 'Himawari_AHI_Band13_Clean_Infrared';
+        showScienceGuide();
+      }
+      el.nasaFollow.checked = true;
+      loadNasaImagery({ startAudio: true });
+    });
+    setInterval(() => {
+      if (state.mediaKind === 'nasa' && el.nasaFollow.checked && state.nasaLayer === el.nasaLayer.value) {
+        el.nasaDate.max = new Date().toISOString().slice(0, 10);
+        loadNasaImagery({ autoRefresh: true });
+      }
+    }, 5 * 60 * 1000);
     el.fileUpload.addEventListener('change', (e) => loadFile(e.target.files && e.target.files[0]));
     el.clearMedia.addEventListener('click', () => {
       releaseMedia(true);
       scanU = 0;
-      announce('Loaded media cleared. Procedural scene restored.');
+      announce('Loaded imagery cleared. Simulated scene restored.');
     });
 
     Array.prototype.forEach.call(document.querySelectorAll('.mode-switch button'), (b) => {
@@ -4088,7 +4375,7 @@
 
     // initial scene
     const P = PRESETS[state.preset];
-    el.hudDataset.textContent = 'Dataset: ' + P.dataset;
+    el.hudDataset.textContent = 'Demo: ' + P.dataset;
     el.hudScale.textContent = 'Scale: ' + P.scaleName;
     if (GL.ok) GL.recolor();
 
@@ -4099,7 +4386,7 @@
       el.orbitToggle.checked = false;
     }
 
-    announce('MSB NASA Earth View ready. Press Start sonification, or press space. Four Earth scenes and custom NASA imagery are available.');
+    announce('MSB NASA Earth View ready. Press Start sonification, or press space. NASA imagery, four simulated scenes and custom media are available.');
     lastTime = performance.now();
     requestAnimationFrame(loop);
     booted = true;
@@ -4118,7 +4405,7 @@
 
   // expose a tiny diagnostics hook for the console / automated smoke tests
   window.MSB_EARTH_VIEW = {
-    version: '2.0.0',
+    version: '2.5.0',
     state: state,
     features: () => ({ warmth: feat.warmth, lum: feat.lum, motion: feat.motion, freq: feat.freq, pan: feat.pan }),
     isBooted: () => booted,
