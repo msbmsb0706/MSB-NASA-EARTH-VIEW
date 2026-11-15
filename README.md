@@ -5,7 +5,7 @@
 
 **NASA Space Apps Challenge 2026 · Team MSB Creative Studios**
 
-`v3.7.1` · single file · zero dependencies · 20 languages · WebGL + Web Audio
+`v3.8.0` · single file · zero dependencies · 20 languages · WebGL + Web Audio
 
 **▶ Live app:** <https://msbmsb0706.github.io/MSB-NASA-EARTH-VIEW/> — served straight from `main` with GitHub Pages.
 
@@ -22,7 +22,7 @@ This application scans Earth imagery in real time and converts **colour, brightn
 motion** into an evolving musical performance. There are no recorded tracks: every note, filter sweep and
 drum pulse is synthesised live in the browser with the Web Audio API.
 
-Version 3.7 adds a hand-written WebGL globe with **1800 twinkling stars**, a **live satellite fleet** (ISS live via wheretheiss.at, Himawari-9, GOES-18, NOAA-20, Terra, Aqua, GPM), great-circle data arcs and a scanning meridian — plus video input, session recording, auto tour, keyboard control, a full accessibility layer, **boosted audio**, a **Live Earth** panel that checks public NASA data in real time, a **warming chart you can click to hear**, a **20-language NASA pill** `🌐 LANG`, and a **Scientific Lab** shown as one merged page: [7.1 Air Quality](#scientific-lab--five-datasets-one-page), 7.2 Climate Lab, 7.3 Water & Ice, 7.4 Hazards and **7.5 Satellite comparison** — a bar chart ranking ten operational free/public missions by spatial detail, update speed or openness, all charts visible at once, with CSV export and sonification for school/public/research.
+Version 3.8 adds a fourth public-data panel — **live NOAA space weather**, **Earth's rotation and magnetic field**, **sunlight on every planet plus each planet's pull on Earth**, and **ISS passes over your own location** (fetched TLE, propagated in the browser, clickable, with a sky chart and calendar export). Version 3.7 added a hand-written WebGL globe with **1800 twinkling stars**, a **live satellite fleet** (ISS live via wheretheiss.at, Himawari-9, GOES-18, NOAA-20, Terra, Aqua, GPM), great-circle data arcs and a scanning meridian — plus video input, session recording, auto tour, keyboard control, a full accessibility layer, **boosted audio**, a **Live Earth** panel that checks public NASA data in real time, a **warming chart you can click to hear**, a **20-language NASA pill** `🌐 LANG`, and a **Scientific Lab** shown as one merged page: [7.1 Air Quality](#scientific-lab--five-datasets-one-page), 7.2 Climate Lab, 7.3 Water & Ice, 7.4 Hazards and **7.5 Satellite comparison** — a bar chart ranking ten operational free/public missions by spatial detail, update speed or openness, all charts visible at once, with CSV export and sonification for school/public/research.
 
 ---
 
@@ -36,7 +36,10 @@ Version 3.7 adds a hand-written WebGL globe with **1800 twinkling stars**, a **l
 5. Keep scrolling to the **Scientific Lab** — all five blocks are on one page. Air quality and USGS earthquakes load
    themselves; press **🔄 Check air** / **📍 Use my location** to move the AQI to your city, click any chart to hear it,
    and try the **🔍 Spatial detail / ⏱️ Update speed / 🌍 Openness** switch in **7.5 Satellite comparison**.
-6. Change the interface language any time with the **`🌐 LANG`** pill in the header (20 languages, Arabic and Urdu flip
+6. Scroll to **8. Space weather, planets & satellites over you**: NOAA SWPC solar wind, Kp and Dst load themselves;
+   press **📍 Use my location** and **🔭 Find ISS passes** to see passes over you in the next three days, then click a
+   pass to draw it in the sky chart, save it as a calendar file, or hear it.
+7. Change the interface language any time with the **`🌐 LANG`** pill in the header (20 languages, Arabic and Urdu flip
    the page to right-to-left).
 
 ### NASA imagery and dates
@@ -63,6 +66,15 @@ python3 -m http.server 8000
 ---
 
 ## What's new
+
+### v3.8.0 — space weather, planet sunlight and passes over you
+| Area | Change |
+| --- | --- |
+| **8.1 Live magnetosphere** | Solar wind speed, IMF **Bz** and **Bt**, **Kp**, **Dst** and the **NOAA G-scale** from NOAA SWPC public JSON, refreshed every five minutes. A Kp chart shows the last two days plus the NOAA forecast and is clickable to hear the storm curve. An aurora estimate converts the current Kp into the oval's magnetic latitude and compares it with yours. |
+| **8.2 Earth's rotation** | Live sidereal clock, spin speed at your latitude, orbital speed, magnetic latitude, dipole field strength and dip angle — plus the honest answer: the geomagnetic field comes from the core and does **not** steer the spin. Local solar elevation, direct sunlight, sunrise/sunset and day length are computed for your place. |
+| **8.3 Planets** | Sunlight on all eight planets right now in **W/m²** and as a percentage of Earth's, from Keplerian elements evaluated for the minute. A second table computes each planet's **gravitational and tidal pull on Earth** and compares it with the Moon's, making the real scale of "planetary influence" visible. Every row is clickable and sonified. |
+| **8.4 Passes over you** | Live ISS TLE from **api.wheretheiss.at**, propagated locally with a J2 model. Press *Use my location* → *Find ISS passes* for every pass above 10° in the next three days with maximum elevation, direction and a **visible** flag. Click a pass to draw its **polar sky chart**, **⬇ export an .ics calendar file**, or **🔊 hear the pass**. Any public two-line TLE can be pasted to track another satellite. |
+| Honesty | The panel states that space weather does not measurably change Earth's rotation, that planetary tides are dominated by the Sun and Moon, and that local predictions are approximations, not navigation data. |
 
 ### v3.7.1 — documentation and help refresh
 | Area | Change |
@@ -170,6 +182,20 @@ column. The chart re-draws when you switch theme or high-contrast mode.
 > The 7.5 catalogue is **not live telemetry**. It lists agency-confirmed operational missions whose data is free
 > and public, with their published resolutions and refresh times; the panel says so on screen.
 
+### Space weather, planets and satellites over you
+A fourth public-data panel (section 8), stacked under the Scientific Lab:
+
+| Block | Data | What you can do |
+| --- | --- | --- |
+| **8.1 🧲 Live magnetosphere** | NOAA SWPC: solar-wind speed, IMF Bz/Bt, planetary Kp, Kyoto Dst, NOAA R/S/G scales | Current conditions with colour-coded warnings, NOAA's 3-day storm watch, a clickable Kp history + forecast chart, **🔊 Hear conditions**, and an aurora-latitude estimate for your location |
+| **8.2 🌍 Earth's rotation** | Computed in-browser: sidereal time, solar position, dipole magnetic model | Live spin direction, rotation period, speed at your latitude, orbital speed, magnetic latitude / field / dip angle, solar elevation, direct sunlight in W/m², sunrise, sunset and day length — with a clear explanation of why the magnetic field does **not** drive the spin |
+| **8.3 🌞 Planets** | JPL Keplerian elements (Standish) + Newtonian gravity, evaluated now | Sunlight on every planet (W/m² and % of Earth), and every planet's gravitational and tidal pull on Earth relative to the Moon; click any row to hear it |
+| **8.4 🛰️ Passes over you** | ISS TLE from api.wheretheiss.at (public, no key); orbit propagated with a J2 model | Passes above 10° for the next 3 days at your location, with elevation, compass direction and visibility; selectable polar **sky chart**, **.ics calendar export**, **pass sonification**, and a paste-a-TLE field for any other public satellite |
+
+The panel is explicitly honest about limits: space weather disturbs radio, GPS, satellites and power grids but does
+not measurably change Earth's rotation or axis; planetary tides are dominated by the Sun and Moon; pass times are
+approximations and should be confirmed with NASA Spot the Station.
+
 ### Languages — 20, with right-to-left support
 - The header’s **`🌐 LANG`** pill switches the main interface labels between **20 languages**:
   English, தமிழ் (Tamil), हिन्दी (Hindi), ಕನ್ನಡ (Kannada), తెలుగు (Telugu), മലയാളം (Malayalam), বাংলা (Bengali),
@@ -269,13 +295,14 @@ Public disaster data (EONET) supplements the audio: when many wildfires/storms a
 
 ## Architecture
 
-Everything lives in **one HTML file** (≈270 kB, ≈5 600 lines) with three clearly separated layers:
+Everything lives in **one HTML file** (≈340 kB, ≈6 900 lines) with three clearly separated layers:
 
 ```
 index.html
 ├── <style>   design system, layout, high-contrast theme, reduced-motion rules, Live Earth cards
 ├── markup    header (incl. 🌐 LANG pill) · stage · transport · jukebox rail · telemetry ·
-│             Live Earth panel · merged Scientific Lab 7.1–7.5 · info-grid · help dialog
+│             Live Earth panel · merged Scientific Lab 7.1–7.5 ·
+│             space weather / planets / passes 8.1–8.4 · info-grid · help dialog
 └── <script>  IIFE, ~4 300 lines (app) + a 10-line theme bootstrap in <head>
     ├── utilities + embedded land mask (base64, 512 × 256 packed bitmap)
     ├── scenes      procedural painters for the four datasets + custom media
@@ -291,6 +318,9 @@ index.html
     ├── sci-lab     Open-Meteo air quality · GISS/Keeling climate + sea-level canvases ·
     │               USGS quakes · satellite comparison chart (log-scaled bars, 3 metrics,
     │               click-to-sonify, CSV) · all charts redraw on theme change
+    ├── sky-lab     NOAA SWPC space weather · Kp chart · Earth rotation + dipole field ·
+    │               planet sunlight & tidal pull · TLE parsing, J2 propagation, pass finding,
+    │               polar sky chart, .ics export · all computed locally
     ├── i18n        20-language dictionary, localStorage persistence, RTL switch for ar/ur
     └── interaction UI bindings, keyboard map, pointer orbit, tour, recording, loop
 ```
@@ -327,6 +357,7 @@ texture, guaranteeing that what you see is exactly what you hear. Live checks ad
 - **Live disasters** are from **NASA EONET** (`eonet.gsfc.nasa.gov`), a public API with no key required. The app fetches directly from your browser; no proxy or tracking.
 - **Climate indicators** link to `climate.nasa.gov/vital-signs` — global temperature, CO₂, sea level, ice. Values shown are educational summaries; follow the links for the latest peer-reviewed datasets.
 - **Scientific Lab sources.** Air quality and pollutants: **Open-Meteo Air Quality API** (CAMS), fetched directly from the browser. Earthquakes: **USGS** `all_day.geojson` summary feed. Climate curves: **NASA GISS** surface-temperature series and the **Mauna Loa Keeling** CO₂ record. Sea level/ice: NASA vital signs and GRACE. Satellite comparison (7.5): a **curated catalogue** of operational mission specifications compiled from NASA, ESA Copernicus, NOAA and JMA published product pages — a catalogue, not live telemetry, and not a measurement of what any satellite is doing right now. Every one of these APIs is public and keyless; nothing is proxied and nothing is stored.
+- **Space weather, sky and passes (section 8).** Solar-wind speed, IMF Bz/Bt, Kp, Dst and the NOAA storm scale are fetched from **NOAA SWPC** public JSON endpoints (`services.swpc.noaa.gov`), which are CORS-open and keyless. The ISS two-line element set comes from **api.wheretheiss.at**. Planet positions, sunlight, gravitational and tidal pull, sidereal time, solar elevation, sunrise/sunset and satellite passes are **computed in the browser** from published Keplerian elements and a J2 orbit model — useful approximations, not official ephemerides, and not for navigation. The magnetic-field values use a simple tilted-dipole model, not the World Magnetic Model. Space weather does not measurably change Earth's rotation or axis; the geomagnetic field is a product of the core dynamo, not a driver of the spin.
 - **A note on scale.** Air-quality AQI in 7.1 is derived from Open-Meteo PM2.5 with a simple linear approximation for demonstration; treat it as an indicator, not a regulatory AQI. CSV exports contain exactly the numbers shown on screen.
 - **Privacy.** There is no analytics or telemetry. Loading NASA imagery sends a request to NASA GIBS; checking disasters sends a request to NASA EONET. Uploaded images and videos are decoded locally and never uploaded; they are released when cleared or replaced.
 - **Super Intelligence disclosure.** Super Intelligence (LLM) tools assisted with code and documentation.
@@ -365,8 +396,8 @@ pass runs on a 64 × 32 buffer, so the application stays smooth on integrated gr
 
 ## Roadmap
 
-Done: merged Scientific Lab (3.6), satellite comparison graph (3.7), 20-language pill with RTL support, Live Earth
-public checks, live ISS position.
+Done: merged Scientific Lab (3.6), satellite comparison graph (3.7), space weather + planet sunlight + local ISS
+passes (3.8), 20-language pill with RTL support, Live Earth public checks, live ISS position.
 
 Next:
 - Add more NASA GIBS layers and time-series playback when source data are available.
