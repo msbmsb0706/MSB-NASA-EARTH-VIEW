@@ -2,6 +2,12 @@
 
 All notable changes to MSB NASA EARTH VIEW.
 
+## [3.6.0] — 2026-11-15
+
+### Changed
+- **Scientific Lab is now one merged view:** the four tab buttons (Air Quality / Climate Lab / Water & Ice / Hazards Live) are gone. Every dataset — AQI + pollutant badges, the Keeling CO₂ curve, the sea-level curve and the USGS quake list — is stacked in a single panel, so all visuals are visible together on one scroll. Each block keeps its own numbered heading (7.1–7.4), buttons and sonification, and air/quakes still auto-load on page load.
+- **Urdu flag:** `اردو (Urdu)` in the `🌐 LANG` pill now shows 🇮🇳 instead of the Pakistan flag (Urdu is an Indian language too). The language itself is unchanged — still 20 languages.
+
 ## [3.5.0] — 2026-11-15
 
 ### Added

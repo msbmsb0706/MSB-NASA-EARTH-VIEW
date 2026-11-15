@@ -799,15 +799,13 @@
   :root[data-theme="light"] .lang-select { background: #fff; color: #0B3D91; border-color: rgba(11,61,145,0.25); }
   .lang-wrap i { font-style: normal; font-size: 1rem; }
 
-  /* ---- Scientific Lab — analysis tabs ---- */
+  /* ---- Scientific Lab — merged single view (all datasets stacked) ---- */
   .sci-lab { grid-column: 1 / -1; overflow: hidden; }
-  .sci-tabs { display: flex; flex-wrap: wrap; gap: 6px; padding: 10px 16px 0; }
-  .sci-tab { padding: 7px 12px; border-radius: 999px; border: 1px solid var(--border); background: rgba(18,30,60,0.7); color: var(--ink-2); font-size: 0.78rem; font-weight: 600; cursor: pointer; }
-  .sci-tab.active { background: #0B3D91; color: #fff; border-color: #0B3D91; box-shadow: 0 2px 10px rgba(11,61,145,0.4); }
-  :root[data-theme="light"] .sci-tab { background: #eef4ff; }
-  :root[data-theme="light"] .sci-tab.active { background: #0B3D91; color: #fff; }
-  .sci-panel { display: none; padding: 14px 16px; }
-  .sci-panel.active { display: grid; gap: 12px; }
+  .sci-panel { display: grid; gap: 12px; padding: 14px 16px; }
+  .sci-panel + .sci-panel { border-top: 1px solid var(--border); }
+  .sci-panel-title { margin: 0; display: flex; align-items: center; gap: 8px; font-family: var(--mono); font-size: 0.8rem; font-weight: 800; letter-spacing: 0.06em; text-transform: uppercase; color: #38bdf8; }
+  :root[data-theme="light"] .sci-panel-title { color: #0B3D91; }
+  .sci-panel-title b { display: inline-flex; align-items: center; justify-content: center; min-width: 20px; height: 20px; padding: 0 5px; border-radius: 6px; background: #0B3D91; color: #fff; font-size: 0.68rem; }
   .sci-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 12px; }
   .sci-card { border: 1px solid var(--border); border-radius: 12px; padding: 12px; background: linear-gradient(180deg, rgba(16,26,52,0.95), rgba(10,18,38,0.95)); display: grid; gap: 8px; }
   :root[data-theme="light"] .sci-card { background: #fff; }
@@ -1067,7 +1065,7 @@
         <option value="bn">🇮🇳 বাংলা (Bengali)</option>
         <option value="mr">🇮🇳 मराठी (Marathi)</option>
         <option value="gu">🇮🇳 ગુજરાતી (Gujarati)</option>
-        <option value="ur">🇵🇰 اردو (Urdu)</option>
+        <option value="ur">🇮🇳 اردو (Urdu)</option>
         <option value="pa">🇮🇳 ਪੰਜਾਬੀ (Punjabi)</option>
         <option value="ko">🇰🇷 한국어 (Korean)</option>
         <option value="pt">🇧🇷 Português</option>
@@ -1391,15 +1389,10 @@
       <span class="panel-title" id="sciTitle"><b>7</b> 🔬 Scientific Lab — analysis &amp; insights</span>
       <span class="panel-meta" id="sciMeta">NASA + USGS + Open-Meteo · public, no key</span>
     </div>
-    <div class="sci-tabs" role="tablist" aria-label="Scientific datasets">
-      <button type="button" class="sci-tab active" data-tab="air" role="tab" aria-selected="true">🌫️ Air Quality</button>
-      <button type="button" class="sci-tab" data-tab="climate" role="tab" aria-selected="false">🌡️ Climate Lab</button>
-      <button type="button" class="sci-tab" data-tab="water" role="tab" aria-selected="false">🌊 Water &amp; Ice</button>
-      <button type="button" class="sci-tab" data-tab="hazards" role="tab" aria-selected="false">⚠️ Hazards Live</button>
-    </div>
 
     <!-- Air Quality -->
-    <div class="sci-panel active" id="sciAir" role="tabpanel">
+    <div class="sci-panel" id="sciAir" role="region" aria-labelledby="sciAirTitle">
+      <h3 class="sci-panel-title" id="sciAirTitle"><b>7.1</b> 🌫️ Air Quality</h3>
       <div class="sci-grid">
         <div class="sci-card">
           <h4>Live Air — Chennai (default)</h4>
@@ -1423,7 +1416,8 @@
     </div>
 
     <!-- Climate Lab -->
-    <div class="sci-panel" id="sciClimate" role="tabpanel">
+    <div class="sci-panel" id="sciClimate" role="region" aria-labelledby="sciClimateTitle">
+      <h3 class="sci-panel-title" id="sciClimateTitle"><b>7.2</b> 🌡️ Climate Lab</h3>
       <div class="sci-grid">
         <div class="sci-card">
           <h4>Climate Time Machine — compare years</h4>
@@ -1456,7 +1450,8 @@
     </div>
 
     <!-- Water & Ice -->
-    <div class="sci-panel" id="sciWater" role="tabpanel">
+    <div class="sci-panel" id="sciWater" role="region" aria-labelledby="sciWaterTitle">
+      <h3 class="sci-panel-title" id="sciWaterTitle"><b>7.3</b> 🌊 Water &amp; Ice</h3>
       <div class="sci-grid">
         <div class="sci-card">
           <h4>Sea level + Ice — NASA vital signs</h4>
@@ -1478,7 +1473,8 @@
     </div>
 
     <!-- Hazards Live -->
-    <div class="sci-panel" id="sciHazards" role="tabpanel">
+    <div class="sci-panel" id="sciHazards" role="region" aria-labelledby="sciHazardsTitle">
+      <h3 class="sci-panel-title" id="sciHazardsTitle"><b>7.4</b> ⚠️ Hazards Live</h3>
       <div class="sci-grid">
         <div class="sci-card">
           <h4>Earthquakes — USGS last 24h</h4>
@@ -1942,9 +1938,7 @@
     liveIssBtn: $('liveIssBtn'),
     liveSatCount: $('liveSatCount'),
     langSelect: $('langSelect'),
-    // sci lab
-    sciTabs: Array.from(document.querySelectorAll('.sci-tab')),
-    sciPanels: { air: $('sciAir'), climate: $('sciClimate'), water: $('sciWater'), hazards: $('sciHazards') },
+    // sci lab (single merged view — all panels always visible)
     airAqi: $('airAqi'), airSub: $('airSub'), airBadges: $('airBadges'), airAdvice: $('airAdvice'),
     airCheckBtn: $('airCheckBtn'), airLocBtn: $('airLocBtn'), airSonifyBtn: $('airSonifyBtn'),
     climateYear: $('climateYear'), climateCompare: $('climateCompare'), climateCompareSub: $('climateCompareSub'),
@@ -4852,21 +4846,9 @@
     // init from saved (any of 20)
     if (state.lang && I18N[state.lang] && state.lang !== 'en') setTimeout(()=>applyLang(state.lang), 400);
 
-    // ---- Scientific Lab — tabs + live data ----
+    // ---- Scientific Lab — merged single view + live data ----
+    // All four datasets are shown at once (no tabs); air + quakes auto-load below.
     (function(){
-      const tabs = el.sciTabs || document.querySelectorAll('.sci-tab');
-      const panels = el.sciPanels || {};
-      tabs.forEach(t=>{
-        t.addEventListener('click', ()=>{
-          tabs.forEach(x=>{ x.classList.remove('active'); x.setAttribute('aria-selected','false'); });
-          t.classList.add('active'); t.setAttribute('aria-selected','true');
-          Object.values(panels).forEach(p=> p && p.classList.remove('active'));
-          const id = t.dataset.tab; if(panels[id]) panels[id].classList.add('active');
-          // lazy load
-          if(id==='air' && el.airAqi && el.airAqi.textContent==='Checking…') checkAir();
-          if(id==='hazards' && el.quakeCount && el.quakeCount.textContent==='Checking…') checkQuakes();
-        });
-      });
 
       // helpers
       const sonifyValue = (val, min, max, base=220, range=500) => {
@@ -5346,7 +5328,7 @@
 
   // expose a tiny diagnostics hook for the console / automated smoke tests
   window.MSB_EARTH_VIEW = {
-    version: '3.5.0',
+    version: '3.6.0',
     state: state,
     features: () => ({ warmth: feat.warmth, lum: feat.lum, motion: feat.motion, freq: feat.freq, pan: feat.pan }),
     isBooted: () => booted,
