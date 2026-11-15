@@ -2,6 +2,11 @@
 
 All notable changes to MSB NASA EARTH VIEW.
 
+## [3.5.0] — 2026-11-15
+
+### Added
+- **Scientific Lab — 4 tabs:** 🌫️ Air Quality (Open-Meteo PM2.5/PM10/O₃/NO₂/CO, AQI badge, Use-my-location, sonify), 🌡️ Climate Lab (year compare 1880→2024, Keeling CO₂ curve canvas, CSV download, sonify), 🌊 Water & Ice (sea-level 1993→2024 chart, GRACE link, IMERG tip), ⚠️ Hazards (USGS earthquakes 24h, M4.5+ count, sonify by magnitude). All public, CORS, no key — school/public/research useful.
+
 ## [3.4.0] — 2026-11-15
 
 ### Added
