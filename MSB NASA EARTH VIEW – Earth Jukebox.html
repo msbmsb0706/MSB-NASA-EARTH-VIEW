@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>MSB NASA EARTH VIEW – The Earth Jukebox</title>
+<style>
+:root{--bg:#f4f7fb;--card:#fff;--ink:#0b1730;--mut:#52607a;--line:#d7dfec;--acc:#1d5fd1;--acc2:#e0562b;--r:14px;--s:8px;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#060b18;--card:#0f1a33;--ink:#eaf1ff;--mut:#9fb0d0;--line:#22335a;--acc:#5ea2ff;--acc2:#ff8a5c}}
+:root[data-theme="dark"]{--bg:#060b18;--card:#0f1a33;--ink:#eaf1ff;--mut:#9fb0d0;--line:#22335a;--acc:#5ea2ff;--acc2:#ff8a5c}
+*{box-sizing:border-box}html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.55 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+.w{max-width:880px;margin:0 auto;padding:calc(var(--s)*3) calc(var(--s)*2) calc(var(--s)*6)}
+.tag{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--acc);font-weight:700}
+h1{font-size:clamp(28px,7vw,48px);line-height:1.08;margin:8px 0 12px;letter-spacing:-.02em}
+.lead{color:var(--mut);max-width:60ch;margin:0 0 24px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:16px;margin-bottom:16px}
+.vp{position:relative;border-radius:12px;overflow:hidden;background:#000;aspect-ratio:16/9}
+canvas{width:100%;height:100%;display:block}
+.row{display:flex;flex-wrap:wrap;gap:8px;margin:12px 0 0}
+button,.file{min-height:44px;padding:0 16px;border-radius:12px;border:1px solid var(--line);background:var(--card);color:var(--ink);font:600 15px system-ui,sans-serif;cursor:pointer;display:inline-flex;align-items:center}
+button[aria-pressed="true"]{background:var(--acc);color:#fff;border-color:var(--acc)}
+#play{background:var(--acc2);color:#fff;border-color:var(--acc2)}
+button:focus-visible,.file:focus-within,input:focus-visible{outline:3px solid var(--acc);outline-offset:2px}
+.file input{position:absolute;opacity:0;width:1px;height:1px}.file{position:relative}
+.m{display:grid;grid-template-columns:1fr;gap:10px;margin-top:14px}
+@media(min-width:640px){.m{grid-template-columns:repeat(3,1fr)}}
+.mt b{display:block;font-size:13px;margin-bottom:4px}.mt span{font-size:12px;color:var(--mut)}
+.bar{height:10px;border-radius:6px;background:var(--line);overflow:hidden}.bar i{display:block;height:100%;width:0;background:linear-gradient(90deg,#2a7bff,#ffb347,#ff4d2e)}
+#say{margin:12px 0 0;font-weight:600;min-height:1.6em}
+h2{font-size:20px;margin:0 0 8px}ul{margin:0;padding-left:20px;color:var(--mut)}small{color:var(--mut);display:block;line-height:1.5}
+label{display:flex;align-items:center;gap:8px;min-height:44px;font-weight:600;font-size:14px}input[type=range]{accent-color:var(--acc);width:140px}
+</style>
+</head>
+<body>
+<main class="w">
+<div class="tag">NASA Space Apps Challenge 2026 · The Earth Information Jukebox</div>
+<h1>MSB NASA EARTH VIEW</h1>
+<p class="lead">Hear the Earth. Pick a scene or load a NASA Earth image or video, and the colours, brightness and motion become live sound: cool blues sound low and deep, warm reds sound high and bright.</p>
+
+<section class="card" aria-label="Earth Jukebox">
+<div class="vp"><canvas id="cv" width="640" height="360" role="img" aria-label="Visualization being turned into sound"></canvas></div>
+<div class="row" role="radiogroup" aria-label="Choose a scene" id="scenes"></div>
+<div class="row">
+<button id="play" aria-pressed="false">▶ Play sound</button>
+<label class="file"><input id="file" type="file" accept="image/*,video/*" aria-label="Load a NASA image or video">Load NASA image or video</label>
+<label>Volume <input id="vol" type="range" min="0" max="100" value="70" aria-label="Volume"></label>
+</div>
+<p id="say" aria-live="polite">Choose a scene and press Play.</p>
+<div class="m" aria-hidden="true">
+<div class="mt"><b>Colour → Pitch</b><div class="bar"><i id="b1"></i></div><span>Cool = low · Warm = high</span></div>
+<div class="mt"><b>Brightness → Volume</b><div class="bar"><i id="b2"></i></div><span>Dark = soft · Bright = loud</span></div>
+<div class="mt"><b>Motion → Rhythm</b><div class="bar"><i id="b3"></i></div><span>Change triggers percussion</span></div>
+</div>
+</section>
+
+<section class="card">
+<h2>How it works</h2>
+<ul>
+<li>Each frame is scanned for average colour, brightness, where the light sits left to right, and frame-to-frame change.</li>
+<li>Warmth sets the note on a pentatonic scale, brightness sets loudness and filter opening, position sets stereo pan, and motion triggers drum pulses.</li>
+<li>Sound is synthesized live with the Web Audio API. No recorded tracks.</li>
+<li>Still images are swept by a moving scan line, so the picture is heard from left to right over 14 seconds.</li>
+</ul>
+</section>
+
+<section class="card">
+<h2>Data and disclosures</h2>
+<small>The four built-in scenes (sea surface, aerosols, night lights, lightning) are procedurally generated demo visuals, not NASA data. To hear real data, download frames or animations from the NASA Earth Information Center or the NASA Scientific Visualization Studio and load them above. NASA media are credited to NASA. Your files stay in your browser and are not uploaded.</small>
+<small style="margin-top:8px">Team MSB Creative Studios · Mysore local event. Super Intelligence tools were used to help write and debug code and documentation; mapping logic and creative direction are by the team. Sonification approach inspired by NASA’s data sonification work.</small>
+</section>
+</main>
+<script>
+"use strict";
+const cv=document.getElementById('cv'),cx=cv.getContext('2d'),W=cv.width,H=cv.height;
+const sm=document.createElement('canvas');sm.width=160;sm.height=90;const sx=sm.getContext('2d'),img=sx.createImageData(160,90);
+const an=document.createElement('canvas');an.width=48;an.height=27;const ax=an.getContext('2d',{willReadFrequently:true});
+const SC=['Sea surface temperature','Aerosols','Night lights','Lightning'];
+let scene=0,mode='demo',media=null,t0=performance.now(),playing=false,prev=new Float32Array(48*27),st={w:.5,l:0,c:.5,m:0},flashes=[],lastSay=0;
+const lights=Array.from({length:420},(_,i)=>({x:Math.random()*160,y:Math.random()*90,b:.4+Math.random()*.6,p:Math.random()*6}));
+// ---- scenes ----
+const hsl=(h,s,l)=>{s/=100;l/=100;const k=n=>(n+h/30)%12,a=s*Math.min(l,1-l),f=n=>l-a*Math.max(-1,Math.min(k(n)-3,Math.min(9-k(n),1)));return[255*f(0),255*f(8),255*f(4)]};
+const nz=(x,y,t)=>Math.sin(x*.07+t*.5)+Math.sin(y*.1-t*.4)+Math.sin((x+y)*.05+t*.3)+Math.sin(Math.hypot(x-80,y-45)*.09-t*.6);
+function demo(t){const d=img.data;
+ if(scene===2){sx.fillStyle='#050a1c';sx.fillRect(0,0,160,90);const n=150+Math.floor(270*((t%24)/24));
+  for(let i=0;i<n;i++){const p=lights[i],a=p.b*(.65+.35*Math.sin(t*2+p.p));sx.fillStyle=`rgba(255,${190+a*50|0},${100+a*60|0},${a})`;sx.fillRect(p.x,p.y,2,2)}return}
+ if(flashes.length===0||t>flashes[flashes.length-1].t+.1){}
+ if(scene===3&&Math.random()<.03)flashes.push({t,x:Math.random()*160,y:Math.random()*60});
+ for(let y=0;y<90;y++)for(let x=0;x<160;x++){const o=(y*160+x)*4,v=nz(x,y,t),n=(v+4)/8;let r,g,b;
+  if(scene===0){[r,g,b]=hsl(225-190*Math.min(1,Math.max(0,n*n*1.4)),70,22+n*40)}
+  else if(scene===1){const q=Math.max(0,nz(x*.8,y*1.2,t*.7)-.6)/3.4;r=12+q*480;g=16+q*190;b=32+q*20}
+  else{r=18+n*30;g=26+n*34;b=48+n*50;for(const f of flashes){const e=Math.exp(-(t-f.t)*7);if(e>.01){const k=e*Math.exp(-((x-f.x)**2+(y-f.y)**2)/1400);r+=255*k;g+=240*k;b+=200*k}}}
+  d[o]=r;d[o+1]=g;d[o+2]=b;d[o+3]=255}
+ sx.putImageData(img,0,0);flashes=flashes.filter(f=>t-f.t<1)}
+function frame(now){const t=(now-t0)/1000;
+ if(mode==='demo'){demo(t);cx.imageSmoothingEnabled=true;cx.drawImage(sm,0,0,W,H)}
+ else if(media){cx.fillStyle='#000';cx.fillRect(0,0,W,H);const w=media.videoWidth||media.naturalWidth,h=media.videoHeight||media.naturalHeight;if(w){const k=Math.min(W/w,H/h);cx.drawImage(media,(W-w*k)/2,(H-h*k)/2,w*k,h*k)}}
+ const still=mode==='image',scan=still?(t%14)/14:0;
+ analyze(still,scan);
+ if(still){cx.fillStyle='rgba(255,255,255,.85)';cx.fillRect(scan*W-1,0,2,H)}
+ meters();requestAnimationFrame(frame)}
+function analyze(strip,s){ax.drawImage(cv,0,0,48,27);const d=ax.getImageData(0,0,48,27).data;
+ const c0=strip?Math.max(0,Math.floor(s*48)-2):0,c1=strip?Math.min(48,Math.floor(s*48)+2):48;
+ let R=0,B=0,L=0,cxw=0,M=0,N=0;
+ for(let y=0;y<27;y++)for(let x=c0;x<c1;x++){const i=(y*48+x)*4,r=d[i],g=d[i+1],b=d[i+2],l=(.3*r+.59*g+.11*b)/255;R+=r;B+=b;L+=l;cxw+=l*x;M+=Math.abs(l-prev[y*48+x]);prev[y*48+x]=l;N++}
+ const w=Math.min(1,Math.max(0,(R-B)/(N*255)*1.3+.5)),l=L/N,m=Math.min(1,M/N*9),c=L>0?cxw/L/48:.5;
+ st.w+=(w-st.w)*.2;st.l+=(l-st.l)*.25;st.m+=(m-st.m)*.4;st.c+=(c-st.c)*.2}
+function meters(){b1.style.width=st.w*100+'%';b2.style.width=Math.min(100,st.l*140)+'%';b3.style.width=st.m*100+'%';
+ const n=performance.now();if(playing&&n-lastSay>2500){lastSay=n;say.textContent=(st.w>.62?'Warm colours: high, bright notes':st.w<.4?'Cool colours: low, deep notes':'Mixed colours: mid-range notes')+' · '+(st.l>.45?'bright, loud':st.l>.2?'moderate volume':'dark, soft')+' · '+(st.m>.3?'fast changes: busy rhythm':st.m>.08?'gentle movement':'calm, steady')}}
+// ---- audio ----
+let ac,master,pan,padLP,padO=[],mel,melG,perc,nb,nextHit=0,tick;
+const SCL=[0,3,5,7,10];const note=i=>220*2**((12*Math.floor(i/5)+SCL[i%5])/12);
+function startAudio(){if(ac){ac.resume();return}
+ ac=new(window.AudioContext||window.webkitAudioContext)();master=ac.createGain();master.gain.value=.7;
+ const comp=ac.createDynamicsCompressor();pan=ac.createStereoPanner();padLP=ac.createBiquadFilter();padLP.type='lowpass';padLP.frequency.value=400;
+ const pg=ac.createGain();pg.gain.value=.11;
+ [0,7,12].forEach((s,i)=>{const o=ac.createOscillator();o.type='sawtooth';o.frequency.value=110*2**(s/12);o.detune.value=(i-1)*8;o.connect(padLP);o.start();padO.push(o)});
+ padLP.connect(pg);pg.connect(pan);
+ mel=ac.createOscillator();mel.type='triangle';melG=ac.createGain();melG.gain.value=0;mel.connect(melG);melG.connect(pan);mel.start();
+ const dl=ac.createDelay(1);dl.delayTime.value=.34;const fb=ac.createGain();fb.gain.value=.38;const wet=ac.createGain();wet.gain.value=.3;
+ pan.connect(master);pan.connect(dl);dl.connect(fb);fb.connect(dl);dl.connect(wet);wet.connect(master);master.connect(comp);comp.connect(ac.destination);
+ nb=ac.createBuffer(1,ac.sampleRate*.2,ac.sampleRate);const a=nb.getChannelData(0);for(let i=0;i<a.length;i++)a[i]=Math.random()*2-1;
+ vol.dispatchEvent(new Event('input'))}
+function hit(v){const n=ac.currentTime,s=ac.createBufferSource();s.buffer=nb;const f=ac.createBiquadFilter();f.type='highpass';f.frequency.value=1800;const g=ac.createGain();g.gain.setValueAtTime(.25*v,n);g.gain.exponentialRampToValueAtTime(.001,n+.12);s.connect(f);f.connect(g);g.connect(pan);s.start(n);
+ const o=ac.createOscillator(),g2=ac.createGain();o.frequency.setValueAtTime(140,n);o.frequency.exponentialRampToValueAtTime(48,n+.18);g2.gain.setValueAtTime(.5*v,n);g2.gain.exponentialRampToValueAtTime(.001,n+.22);o.connect(g2);g2.connect(master);o.start(n);o.stop(n+.25)}
+function audioTick(){if(!playing||!ac)return;const n=ac.currentTime,i=Math.round(st.w*14);
+ mel.frequency.setTargetAtTime(note(i),n,.08);melG.gain.setTargetAtTime(Math.min(.3,st.l*.45),n,.1);
+ padLP.frequency.setTargetAtTime(250+st.l*2600,n,.2);const root=note(Math.max(0,i-5))/2;padO[0].frequency.setTargetAtTime(root,n,.3);padO[1].frequency.setTargetAtTime(root*1.5,n,.3);padO[2].frequency.setTargetAtTime(root*2,n,.3);
+ pan.pan.setTargetAtTime((st.c-.5)*1.8,n,.1);
+ if(st.m>.04&&n>=nextHit){hit(Math.min(1,.3+st.m));nextHit=n+Math.max(.14,.9-st.m*1.3)}}
+play.onclick=()=>{playing=!playing;play.setAttribute('aria-pressed',playing);play.textContent=playing?'■ Stop sound':'▶ Play sound';
+ if(playing){startAudio();if(media&&media.play)media.play();tick=setInterval(audioTick,50);say.textContent='Listening…'}
+ else{clearInterval(tick);if(ac){melG.gain.setTargetAtTime(0,ac.currentTime,.05);ac.suspend()}say.textContent='Stopped.'}};
+vol.oninput=()=>{if(master)master.gain.value=vol.value/100*.9};
+// ---- scene + file UI ----
+SC.forEach((s,i)=>{const b=document.createElement('button');b.textContent=s;b.setAttribute('role','radio');b.setAttribute('aria-pressed',i===0);b.onclick=()=>{scene=i;mode='demo';media=null;t0=performance.now();[...scenes.children].forEach((c,j)=>c.setAttribute('aria-pressed',j===i))};scenes.appendChild(b)});
+file.onchange=e=>{const f=e.target.files[0];if(!f)return;const u=URL.createObjectURL(f);[...scenes.children].forEach(c=>c.setAttribute('aria-pressed',false));t0=performance.now();
+ if(f.type.startsWith('video')){const v=document.createElement('video');v.src=u;v.loop=true;v.muted=true;v.playsInline=true;media=v;mode='video';v.play().catch(()=>{});say.textContent='Video loaded. Press Play sound.'}
+ else{const i=new Image();i.onload=()=>{media=i;mode='image';say.textContent='Image loaded. A scan line sweeps left to right. Press Play sound.'};i.src=u}};
+requestAnimationFrame(frame);
+</script>
+</body>
+</html>
