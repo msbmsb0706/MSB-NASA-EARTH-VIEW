@@ -56,6 +56,7 @@ python3 -m http.server 8000
 | Audio | Reverb, feedback delay, stereo panning, transient percussion, FM bells, compressor; per-scene sound design. |
 | UX | Auto tour, session recording, fullscreen, high-contrast mode, keyboard shortcuts, help dialog, URL-free deep state. |
 | A11y | ARIA live announcements, labelled controls, reduced-motion support, keyboard access to every action. |
+| Design | Daylight theme merged from the lite build, system-preference aware, remembered across visits. |
 | Docs | This README, a changelog and an MIT licence. |
 
 ### Sound design (merged from the lite build)
@@ -108,6 +109,15 @@ See [`CHANGELOG.md`](CHANGELOG.md) for the full list.
   scan meridian (14 seconds per sweep at 1× speed); videos loop and drive the mapping every frame.
   Files never leave the device.
 
+### Design and themes (merged from the lite build)
+- **Daylight theme** using the lite build's palette (`#f4f7fb` paper, `#0b1730` ink, `#1d5fd1` accent),
+  with every panel, card, control, dialog and meter restyled — the globe stage deliberately keeps its
+  deep-space look in both themes, because it is a viewport rather than paper.
+- **Follows your system preference** until you choose, then remembers your choice in `localStorage`.
+- Theme resolved **before first paint** so there is no flash on load.
+- High-contrast mode composes with both themes.
+- Mobile polish from the lite build: 44 px touch targets and safe-area insets on the header.
+
 ### Performance and comfort
 - Auto tour (12 s per scene), audio session recording to `.webm`, fullscreen, high-contrast theme.
 - Reduced-motion support (`prefers-reduced-motion`) and adaptive device-pixel-ratio capping.
@@ -132,6 +142,7 @@ See [`CHANGELOG.md`](CHANGELOG.md) for the full list.
 | Auto tour | **Auto tour** | <kbd>T</kbd> |
 | Auto-orbit | **Auto-orbit** switch | <kbd>O</kbd> |
 | Fullscreen | **⛶** | <kbd>F</kbd> |
+| Daylight / dark theme | **☀ / ☾** | <kbd>L</kbd> |
 | Help | **?** | <kbd>H</kbd> |
 | Close dialogs | — | <kbd>Esc</kbd> |
 
@@ -233,8 +244,9 @@ texture, guaranteeing that what you see is exactly what you hear.
 - ARIA live regions announce scene changes, play state, loaded media, tour/recording state and a periodic
   qualitative description of the sound (warm/cool, bright/soft, busy/calm, current note).
 - Audio starts only after an explicit user gesture, as required by browser autoplay policies.
-- High-contrast mode, `prefers-reduced-motion` support, 44 px touch targets, safe-area insets and a
-  screen-reader description of the visualisation.
+- A daylight theme that follows `prefers-color-scheme` until you pick one, plus an independent
+  high-contrast mode; both compose with `prefers-reduced-motion`, 44 px touch targets, safe-area insets
+  and a screen-reader description of the visualisation.
 - The sound itself is the accessible output: every visual variable has an audible counterpart.
 
 ---

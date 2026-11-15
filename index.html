@@ -6,6 +6,17 @@
 <meta name="color-scheme" content="dark light" />
 <meta name="description" content="MSB NASA EARTH VIEW — The Earth Information Jukebox. A zero-dependency 3D Earth and real-time visual-to-audio sonification engine for NASA Earth Information Center and SVS imagery." />
 <meta name="theme-color" content="#05070f" />
+<script>
+  /* Resolve the stored theme before first paint so there is no flash. */
+  try {
+    var savedTheme = localStorage.getItem('msb-earth-view-theme') || 'auto';
+    var prefersLight = window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches;
+    var useLight = savedTheme === 'light' || (savedTheme === 'auto' && prefersLight);
+    document.documentElement.dataset.theme = useLight ? 'light' : 'dark';
+  } catch (e) {
+    document.documentElement.dataset.theme = 'dark';
+  }
+</script>
 <title>MSB NASA EARTH VIEW — The Earth Information Jukebox</title>
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Ccircle cx='32' cy='32' r='30' fill='%230b1224'/%3E%3Ccircle cx='32' cy='32' r='19' fill='none' stroke='%2338bdf8' stroke-width='3'/%3E%3Cellipse cx='32' cy='32' rx='8' ry='19' fill='none' stroke='%232dd4bf' stroke-width='2.4'/%3E%3Cpath d='M13 32h38' stroke='%232dd4bf' stroke-width='2.4'/%3E%3C/svg%3E" />
 <style>
@@ -116,7 +127,7 @@
     justify-content: space-between;
     gap: 16px;
     flex-wrap: wrap;
-    padding: 14px clamp(14px, 3vw, 28px);
+    padding: calc(14px + env(safe-area-inset-top, 0px)) clamp(14px, 3vw, 28px) 14px;
     background: linear-gradient(180deg, rgba(5, 8, 16, 0.94), rgba(5, 8, 16, 0.72));
     border-bottom: 1px solid var(--border);
     backdrop-filter: blur(16px) saturate(130%);
@@ -764,6 +775,131 @@
   .dialog-body ul { margin: 0; padding-left: 18px; display: grid; gap: 4px; }
   .shortcut-grid { display: grid; grid-template-columns: auto 1fr; gap: 6px 14px; font-size: 0.82rem; color: var(--ink-2); align-items: center; }
 
+  /* ---------------- daylight theme (merged from the lite build) ---------------- */
+
+  :root[data-theme="light"] {
+    --bg: #eef3fa;
+    --bg-2: #ffffff;
+    --panel: rgba(255, 255, 255, 0.9);
+    --panel-solid: #ffffff;
+    --panel-raised: rgba(246, 249, 255, 0.96);
+    --border: rgba(17, 38, 74, 0.14);
+    --border-strong: rgba(17, 38, 74, 0.28);
+    --ink: #0b1730;
+    --ink-2: #455571;
+    --ink-3: #6a7c99;
+    --cyan: #1d5fd1;
+    --teal: #0f8f83;
+    --amber: #b45309;
+    --rose: #c2410c;
+    --violet: #6d4bc7;
+    --green: #15803d;
+    --shadow: 0 16px 40px rgba(17, 38, 74, 0.12);
+    --focus: 0 0 0 3px rgba(29, 95, 209, 0.38);
+  }
+
+  :root[data-theme="light"] body { background: var(--bg); }
+
+  :root[data-theme="light"] body::before {
+    background:
+      radial-gradient(1100px 620px at 12% -10%, rgba(29, 95, 209, 0.15), transparent 62%),
+      radial-gradient(900px 520px at 92% 8%, rgba(224, 86, 43, 0.1), transparent 60%),
+      radial-gradient(1000px 700px at 50% 108%, rgba(15, 143, 131, 0.12), transparent 62%),
+      linear-gradient(180deg, #f8fbff 0%, #eef3fa 55%, #e8effa 100%);
+  }
+
+  :root[data-theme="light"] .topbar {
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.96), rgba(255, 255, 255, 0.84));
+  }
+
+  :root[data-theme="light"] .panel-head { background: rgba(241, 246, 255, 0.92); }
+
+  :root[data-theme="light"] .pill { background: rgba(255, 255, 255, 0.92); color: var(--ink-2); }
+  :root[data-theme="light"] .pill.live { color: #0b6b60; border-color: rgba(15, 143, 131, 0.45); }
+  :root[data-theme="light"] .pill.warn { color: #8a4b00; border-color: rgba(180, 83, 9, 0.45); }
+
+  :root[data-theme="light"] .btn { background: #ffffff; border-color: var(--border-strong); }
+  :root[data-theme="light"] .btn:hover { background: #eef4ff; border-color: rgba(29, 95, 209, 0.45); }
+  :root[data-theme="light"] .btn[aria-pressed="true"] {
+    background: rgba(29, 95, 209, 0.12);
+    border-color: rgba(29, 95, 209, 0.55);
+    color: #14458f;
+  }
+  :root[data-theme="light"] .btn.ghost { background: transparent; }
+
+  :root[data-theme="light"] .transport { background: rgba(248, 251, 255, 0.92); }
+
+  :root[data-theme="light"] .track { background: linear-gradient(135deg, #ffffff, #f4f8ff); }
+  :root[data-theme="light"] .track .name { color: var(--ink); }
+  :root[data-theme="light"] .track .desc { color: var(--ink-2); }
+  :root[data-theme="light"] .track[aria-pressed="true"] {
+    background: linear-gradient(135deg, #e6f0ff, #f8fbff);
+    box-shadow: inset 0 0 22px rgba(29, 95, 209, 0.08);
+  }
+  :root[data-theme="light"] .track[aria-pressed="true"] .tag { color: #1d5fd1; }
+
+  :root[data-theme="light"] .metric { background: linear-gradient(160deg, #ffffff, #f3f7ff); }
+  :root[data-theme="light"] .metric .value { color: var(--ink); }
+
+  :root[data-theme="light"] .upload-box { background: rgba(245, 249, 255, 0.9); }
+  :root[data-theme="light"] .upload-box:hover,
+  :root[data-theme="light"] .upload-box.dragover { background: #eaf2ff; }
+
+  :root[data-theme="light"] select { background: #ffffff; color: var(--ink); }
+  :root[data-theme="light"] .switch { background: rgba(240, 246, 255, 0.92); color: var(--ink-2); }
+  :root[data-theme="light"] .switch input { background: rgba(17, 38, 74, 0.2); }
+  :root[data-theme="light"] .switch input:checked { background: rgba(29, 95, 209, 0.55); }
+
+  :root[data-theme="light"] .bar { background: rgba(17, 38, 74, 0.12); }
+
+  :root[data-theme="light"] .info-body h3 { color: #1d5fd1; }
+  :root[data-theme="light"] .info-body kbd { background: #ffffff; color: var(--ink); }
+
+  :root[data-theme="light"] dialog { background: linear-gradient(180deg, #ffffff, #f5f9ff); }
+  :root[data-theme="light"] .dialog-head { background: rgba(255, 255, 255, 0.97); }
+  :root[data-theme="light"] .dialog-body h3 { color: #1d5fd1; }
+
+  :root[data-theme="light"] .skip-link { background: #1d5fd1; color: #ffffff; }
+
+  :root[data-theme="light"] footer { color: var(--ink-3); }
+
+  :root[data-theme="light"] .panel-title { color: #1c3763; }
+  :root[data-theme="light"] .panel-title b {
+    background: rgba(29, 95, 209, 0.12);
+    border-color: rgba(29, 95, 209, 0.4);
+    color: #14458f;
+  }
+  :root[data-theme="light"] .panel-meta { color: var(--ink-3); }
+  :root[data-theme="light"] .upload-box strong { color: var(--ink); }
+  :root[data-theme="light"] .slider output { color: #0b6b8a; }
+  :root[data-theme="light"] .slider label { color: var(--ink-3); }
+  :root[data-theme="light"] .map-row b { color: var(--ink); }
+  :root[data-theme="light"] .metric .label,
+  :root[data-theme="light"] .metric .sub { color: var(--ink-3); }
+  :root[data-theme="light"] .link-btn { color: #1d5fd1; }
+  :root[data-theme="light"] .design-note { color: var(--ink-3); }
+
+  :root[data-theme="light"] input[type="range"]::-webkit-slider-runnable-track {
+    background: linear-gradient(90deg, rgba(29, 95, 209, 0.8), rgba(15, 143, 131, 0.55));
+  }
+  :root[data-theme="light"] input[type="range"]::-moz-range-track {
+    background: linear-gradient(90deg, rgba(29, 95, 209, 0.8), rgba(15, 143, 131, 0.55));
+  }
+
+  /* the stage keeps its deep-space look in both themes: it is a viewport, not paper */
+  :root[data-theme="light"] .stage {
+    box-shadow: inset 0 0 0 1px rgba(17, 38, 74, 0.18);
+  }
+
+  :root[data-theme="light"] body.hc {
+    --panel: rgba(255, 255, 255, 0.99);
+    --border: rgba(0, 0, 0, 0.5);
+    --border-strong: rgba(0, 0, 0, 0.8);
+    --ink: #000000;
+    --ink-2: #17233a;
+    --ink-3: #35435e;
+  }
+
   /* high contrast theme */
   body.hc { --panel: rgba(2, 5, 10, 0.96); --border: rgba(255, 255, 255, 0.38); --border-strong: rgba(255, 255, 255, 0.62); --ink-2: #d6e2f7; --ink-3: #a8b8d4; }
   body.hc .stage::after { opacity: 0.2; }
@@ -776,6 +912,8 @@
   }
 
   @media (max-width: 720px) {
+    .btn { min-height: 44px; }
+    .btn.icon { width: 44px; }
     .brand p { display: none; }
     .topbar { padding: 10px 12px; gap: 10px; }
     .pill { font-size: 0.6rem; padding: 4px 8px; }
@@ -820,6 +958,7 @@
     </div>
     <button class="btn" id="tourBtn" aria-pressed="false" title="Auto tour — cycle the four Earth scenes (T)">Auto tour</button>
     <button class="btn" id="recordBtn" aria-pressed="false" title="Record the sonification as a .webm file">Record</button>
+    <button class="btn icon" id="themeBtn" title="Light / dark theme (L)" aria-label="Switch to light theme">☀</button>
     <button class="btn icon" id="contrastBtn" aria-pressed="false" title="High contrast mode" aria-label="Toggle high contrast mode">◐</button>
     <button class="btn icon" id="helpBtn" title="Help and keyboard shortcuts (H)" aria-label="Open help">?</button>
     <button class="btn icon" id="fsBtn" title="Fullscreen (F)" aria-label="Toggle fullscreen">⛶</button>
@@ -1058,7 +1197,7 @@
       </div>
       <div class="info-body">
         <p><kbd>Space</kbd> play / pause · <kbd>1</kbd>–<kbd>4</kbd> scenes · <kbd>V</kbd> 3D / flat · <kbd>R</kbd> reset scan</p>
-        <p><kbd>T</kbd> auto tour · <kbd>O</kbd> auto-orbit · <kbd>D</kbd> voice · <kbd>S</kbd> scale · <kbd>F</kbd> fullscreen · <kbd>H</kbd> help</p>
+        <p><kbd>T</kbd> auto tour · <kbd>O</kbd> auto-orbit · <kbd>D</kbd> voice · <kbd>S</kbd> scale · <kbd>L</kbd> theme · <kbd>F</kbd> fullscreen · <kbd>H</kbd> help</p>
         <p><kbd>←</kbd><kbd>→</kbd> nudge scan · <kbd>↑</kbd><kbd>↓</kbd> master gain · drag the globe to orbit, pinch or ⌘/Ctrl + scroll to zoom.</p>
       </div>
     </section>
@@ -1131,6 +1270,7 @@
         <kbd>T</kbd><span>Auto tour — cycle all four scenes</span>
         <kbd>O</kbd><span>Toggle auto-orbit</span>
         <kbd>F</kbd><span>Fullscreen</span>
+        <kbd>L</kbd><span>Switch between the dark and daylight themes</span>
         <kbd>H</kbd><span>Open this help</span>
         <kbd>Esc</kbd><span>Close dialogs and menus</span>
       </div>
@@ -1138,9 +1278,10 @@
     <div>
       <h3>Accessibility</h3>
       <p>Everything is reachable by keyboard and announced through ARIA live regions: the current scene,
-        play state, note and motion are read out as they change. A high-contrast mode is available in the
-        header, and the page honours <em>prefers-reduced-motion</em>. The audio engine starts only after a
-        user gesture, as browsers require.</p>
+        play state, note and motion are read out as they change. The header offers a daylight theme
+        (following your system preference until you choose otherwise) and a high-contrast mode, and the page
+        honours <em>prefers-reduced-motion</em>. The audio engine starts only after a user gesture, as
+        browsers require.</p>
     </div>
     <div>
       <h3>Privacy</h3>
@@ -1362,6 +1503,7 @@
     mode: '3d',
     design: 'hologram',
     scale: 'scene',
+    theme: 'auto',
     perc: true,
     bells: true,
     notes: null,
@@ -1438,6 +1580,7 @@
     percToggle: $('percToggle'),
     bellsToggle: $('bellsToggle'),
     designNote: $('designNote'),
+    themeBtn: $('themeBtn'),
     tourBtn: $('tourBtn'),
     recordBtn: $('recordBtn'),
     contrastBtn: $('contrastBtn'),
@@ -3296,6 +3439,64 @@
   let dragActive = false;
   const pointers = new Map();
 
+  // ---- theme (dark · daylight · follow system) ---------------------------
+  const THEME_KEY = 'msb-earth-view-theme';
+
+  function resolvedTheme(mode) {
+    if (mode === 'light' || mode === 'dark') return mode;
+    const prefersLight = window.matchMedia
+      ? window.matchMedia('(prefers-color-scheme: light)').matches
+      : false;
+    return prefersLight ? 'light' : 'dark';
+  }
+
+  function applyTheme(mode, persist) {
+    if (mode !== 'light' && mode !== 'dark' && mode !== 'auto') mode = 'auto';
+    state.theme = mode;
+    const resolved = resolvedTheme(mode);
+    document.documentElement.dataset.theme = resolved;
+    if (el.themeBtn) {
+      const toLight = resolved !== 'light';
+      el.themeBtn.textContent = toLight ? '☀' : '☾';
+      el.themeBtn.setAttribute('aria-label', toLight ? 'Switch to the daylight theme' : 'Switch to the dark theme');
+      el.themeBtn.title = (toLight ? 'Daylight theme' : 'Dark theme') + ' — press L';
+    }
+    const meta = document.querySelector('meta[name="theme-color"]');
+    if (meta) meta.setAttribute('content', resolved === 'light' ? '#eef3fa' : '#05070f');
+    if (persist) {
+      try {
+        localStorage.setItem(THEME_KEY, mode);
+      } catch (err) {
+        /* private mode — the theme simply is not remembered */
+      }
+    }
+    return resolved;
+  }
+
+  function toggleTheme() {
+    const next = resolvedTheme(state.theme) === 'light' ? 'dark' : 'light';
+    applyTheme(next, true);
+    announce(next === 'light' ? 'Daylight theme on.' : 'Dark theme on.');
+  }
+
+  function initTheme() {
+    let saved = 'auto';
+    try {
+      saved = localStorage.getItem(THEME_KEY) || 'auto';
+    } catch (err) {
+      saved = 'auto';
+    }
+    applyTheme(saved, false);
+    if (window.matchMedia) {
+      const mq = window.matchMedia('(prefers-color-scheme: light)');
+      const onChange = () => {
+        if (state.theme === 'auto') applyTheme('auto', false);
+      };
+      if (mq.addEventListener) mq.addEventListener('change', onChange);
+      else if (mq.addListener) mq.addListener(onChange);
+    }
+  }
+
   function setMode(mode) {
     if (mode === '3d' && !GL.ok) {
       mode = '2d';
@@ -3631,6 +3832,7 @@
       announce(state.bells ? 'Bells on.' : 'Bells off.');
     });
 
+    if (el.themeBtn) el.themeBtn.addEventListener('click', toggleTheme);
     el.tourBtn.addEventListener('click', () => setTour(!state.tour));
     el.recordBtn.addEventListener('click', toggleRecord);
     el.contrastBtn.addEventListener('click', () => {
@@ -3748,6 +3950,8 @@
         announce(state.orbit ? 'Auto-orbit on.' : 'Auto-orbit off.');
       } else if (k === 'f' || k === 'F') {
         el.fsBtn.click();
+      } else if (k === 'l' || k === 'L') {
+        toggleTheme();
       } else if (k === 'h' || k === 'H' || k === '?') {
         openHelp();
       } else if (k === 'ArrowLeft') {
@@ -3879,6 +4083,7 @@
     el.reverbToggle.checked = state.reverb;
     el.orbitToggle.checked = state.orbit;
 
+    initTheme();
     bindUI();
 
     // initial scene

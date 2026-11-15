@@ -2,6 +2,25 @@
 
 All notable changes to MSB NASA EARTH VIEW.
 
+## [2.2.0] — 2026-11-15
+
+### Added
+- **Daylight theme**, merged from the lite build's design (paper `#f4f7fb`, ink `#0b1730`, accent
+  `#1d5fd1`). Every surface is covered: header, panels, dataset cards, metrics, sound-design selects,
+  upload zone, transport, mapping bars, footer, dialogs and keycaps. The visualisation stage keeps its
+  deep-space look in both themes on purpose.
+- **Theme control** in the header (☀ / ☾) with the <kbd>L</kbd> shortcut. The app follows
+  `prefers-color-scheme` until you choose, then remembers the choice in `localStorage`.
+- Theme is resolved by a tiny inline bootstrap **before first paint**, so there is no flash of the
+  wrong theme, and the `theme-color` meta tag follows the active theme.
+- High-contrast mode now composes with the daylight theme (dark-on-white variant).
+- Mobile polish carried over from the lite build: 44 px touch targets and `env(safe-area-inset-top)`
+  on the sticky header.
+- Light-theme variants for range sliders, selects, switches and keycaps.
+
+### Changed
+- `Audio.init` configures delay/reverb from the active sound-design record (see 2.1.0).
+
 ## [2.1.0] — 2026-11-15
 
 ### Added
