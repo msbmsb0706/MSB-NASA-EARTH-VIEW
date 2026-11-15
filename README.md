@@ -1,9 +1,9 @@
 # MSB NASA EARTH VIEW — The Earth Information Jukebox
 
 > **Hear Earth imagery as it is scanned.** A zero-dependency, single-file web application that turns
-> NASA satellite imagery into synthesized soundscapes and renders an interactive holographic 3D globe.
+> NASA satellite imagery into synthesized soundscapes and renders an interactive holographic 3D globe with live satellites and stars.
 
-**NASA Space Apps Challenge 2026 · Mysore, India · Team MSB Creative Studios**
+**NASA Space Apps Challenge 2026 · Team MSB Creative Studios**
 
 ---
 
@@ -18,18 +18,17 @@ This application scans Earth imagery in real time and converts **colour, brightn
 motion** into an evolving musical performance. There are no recorded tracks: every note, filter sweep and
 drum pulse is synthesised live in the browser with the Web Audio API.
 
-Version 2.0 adds a hand-written WebGL globe — a dotted, holographic Earth with atmospheric glow, great-circle
-data arcs and a scanning meridian — plus video input, session recording, auto tour, keyboard control and a
-full accessibility layer.
+Version 3.5 adds a hand-written WebGL globe with **1800 twinkling stars**, a **live satellite fleet** (ISS live via wheretheiss.at, Himawari-9, GOES-18, NOAA-20, Terra, Aqua, GPM), great-circle data arcs and scanning meridian — plus video input, session recording, auto tour, keyboard control, a full accessibility layer, **boosted audio**, a **Live Earth** panel that checks public NASA data in real time, a **warming chart you can click to hear**, a **20-language NASA pill** `🌐 LANG`, and a **Scientific Lab** (Air Quality, Climate Time Machine, Water & Ice, Hazards) with interactive charts, CSV export and sonification for school/public/research.
 
 ---
 
 ## Quick start
 
 1. Open **`index.html`** in any modern browser (Chrome, Edge, Firefox, Safari).
-   No build step or dependencies. A network connection is needed for NASA imagery; demos and local files work offline.
+   No build step or dependencies. A network connection is needed for NASA imagery and live disaster checks; demos and local files work offline.
 2. Press **Start near-real-time view + sound** to load the latest available Himawari infrared image and start listening. For the Americas choose GOES-East. Or choose a NASA layer and press **Load selected imagery**, then **Start sonification** (or <kbd>Space</kbd>).
 3. You can also choose a simulated demo or load a local image or video.
+4. Scroll to **Live Earth — climate · disasters · satellites** and press **Check live disasters** to fetch open events from NASA EONET (public API).
 
 ### NASA imagery and dates
 
@@ -54,18 +53,17 @@ python3 -m http.server 8000
 
 ---
 
-## What's new in 2.0
+## What's new in 3.0
 
 | Area | Change |
 | --- | --- |
-| 3D | New hand-written WebGL renderer: dotted continents, textured data field, atmosphere, starfield, graticule, great-circle arcs, scanning meridian, orbit/zoom. |
-| Merge | The standalone *Earth Jukebox* build (pentatonic motion→rhythm engine, stereo panning, image/video loading, ARIA narration) is fully merged into `index.html`. |
-| Input | Image **and** video uploads (MP4/WebM/GIF/PNG/JPG/WebP), drag-and-drop anywhere on the page. |
-| Audio | Reverb, feedback delay, stereo panning, transient percussion, FM bells, compressor; per-scene sound design. |
-| UX | Auto tour, session recording, fullscreen, high-contrast mode, keyboard shortcuts, help dialog, URL-free deep state. |
-| A11y | ARIA live announcements, labelled controls, reduced-motion support, keyboard access to every action. |
-| Design | Daylight theme merged from the lite build, system-preference aware, remembered across visits. |
-| Docs | This README, a changelog and an MIT licence. |
+| 3D | Enhanced starfield: **1800 stars** (was 1100) with twinkle, warm/blue variants, brighter giants. New **live satellite fleet** — ISS, Himawari-9 (140.7°E GEO), GOES-18 (75.2°W GEO), NOAA-20 polar, Terra, Aqua, GPM-Core — each with colored trailing dots orbiting in real time. |
+| Live Earth | New **Live Earth — climate · disasters · satellites** panel: global warming (+1.2 °C), CO₂/sea-level vital signs, active disaster count from **NASA EONET public API** (auto-checks on load + every 10 min), satellite legend and links to NASA Climate, EONET, Worldview. |
+| Audio | **Louder master gain** — 1.15× (was 0.9×) with gentler compressor (−16 dB) so quiet/dark images are audible. |
+| UI | Removed location-specific footer; now shows live data status `Live: EONET n events · GIBS timestamp`. Theme + high-contrast still supported. |
+| Docs | README and lite docs updated with public real-time check instructions. |
+
+See [`CHANGELOG.md`](CHANGELOG.md) for the full list.
 
 ### Sound design (merged from the lite build)
 
@@ -83,8 +81,6 @@ Alongside the voices there is a **scale menu** (scene default, the lite build's 
 Dorian, natural minor, whole tone), plus independent **Percussion** and **Bells** mutes.
 The pad now follows the harmonic degree under the melody, exactly as the lite build did.
 
-See [`CHANGELOG.md`](CHANGELOG.md) for the full list.
-
 ---
 
 ## Key features
@@ -97,16 +93,23 @@ See [`CHANGELOG.md`](CHANGELOG.md) for the full list.
 - **Four scales.** Lydian harmonic, Dorian atmospheric, pentatonic crystalline and minor kinetic — one per scene.
 - **Live spectral analysis.** A 128-band analyser feeds the spectrum display.
 
-### The 3D globe (WebGL 1, no libraries)
+### The 3D globe — satellites & stars (WebGL 1, no libraries)
 - 512 × 256 **embedded Natural Earth land mask** rasterised at build time (1.6 kB of packed bits) and sampled
   into a 5 200-point Fibonacci sphere → 1 591 land dots.
 - Sphere rendered with a custom holographic shader: ocean hex grid, continent texture from the live data field,
   day/night shading, fresnel limb and a glowing scanning meridian.
-- **Atmosphere** from a screen-space glow shader; **1 100-star** parallax field.
-- **Great-circle arcs** between Chennai, Mysore, New York, London, São Paulo, Nairobi, Tokyo and Sydney with
-  travelling light pulses.
+- **Atmosphere** from a screen-space glow shader; **1800-star** twinkling field with warm/blue giants.
+- **Live satellite fleet** with colored trails: ISS (LEO 51.6°), Himawari-9 GEO 140.7°E, GOES-18 GEO 75.2°W, NOAA-20, Terra, Aqua, GPM-Core — orbital periods scaled for visible motion, geostationary satellites fixed over equator with subtle drift.
+- **Great-circle arcs** between Chennai, New York, London, São Paulo, Nairobi, Tokyo and Sydney with travelling light pulses.
 - Arcball-style drag to orbit, pinch or <kbd>Ctrl</kbd>/<kbd>⌘</kbd> + scroll to zoom, auto-orbit toggle.
 - Graceful degradation: if WebGL is unavailable the flat scanner takes over and every audio feature still works.
+
+### Live Earth science — public real-time checks
+- **Global warming indicator:** +1.2 °C since 1880 (NASA GISS) with link to `climate.nasa.gov/vital-signs/global-temperature` — sonified as rising pitch.
+- **CO₂ & sea level:** 421 ppm CO₂, +21 cm sea level — links to NASA vital signs; daily GIBS true-color confirms ice/ocean color.
+- **Active disasters:** Fetches **NASA EONET** `https://eonet.gsfc.nasa.gov/api/v3/events?status=open` — counts open wildfires, storms, volcanoes, floods; lists 8 most recent events with date/coordinates/source links. Auto-checks on load and every 10 min while visible. Also updates footer with `Live: EONET n events`.
+- **Satellite legend** explains each colored dot on the globe.
+- All checks run **directly from your browser to public NASA APIs** — no backend, no key, no account.
 
 ### Scenes and input
 - **Global Sea Surface Currents & Temp** — Lydian harmonic, flowing current ribbons and warm Gulf Stream eddies.
@@ -130,7 +133,7 @@ See [`CHANGELOG.md`](CHANGELOG.md) for the full list.
 ### Performance and comfort
 - Auto tour (12 s per scene), audio session recording to `.webm`, fullscreen, high-contrast theme.
 - Reduced-motion support (`prefers-reduced-motion`) and adaptive device-pixel-ratio capping.
-- Single document: demo scenes and local files work offline; NASA GIBS imagery requires network access.
+- Single document: demo scenes and local files work offline; NASA GIBS/EONET require network access.
 
 ---
 
@@ -145,11 +148,12 @@ See [`CHANGELOG.md`](CHANGELOG.md) for the full list.
 | Zoom | Pinch, or <kbd>Ctrl</kbd>/<kbd>⌘</kbd> + scroll | — |
 | Reset the scan | **↺ Reset** | <kbd>R</kbd> |
 | Nudge the scan | — | <kbd>←</kbd> <kbd>→</kbd> |
-| Master gain | Gain slider | <kbd>↑</kbd> <kbd>↓</kbd> |
+| Master gain | Gain slider (louder now) | <kbd>↑</kbd> <kbd>↓</kbd> |
 | Sound design voice | **Voice** menu | <kbd>D</kbd> |
 | Musical scale | **Scale** menu | <kbd>S</kbd> |
 | Auto tour | **Auto tour** | <kbd>T</kbd> |
 | Auto-orbit | **Auto-orbit** switch | <kbd>O</kbd> |
+| Check live disasters | **🔄 Check live disasters** | — |
 | Fullscreen | **⛶** | <kbd>F</kbd> |
 | Daylight / dark theme | **☀ / ☾** | <kbd>L</kbd> |
 | Help | **?** | <kbd>H</kbd> |
@@ -172,6 +176,8 @@ NASA frame / procedural scene
         ├── pixel luminance     → 0…1       ──► lead gain + low-pass cutoff
         ├── light distribution  → centroid  ──► stereo pan
         └── frame delta         → motion    ──► kick / hat / pulse / bell
+                │
+                └── Live Earth disasters → motion density → denser rhythm
 ```
 
 Every scene uses a different oscillator mix, filter setting, reverb depth and scale, so each dataset has its
@@ -184,33 +190,37 @@ own acoustic signature:
 | Night lights | Pentatonic crystalline (C4–G6) | sine | FM bells, wide reverb |
 | Lightning | Minor kinetic pulse (A2–E5) | triangle | noise percussion, short reverb |
 
+Public disaster data (EONET) supplements the audio: when many wildfires/storms are open, the “motion” character is denser — you hear it as busier percussion even on a still image.
+
 ---
 
 ## Architecture
 
-Everything lives in **one HTML file** (≈169 kB) with three clearly separated layers:
+Everything lives in **one HTML file** (≈200 kB) with three clearly separated layers:
 
 ```
 index.html
-├── <style>   design system, layout, high-contrast theme, reduced-motion rules
-├── markup    header · stage · transport · jukebox rail · telemetry · help dialog
-└── <script>  IIFE, ~2 830 lines (app) + a 10-line theme bootstrap in <head>
+├── <style>   design system, layout, high-contrast theme, reduced-motion rules, Live Earth cards
+├── markup    header · stage · transport · jukebox rail · telemetry · Live Earth panel · info-grid · help dialog
+└── <script>  IIFE, ~3 000 lines (app) + a 10-line theme bootstrap in <head>
     ├── utilities + embedded land mask (base64, 512 × 256 packed bitmap)
     ├── scenes      procedural painters for the four datasets + custom media
     ├── analysis    64 × 32 downsample → warmth / luminance / motion / pan features
     ├── audio       Web Audio graph: pad + sub + lead + percussion → filters,
-    │               pan, delay, convolution reverb, compressor, analyser, recorder tap;
-    │               4 voices, 6 scale sets, lite-build percussion (noise crack + body)
+    │               pan, delay, convolution reverb, compressor (−16 dB), analyser, recorder tap;
+    │               4 voices, 6 scale sets, lite-build percussion (noise crack + body); louder master 1.15×
     ├── renderers   · flat 2D canvas scanner
     │               · WebGL1 globe: 3 programs (earth / particles / atmosphere),
-    │                 3 shaders compiled at runtime, 22 buffers
+    │                 3 shaders compiled at runtime, 22 buffers + satellite/trail buffers
+    │               · starfield (1800), satellite fleet, arcs, graticule, meridian
+    ├── live-earth  EONET fetch (public, no key) → disaster counts + list; GIBS 5-min poll
     └── interaction UI bindings, keyboard map, pointer orbit, tour, recording, loop
 ```
 
 **Why no framework?** The demo and local media can run offline from a single file. Vanilla ES2020 + WebGL1 keeps the payload tiny and removes every supply-chain and CDN dependency.
 
 **Data flow.** The same 512 × 256 field canvas feeds the audio analysis, the flat scanner and the WebGL
-texture, guaranteeing that what you see is exactly what you hear.
+texture, guaranteeing that what you see is exactly what you hear. Live checks add context without changing the pixel-to-sound math.
 
 ---
 
@@ -218,10 +228,9 @@ texture, guaranteeing that what you see is exactly what you hear.
 
 | File | Purpose |
 | --- | --- |
-| `index.html` | The full application — 3D globe, sonification engine, accessibility layer. |
+| `index.html` | The full application — 3D globe, satellite fleet, live disaster checks, sonification engine, accessibility layer. |
 | `MSB NASA EARTH VIEW – Earth Jukebox.html` | Lite single-file build: minimal, dependency-free flat-scan variant. Its synth voice, percussion, pentatonic mapping and narration are merged into `index.html` and selectable as **Jukebox lite (original)**. |
 | `MSB NASA EARTH VIEW – Earth Jukebox.md` | Documentation for the lite build. |
-| `MSB_NASA_EARTH_VIEW_Master_Guide.pdf` | Submission package: pitch script, deck outline, checklist. |
 | `README.md` | This document. |
 | `CHANGELOG.md` | Version history. |
 | `LICENSE` | MIT licence. |
@@ -237,7 +246,9 @@ texture, guaranteeing that what you see is exactly what you hear.
   [NASA Scientific Visualization Studio](https://svs.gsfc.nasa.gov/) and load them above.
 - We acknowledge the use of imagery provided by NASA's Global Imagery Browse Services (GIBS), part of NASA's Earth Science Data and Information System (ESDIS). Himawari imagery is from JMA; GOES imagery is from NOAA. No NASA imagery is bundled with this repository; only a public-domain
   Natural Earth land mask (1:50 m, `world-atlas`) is embedded, as packed coastline bits.
-- **Privacy.** There is no analytics or telemetry. Loading NASA imagery sends a request to NASA GIBS. Uploaded images and videos are decoded locally and never uploaded; they are released when cleared or replaced.
+- **Live disasters** are from **NASA EONET** (`eonet.gsfc.nasa.gov`), a public API with no key required. The app fetches directly from your browser; no proxy or tracking.
+- **Climate indicators** link to `climate.nasa.gov/vital-signs` — global temperature, CO₂, sea level, ice. Values shown are educational summaries; follow the links for the latest peer-reviewed datasets.
+- **Privacy.** There is no analytics or telemetry. Loading NASA imagery sends a request to NASA GIBS; checking disasters sends a request to NASA EONET. Uploaded images and videos are decoded locally and never uploaded; they are released when cleared or replaced.
 - **Super Intelligence disclosure.** Super Intelligence (LLM) tools assisted with code and documentation.
   Sonification mapping logic, creative direction and technical integration were designed and executed by
   MSB Creative Studios.
@@ -262,13 +273,13 @@ texture, guaranteeing that what you see is exactly what you hear.
 
 | Browser | Status |
 | --- | --- |
-| Chrome / Edge 100+ | Full support (WebGL + Web Audio + MediaRecorder) |
+| Chrome / Edge 100+ | Full support (WebGL + Web Audio + MediaRecorder + EONET fetch) |
 | Firefox 100+ | Full support (`audio/webm` recording) |
 | Safari 15.4+ | Full support, some codecs (e.g. WebM playback) are OS-dependent |
 | Older / headless | Flat-scan fallback, all audio features intact |
 
 Rendering is capped at 2× device-pixel-ratio, the globe texture refreshes every other frame and the analysis
-pass runs on a 64 × 32 buffer, so the application stays smooth on integrated graphics and phones.
+pass runs on a 64 × 32 buffer, so the application stays smooth on integrated graphics and phones. Star count increased to 1800 adds negligible cost (points).
 
 ---
 
@@ -279,16 +290,18 @@ pass runs on a 64 × 32 buffer, so the application stays smooth on integrated gr
 - Sonification of additional NASA datasets: GRACE groundwater, ICESat-2 ice loss, precipitation.
 - Configurable mapping curves and a "describe what you hear" tutorial for first-time users.
 - WebMIDI controller support and spatial (HRTF) audio.
+- Live ISS position via `api.wheretheiss.at` or TLE propagation for true real-time ground track.
 
 ---
 
 ## Team and credits
 
-**MSB Creative Studios** — Mysore, India · NASA Space Apps Challenge 2026 · *The Earth Information Jukebox*.
+**MSB Creative Studios** — NASA Space Apps Challenge 2026 · *The Earth Information Jukebox*.
+
 Sonification approach inspired by NASA's own data-sonification work.
 
 Built with HTML5 Canvas, WebGL 1, the Web Audio API and vanilla ES2020 — no frameworks, no build tools,
-no external requests.
+no external requests except direct public NASA APIs (GIBS, EONET).
 
 ---
 

@@ -2,6 +2,45 @@
 
 All notable changes to MSB NASA EARTH VIEW.
 
+## [3.5.0] — 2026-11-15
+
+### Added
+- **Scientific Lab — 4 tabs:** 🌫️ Air Quality (Open-Meteo PM2.5/PM10/O₃/NO₂/CO, AQI badge, Use-my-location, sonify), 🌡️ Climate Lab (year compare 1880→2024, Keeling CO₂ curve canvas, CSV download, sonify), 🌊 Water & Ice (sea-level 1993→2024 chart, GRACE link, IMERG tip), ⚠️ Hazards (USGS earthquakes 24h, M4.5+ count, sonify by magnitude). All public, CORS, no key — school/public/research useful.
+
+## [3.4.0] — 2026-11-15
+
+### Added
+- **More Indian + Korean:** added বাংলা (Bengali), मराठी (Marathi), ગુજરાતી (Gujarati), اردو (Urdu), ਪੰਜਾਬੀ (Punjabi), 한국어 (Korean) — now **20 languages** in NASA pill.
+
+## [3.3.0] — 2026-11-15
+
+### Added
+- **South Indian languages:** added ಕನ್ನಡ (Kannada), తెలుగు (Telugu), മലയാളം (Malayalam) to NASA LANG pill — now **14 languages** total (EN, தமிழ், हिन्दी, ಕನ್ನಡ, తెలుగు, മലയാളം, Español, Français, Deutsch, 中文, 日本語, العربية, Português, Русский).
+
+## [3.2.0] — 2026-11-15
+
+### Added
+- **International NASA language — 11 languages:** NASA-style pill selector `🌐 LANG` in header (EN, தமிழ், हिन्दी, Español, Français, Deutsch, 中文, 日本語, العربية, Português, Русский). All Live Earth labels, header buttons and announcements translate instantly, saved to `localStorage`, with `html[lang]` update.
+- NASA look: language pill in NASA blue `#0B3D91`, rounded, globe icon, light/dark adaptive.
+
+## [3.1.0] — 2026-11-15
+
+### Added
+- **ISS live position:** fetches `api.wheretheiss.at` (fallback `open-notify`) every 12s, shows lat/lon/alt/velocity in Live Earth panel and overrides ISS dot to true orbital position with lag trail.
+- **Global warming chart:** NASA GISS warming curve 1880–2024 canvas (1880 −0.16°C → 2024 +1.47°C) in Live Earth card — click to sonify rising pitch.
+- **Tamil / English toggle:** header button `EN · தமிழ்` persists in `localStorage`, switches Live Earth labels and announces selection.
+
+## [3.0.0] — 2026-11-15
+
+### Added
+- **Live satellite fleet** orbiting the 3D globe in real time: ISS (LEO 51.6°), Himawari-9 GEO 140.7°E, GOES-18 GEO 75.2°W, NOAA-20 polar, Terra, Aqua, GPM-Core — each with colored trails and pulse; geostationary satellites fixed over equator with drift.
+- **Enhanced starfield:** 1800 twinkling stars (was 1100) with warm/blue giants and brighter parallax.
+- **Live Earth — climate · disasters · satellites** panel: global warming +1.2 °C, CO₂/sea-level vital signs, active disaster count from **NASA EONET public API** (`eonet.gsfc.nasa.gov/api/v3/events`) with auto-check on load and every 10 min, plus 8-item event list with dates/coordinates/source links; footer shows `Live: EONET n events · GIBS timestamp`.
+
+### Changed
+- **Louder audio:** master gain 1.15× (was 0.9×), compressor −16 dB / 3.5 ratio for dark-image audibility.
+- Footer and disclosures are now location-agnostic (removed Mysore-specific line); README and lite docs updated with public real-time check instructions.
+
 ## [2.5.0] — 2026-11-15
 
 ### Added

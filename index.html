@@ -740,6 +740,90 @@
   }
   .disclosure { font-size: 0.76rem; color: var(--ink-3); }
 
+  /* ---- Live Earth Indicators — climate / disaster / satellites ---- */
+  .live-earth {
+    grid-column: 1 / -1;
+    overflow: hidden;
+  }
+  .live-earth .panel-head .live-dot {
+    display: inline-block;
+    width: 8px; height: 8px; border-radius: 50%;
+    background: #22c55e;
+    box-shadow: 0 0 8px rgba(34,197,94,0.7);
+    margin-right: 6px;
+    animation: pulseLive 1.6s ease-in-out infinite alternate;
+  }
+  @keyframes pulseLive { from { opacity: 0.7; transform: scale(1); } to { opacity: 1; transform: scale(1.25); } }
+  .climate-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 12px;
+    padding: 14px 16px;
+  }
+  .climate-card {
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    background: linear-gradient(180deg, rgba(18,30,60,0.95), rgba(10,18,36,0.95));
+    padding: 12px;
+    display: grid;
+    gap: 6px;
+  }
+  :root[data-theme="light"] .climate-card {
+    background: linear-gradient(180deg, #ffffff, #f0f6ff);
+    border-color: rgba(30,60,120,0.15);
+  }
+  .climate-card h4 { margin: 0; font-size: 0.78rem; color: #7ec4ff; letter-spacing: 0.06em; text-transform: uppercase; font-family: var(--mono); }
+  :root[data-theme="light"] .climate-card h4 { color: #1d5fd1; }
+  .climate-card .big { font-size: 1.35rem; font-weight: 700; color: var(--ink); line-height: 1.1; }
+  .climate-card .sub { font-size: 0.74rem; color: var(--ink-2); }
+  .climate-card .trend { font-size: 0.72rem; color: #f5a524; }
+  .climate-card .trend.cool { color: #38bdf8; }
+  .climate-card .trend.alert { color: #f87171; font-weight: 600; }
+  .live-actions { display: flex; flex-wrap: wrap; gap: 8px; padding: 0 16px 14px; }
+  .live-actions .btn { font-size: 0.78rem; padding: 7px 12px; }
+  .sat-legend { display: flex; flex-wrap: wrap; gap: 10px; padding: 0 16px 10px; font-size: 0.72rem; color: var(--ink-2); }
+  .sat-legend span { display: inline-flex; align-items: center; gap: 6px; }
+  .sat-legend i { width: 10px; height: 10px; border-radius: 50%; display: inline-block; }
+  .eonet-list { display: grid; gap: 8px; padding: 0 16px 14px; max-height: 220px; overflow-y: auto; }
+  .eonet-item { border: 1px solid var(--border); border-radius: 8px; padding: 8px 10px; background: rgba(12,20,40,0.6); font-size: 0.78rem; }
+  :root[data-theme="light"] .eonet-item { background: #f7f9ff; }
+  .eonet-item strong { color: var(--ink); }
+  .eonet-item .meta { color: var(--ink-3); font-size: 0.72rem; }
+  .warm-chart { width: 100%; height: 72px; display: block; margin-top: 6px; border-radius: 8px; background: rgba(0,0,0,0.25); border: 1px solid var(--border); }
+  :root[data-theme="light"] .warm-chart { background: #eaf1ff; }
+  .lang-wrap { display: flex; align-items: center; gap: 6px; background: rgba(11,61,145,0.18); border: 1px solid rgba(11,61,145,0.35); border-radius: 999px; padding: 4px 8px 4px 10px; }
+  :root[data-theme="light"] .lang-wrap { background: rgba(11,61,145,0.08); }
+  .lang-wrap label { font-family: var(--mono); font-size: 0.68rem; color: #7ec8ff; letter-spacing: 0.1em; text-transform: uppercase; white-space: nowrap; }
+  :root[data-theme="light"] .lang-wrap label { color: #0B3D91; }
+  .lang-select { appearance: none; -webkit-appearance: none; background: rgba(5,10,25,0.9); color: #e6f0ff; border: 1px solid rgba(120,160,220,0.35); border-radius: 999px; padding: 5px 28px 5px 10px; font-size: 0.78rem; font-weight: 600; cursor: pointer; min-width: 110px; }
+  :root[data-theme="light"] .lang-select { background: #fff; color: #0B3D91; border-color: rgba(11,61,145,0.25); }
+  .lang-wrap i { font-style: normal; font-size: 1rem; }
+
+  /* ---- Scientific Lab — analysis tabs ---- */
+  .sci-lab { grid-column: 1 / -1; overflow: hidden; }
+  .sci-tabs { display: flex; flex-wrap: wrap; gap: 6px; padding: 10px 16px 0; }
+  .sci-tab { padding: 7px 12px; border-radius: 999px; border: 1px solid var(--border); background: rgba(18,30,60,0.7); color: var(--ink-2); font-size: 0.78rem; font-weight: 600; cursor: pointer; }
+  .sci-tab.active { background: #0B3D91; color: #fff; border-color: #0B3D91; box-shadow: 0 2px 10px rgba(11,61,145,0.4); }
+  :root[data-theme="light"] .sci-tab { background: #eef4ff; }
+  :root[data-theme="light"] .sci-tab.active { background: #0B3D91; color: #fff; }
+  .sci-panel { display: none; padding: 14px 16px; }
+  .sci-panel.active { display: grid; gap: 12px; }
+  .sci-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 12px; }
+  .sci-card { border: 1px solid var(--border); border-radius: 12px; padding: 12px; background: linear-gradient(180deg, rgba(16,26,52,0.95), rgba(10,18,38,0.95)); display: grid; gap: 8px; }
+  :root[data-theme="light"] .sci-card { background: #fff; }
+  .sci-card h4 { margin: 0; font-size: 0.78rem; color: #38bdf8; font-family: var(--mono); text-transform: uppercase; letter-spacing: 0.06em; }
+  :root[data-theme="light"] .sci-card h4 { color: #0B3D91; }
+  .sci-value { font-size: 1.25rem; font-weight: 800; color: var(--ink); }
+  .sci-sub { font-size: 0.74rem; color: var(--ink-2); }
+  .aqi-badge { display: inline-block; padding: 3px 8px; border-radius: 999px; font-size: 0.72rem; font-weight: 700; color: #fff; }
+  .sci-actions { display: flex; flex-wrap: wrap; gap: 8px; }
+  .sci-actions .btn { font-size: 0.76rem; padding: 6px 10px; }
+  .sci-chart { width: 100%; height: 84px; display: block; border-radius: 8px; background: rgba(0,0,0,0.25); border: 1px solid var(--border); }
+  :root[data-theme="light"] .sci-chart { background: #eaf1ff; }
+  .quake-list { max-height: 200px; overflow-y: auto; display: grid; gap: 6px; }
+  .quake-item { border: 1px solid var(--border); border-radius: 8px; padding: 8px 10px; background: rgba(12,20,40,0.5); font-size: 0.78rem; }
+  :root[data-theme="light"] .quake-item { background: #f7f9ff; }
+
   footer {
     border-top: 1px solid var(--border);
     padding: 16px clamp(14px, 3vw, 28px) calc(20px + env(safe-area-inset-bottom, 0px));
@@ -965,6 +1049,31 @@
     </div>
     <button class="btn" id="tourBtn" aria-pressed="false" title="Auto tour — cycle the four Earth scenes (T)">Auto tour</button>
     <button class="btn" id="recordBtn" aria-pressed="false" title="Record the sonification as a .webm file">Record</button>
+    <div class="lang-wrap" title="Language — NASA international">
+      <i aria-hidden="true">🌐</i><label for="langSelect">LANG</label>
+      <select id="langSelect" class="lang-select" aria-label="Select language">
+        <option value="en">🇺🇸 English</option>
+        <option value="ta">🇮🇳 தமிழ் (Tamil)</option>
+        <option value="hi">🇮🇳 हिन्दी (Hindi)</option>
+        <option value="es">🇪🇸 Español</option>
+        <option value="fr">🇫🇷 Français</option>
+        <option value="de">🇩🇪 Deutsch</option>
+        <option value="zh">🇨🇳 中文</option>
+        <option value="ja">🇯🇵 日本語</option>
+        <option value="ar">🇸🇦 العربية</option>
+        <option value="kn">🇮🇳 ಕನ್ನಡ (Kannada)</option>
+        <option value="te">🇮🇳 తెలుగు (Telugu)</option>
+        <option value="ml">🇮🇳 മലയാളം (Malayalam)</option>
+        <option value="bn">🇮🇳 বাংলা (Bengali)</option>
+        <option value="mr">🇮🇳 मराठी (Marathi)</option>
+        <option value="gu">🇮🇳 ગુજરાતી (Gujarati)</option>
+        <option value="ur">🇵🇰 اردو (Urdu)</option>
+        <option value="pa">🇮🇳 ਪੰਜਾਬੀ (Punjabi)</option>
+        <option value="ko">🇰🇷 한국어 (Korean)</option>
+        <option value="pt">🇧🇷 Português</option>
+        <option value="ru">🇷🇺 Русский</option>
+      </select>
+    </div>
     <button class="btn icon" id="themeBtn" title="Light / dark theme (L)" aria-label="Switch to light theme">☀</button>
     <button class="btn icon" id="contrastBtn" aria-pressed="false" title="High contrast mode" aria-label="Toggle high contrast mode">◐</button>
     <button class="btn icon" id="helpBtn" title="Help and keyboard shortcuts (H)" aria-label="Open help">?</button>
@@ -1220,6 +1329,177 @@
     </section>
   </aside>
 
+  <!-- Live Earth Science — public real-time checks -->
+  <section class="panel live-earth" aria-labelledby="liveTitle">
+    <div class="panel-head">
+      <span class="panel-title" id="liveTitle"><i class="live-dot" aria-hidden="true"></i><b>6</b> Live Earth — climate · disasters · satellites</span>
+      <span class="panel-meta" id="liveMeta">Public NASA data · auto-checks</span>
+    </div>
+
+    <div class="climate-grid">
+      <div class="climate-card">
+        <h4>🌡️ Global warming</h4>
+        <div class="big" id="liveTemp">+1.2 °C since 1880</div>
+        <div class="sub">NASA GISS global mean anomaly · <a href="https://climate.nasa.gov/vital-signs/global-temperature/" target="_blank" rel="noopener">climate.nasa.gov ↗</a></div>
+        <canvas class="warm-chart" id="warmChart" width="260" height="72" aria-label="Global temperature anomaly 1880-2026 warming curve — click to sonify"></canvas>
+        <div class="trend alert" id="liveTempTrend">▲ Warming trend — click chart to hear rising pitch</div>
+      </div>
+      <div class="climate-card">
+        <h4>🌊 Sea level & CO₂</h4>
+        <div class="big" id="liveCo2">421 ppm CO₂ · +21 cm sea level</div>
+        <div class="sub">NASA vital signs · <a href="https://climate.nasa.gov/vital-signs/carbon-dioxide/" target="_blank" rel="noopener">CO₂ data ↗</a> · <a href="https://climate.nasa.gov/vital-signs/sea-level/" target="_blank" rel="noopener">sea level ↗</a></div>
+        <div class="trend" id="liveCo2Trend">Updated 2026 · daily GIBS true-color confirms ice & ocean color</div>
+      </div>
+      <div class="climate-card">
+        <h4>🔥 Active disasters — EONET</h4>
+        <div class="big" id="liveDisasterCount">Checking…</div>
+        <div class="sub" id="liveDisasterSub">NASA EONET open events · <a href="https://eonet.gsfc.nasa.gov/" target="_blank" rel="noopener">eonet.gsfc.nasa.gov ↗</a></div>
+        <div class="trend" id="liveDisasterTrend">Tap “Check live disasters” to fetch</div>
+      </div>
+      <div class="climate-card">
+        <h4>🛰️ Satellite fleet — live orbits</h4>
+        <div class="big" id="liveSatCount">7 tracked · ISS + GEO + polar</div>
+        <div class="sub" id="liveIssSub">Himawari-9 (140.7°E) · GOES-18 (75.2°W) · <span id="liveIssPos">ISS live: fetching…</span> · NOAA-20 · Terra · Aqua · GPM</div>
+        <div class="trend cool" id="liveSatTrend">Visible as colored dots orbiting the globe with trails — <button type="button" class="link-btn" id="liveIssBtn" style="font-size:0.72rem;padding:0 4px;">📍 Track ISS now</button></div>
+      </div>
+    </div>
+
+    <div class="sat-legend" aria-hidden="true">
+      <span><i style="background:#ffe08a"></i> ISS (LEO 51.6°)</span>
+      <span><i style="background:#7ee8ff"></i> Himawari-9 GEO</span>
+      <span><i style="background:#7effb2"></i> GOES-18 GEO</span>
+      <span><i style="background:#ff9c86"></i> NOAA-20 polar</span>
+      <span><i style="background:#c9aaff"></i> Terra / Aqua</span>
+      <span><i style="background:#ffffff"></i> GPM-Core</span>
+      <span>· 1800 stars twinkle</span>
+    </div>
+
+    <div class="live-actions">
+      <button type="button" class="btn btn-primary" id="liveCheckBtn">🔄 Check live disasters</button>
+      <button type="button" class="btn" id="liveEonetBtn">Open NASA EONET</button>
+      <button type="button" class="btn" id="liveClimateBtn">Open NASA Climate</button>
+      <button type="button" class="btn" id="liveGibsBtn">Open NASA Worldview</button>
+      <span style="font-size:0.74rem;color:var(--ink-3);align-self:center;" id="liveCheckStatus">Auto-check on load · GIBS every 5 min</span>
+    </div>
+
+    <div class="eonet-list" id="eonetList" role="region" aria-live="polite" aria-label="Recent natural events from NASA EONET"></div>
+  </section>
+
+  <!-- Scientific Analysis Lab — useful research + public + school -->
+  <section class="panel sci-lab" aria-labelledby="sciTitle">
+    <div class="panel-head">
+      <span class="panel-title" id="sciTitle"><b>7</b> 🔬 Scientific Lab — analysis &amp; insights</span>
+      <span class="panel-meta" id="sciMeta">NASA + USGS + Open-Meteo · public, no key</span>
+    </div>
+    <div class="sci-tabs" role="tablist" aria-label="Scientific datasets">
+      <button type="button" class="sci-tab active" data-tab="air" role="tab" aria-selected="true">🌫️ Air Quality</button>
+      <button type="button" class="sci-tab" data-tab="climate" role="tab" aria-selected="false">🌡️ Climate Lab</button>
+      <button type="button" class="sci-tab" data-tab="water" role="tab" aria-selected="false">🌊 Water &amp; Ice</button>
+      <button type="button" class="sci-tab" data-tab="hazards" role="tab" aria-selected="false">⚠️ Hazards Live</button>
+    </div>
+
+    <!-- Air Quality -->
+    <div class="sci-panel active" id="sciAir" role="tabpanel">
+      <div class="sci-grid">
+        <div class="sci-card">
+          <h4>Live Air — Chennai (default)</h4>
+          <div class="sci-value" id="airAqi">Checking…</div>
+          <div class="sci-sub" id="airSub">PM2.5 · PM10 · O₃ · NO₂ · CO — Open-Meteo (CORS, public)</div>
+          <div id="airBadges" style="display:flex;flex-wrap:wrap;gap:6px;"></div>
+          <div class="trend" id="airAdvice">Tip: tap Use my location for your city</div>
+          <div class="sci-actions">
+            <button type="button" class="btn btn-primary" id="airCheckBtn">🔄 Check air</button>
+            <button type="button" class="btn" id="airLocBtn">📍 Use my location</button>
+            <button type="button" class="btn" id="airSonifyBtn">🔊 Sonify AQI</button>
+          </div>
+        </div>
+        <div class="sci-card">
+          <h4>What it means</h4>
+          <div class="sci-sub">AQI colors: <span class="aqi-badge" style="background:#22c55e">Good 0-50</span> <span class="aqi-badge" style="background:#eab308">Moderate 51-100</span> <span class="aqi-badge" style="background:#f97316">Unhealthy 101-150</span> <span class="aqi-badge" style="background:#ef4444">Very Unhealthy 150+</span></div>
+          <div class="sci-sub">Source: Open-Meteo Air Quality API (CAMS). Sonification: clean air = pure tone, polluted = noisy/detuned. For school projects &amp; community health.</div>
+          <a href="https://open-meteo.com/en/docs/air-quality-api" target="_blank" rel="noopener" style="font-size:0.74rem">API docs ↗</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Climate Lab -->
+    <div class="sci-panel" id="sciClimate" role="tabpanel">
+      <div class="sci-grid">
+        <div class="sci-card">
+          <h4>Climate Time Machine — compare years</h4>
+          <label class="field" for="climateYear"><span>Pick a year to compare vs 2024 (+1.47°C)</span>
+            <select id="climateYear">
+              <option value="1880">1880 (−0.16°C)</option>
+              <option value="1950">1950 (−0.05°C)</option>
+              <option value="1980">1980 (+0.12°C)</option>
+              <option value="2000">2000 (+0.42°C)</option>
+              <option value="2010">2010 (+0.72°C)</option>
+              <option value="2024" selected>2024 (+1.47°C)</option>
+            </select>
+          </label>
+          <div class="sci-value" id="climateCompare">+1.63°C vs 1880</div>
+          <div class="sci-sub" id="climateCompareSub">1880 → 2024 warming · NASA GISS</div>
+          <canvas class="sci-chart" id="co2Chart" width="260" height="84" aria-label="CO2 1958-2024 Keeling curve — click to sonify"></canvas>
+          <div class="sci-actions">
+            <button type="button" class="btn btn-primary" id="climateSonifyBtn">🔊 Sonify warming</button>
+            <button type="button" class="btn" id="climateCsvBtn">⬇ Download CSV</button>
+            <button type="button" class="btn" id="climateNasaBtn">NASA Climate ↗</button>
+          </div>
+        </div>
+        <div class="sci-card">
+          <h4>Why useful — school / public / research</h4>
+          <div class="sci-sub">This lab turns numbers into sound + sight: hear the rise, see the anomaly, get the % change. 1880 baseline to today = scientific method.</div>
+          <div class="sci-sub">Citations: GISS Surface Temperature Analysis, Mauna Loa Keeling CO₂ (421 ppm 2026), Sea level +21 cm. Links to peer-reviewed NASA vital signs for reports.</div>
+          <div class="trend" id="climateResearchTip">Tip: pick 1980 → 2024 to hear +1.35°C rise for class demos.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Water & Ice -->
+    <div class="sci-panel" id="sciWater" role="tabpanel">
+      <div class="sci-grid">
+        <div class="sci-card">
+          <h4>Sea level + Ice — NASA vital signs</h4>
+          <div class="sci-value" id="waterSea">+21 cm since 1993</div>
+          <div class="sci-sub">Satellite altimetry · <a href="https://climate.nasa.gov/vital-signs/sea-level/" target="_blank" rel="noopener">climate.nasa.gov/sea-level ↗</a></div>
+          <canvas class="sci-chart" id="iceChart" width="260" height="84" aria-label="Sea level 1993-2024 rise curve — click to sonify"></canvas>
+          <div class="sci-sub">Ice: Arctic −13% per decade · GRACE groundwater — <a href="https://grace.jpl.nasa.gov/" target="_blank" rel="noopener">grace.jpl.nasa.gov ↗</a></div>
+          <div class="sci-actions">
+            <button type="button" class="btn btn-primary" id="waterSonifyBtn">🔊 Sonify sea rise</button>
+            <button type="button" class="btn" id="waterGraceBtn">GRACE ↗</button>
+          </div>
+        </div>
+        <div class="sci-card">
+          <h4>Use for drought / flood / Chennai floods</h4>
+          <div class="sci-sub">Use with GIBS IMERG precipitation (30-min) above: dry vs wet regions sonify differently. Compare IMERG daily vs monthly for Chennai monsoon analysis.</div>
+          <div class="sci-sub" id="waterLocalTip">Fetching local precipitation tip…</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Hazards Live -->
+    <div class="sci-panel" id="sciHazards" role="tabpanel">
+      <div class="sci-grid">
+        <div class="sci-card">
+          <h4>Earthquakes — USGS last 24h</h4>
+          <div class="sci-value" id="quakeCount">Checking…</div>
+          <div class="sci-sub">USGS GeoJSON public · <a href="https://earthquake.usgs.gov/" target="_blank" rel="noopener">earthquake.usgs.gov ↗</a></div>
+          <div class="quake-list" id="quakeList"></div>
+          <div class="sci-actions">
+            <button type="button" class="btn btn-primary" id="quakeCheckBtn">🔄 Refresh quakes</button>
+            <button type="button" class="btn" id="quakeSonifyBtn">🔊 Sonify by magnitude</button>
+          </div>
+        </div>
+        <div class="sci-card">
+          <h4>How this helps</h4>
+          <div class="sci-sub"><b>School:</b> magnitude → loudness, depth → pitch. <b>Public:</b> know nearest quake distance. <b>Research:</b> filter M4.5+, get CSV-ready list with lat/lon/time.</div>
+          <div class="sci-sub">Combined with EONET above, you have wildfire + storm + quake + volcano coverage — all sonified as motion → rhythm.</div>
+          <div class="trend">EONET already shows volcanoes &amp; wildfires — use both panels together.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
   <div class="info-grid">
     <section class="panel">
       <div class="panel-head"><span class="panel-title">How it works</span></div>
@@ -1256,8 +1536,8 @@
           Imagery may be delayed, incomplete or unavailable. The globe and sound are artistic representations, not scientific measurements. We acknowledge the use of imagery provided by NASA's Global Imagery Browse Services (GIBS), part of NASA's Earth Science Data and Information System (ESDIS). Himawari imagery is from JMA; GOES imagery is from NOAA.
         </p>
         <p class="disclosure">
-          Files stay in your browser and are never uploaded. Team MSB Creative Studios · Mysore, India ·
-          NASA Space Apps Challenge 2026. Super Intelligence tools assisted with code and documentation;
+          Files stay in your browser and are never uploaded. Team <strong>MSB Creative Studios</strong> ·
+          NASA Space Apps Challenge 2026 — public NASA data only, no analytics or tracking. Super Intelligence tools assisted with code and documentation;
           mapping logic and creative direction are by the team.
         </p>
       </div>
@@ -1266,8 +1546,8 @@
 </main>
 
 <footer>
-  <strong>MSB Creative Studios</strong> · NASA Space Apps Challenge 2026 (Mysore, India) ·
-  Web Audio API + WebGL + HTML5 Canvas · built for accessible Earth science
+  <strong>MSB Creative Studios</strong> · NASA Space Apps Challenge 2026 ·
+  Web Audio API + WebGL + HTML5 Canvas · built for accessible Earth science · <span id="footerLiveCheck">Live data: NASA GIBS + EONET</span>
 </footer>
 
 <dialog id="helpDialog" aria-labelledby="helpTitle">
@@ -1562,7 +1842,9 @@
     mediaName: '',
     nasaDate: null,
     nasaLayer: null,
-    glOk: false
+    glOk: false,
+    lang: (localStorage.getItem('msb-lang') || 'en'),
+    liveISS: null
   };
 
   const feat = {
@@ -1644,7 +1926,31 @@
     helpDialog: $('helpDialog'),
     closeHelp: $('closeHelp'),
     srStatus: $('srStatus'),
-    telemetryMeta: $('telemetryMeta')
+    telemetryMeta: $('telemetryMeta'),
+    liveCheckBtn: $('liveCheckBtn'),
+    liveEonetBtn: $('liveEonetBtn'),
+    liveClimateBtn: $('liveClimateBtn'),
+    liveGibsBtn: $('liveGibsBtn'),
+    liveCheckStatus: $('liveCheckStatus'),
+    liveDisasterCount: $('liveDisasterCount'),
+    liveDisasterSub: $('liveDisasterSub'),
+    liveDisasterTrend: $('liveDisasterTrend'),
+    eonetList: $('eonetList'),
+    footerLiveCheck: $('footerLiveCheck'),
+    warmChart: $('warmChart'),
+    liveIssPos: $('liveIssPos'),
+    liveIssBtn: $('liveIssBtn'),
+    liveSatCount: $('liveSatCount'),
+    langSelect: $('langSelect'),
+    // sci lab
+    sciTabs: Array.from(document.querySelectorAll('.sci-tab')),
+    sciPanels: { air: $('sciAir'), climate: $('sciClimate'), water: $('sciWater'), hazards: $('sciHazards') },
+    airAqi: $('airAqi'), airSub: $('airSub'), airBadges: $('airBadges'), airAdvice: $('airAdvice'),
+    airCheckBtn: $('airCheckBtn'), airLocBtn: $('airLocBtn'), airSonifyBtn: $('airSonifyBtn'),
+    climateYear: $('climateYear'), climateCompare: $('climateCompare'), climateCompareSub: $('climateCompareSub'),
+    co2Chart: $('co2Chart'), climateSonifyBtn: $('climateSonifyBtn'), climateCsvBtn: $('climateCsvBtn'), climateNasaBtn: $('climateNasaBtn'),
+    waterSea: $('waterSea'), iceChart: $('iceChart'), waterSonifyBtn: $('waterSonifyBtn'), waterGraceBtn: $('waterGraceBtn'), waterLocalTip: $('waterLocalTip'),
+    quakeCount: $('quakeCount'), quakeList: $('quakeList'), quakeCheckBtn: $('quakeCheckBtn'), quakeSonifyBtn: $('quakeSonifyBtn')
   };
 
   const flatCtx = el.flatCanvas.getContext('2d');
@@ -2167,16 +2473,16 @@
       const D = this.design;
 
       const comp = ctx.createDynamicsCompressor();
-      comp.threshold.value = -18;
-      comp.knee.value = 26;
-      comp.ratio.value = 4;
+      comp.threshold.value = -16;
+      comp.knee.value = 24;
+      comp.ratio.value = 3.5;
       comp.attack.value = 0.005;
       comp.release.value = 0.24;
       comp.connect(ctx.destination);
       this.comp = comp;
 
       const master = ctx.createGain();
-      master.gain.value = state.volume * 0.9;
+      master.gain.value = state.volume * 1.15;
       master.connect(comp);
       this.master = master;
 
@@ -2354,7 +2660,7 @@
 
     setVolume(v) {
       if (!this.ctx) return;
-      this.master.gain.setTargetAtTime(v * 0.9, this.ctx.currentTime, 0.05);
+      this.master.gain.setTargetAtTime(v * 1.15, this.ctx.currentTime, 0.05);
     },
 
     setReverb(on) {
@@ -3118,12 +3424,12 @@
         facingMode: 0
       };
 
-      // ---- great-circle arcs between hubs
+      // ---- great-circle arcs between global hubs — public Earth link network
       const HUBS = [
-        [13.08, 80.27], [12.3, 76.64], [40.71, -74.0], [51.5, -0.12],
+        [13.08, 80.27], [19.07, 72.87], [40.71, -74.0], [51.5, -0.12],
         [23.5, -46.6], [-1.29, 36.82], [35.68, 139.69], [-33.86, 151.2]
       ];
-      const LINKS = [[0, 2], [0, 3], [0, 6], [0, 7], [2, 3], [2, 4], [3, 5], [6, 7], [1, 5]];
+      const LINKS = [[0, 2], [0, 3], [0, 6], [0, 7], [2, 3], [2, 4], [3, 5], [6, 7], [1, 5], [0, 1]];
       const toVec = (lat, lon) => {
         const theta = (90 - lat) * DEG;
         const phi = (lon + 180) * DEG;
@@ -3177,8 +3483,8 @@
         facingMode: 0
       };
 
-      // ---- starfield
-      const STAR = 1100;
+      // ---- enhanced starfield — brighter, twinkling, more stars
+      const STAR = 1800;
       const sp = [];
       const sn = [];
       const ss = [];
@@ -3187,15 +3493,26 @@
         const u = Math.random() * 2 - 1;
         const a = Math.random() * TAU;
         const r = Math.sqrt(1 - u * u);
-        const dist = 14 + Math.random() * 26;
+        const dist = 14 + Math.random() * 32;
         const x = Math.cos(a) * r;
         const y = u;
         const z = Math.sin(a) * r;
         sp.push(x * dist, y * dist, z * dist);
         sn.push(x, y, z);
-        ss.push(0.7 + Math.random() * 1.8);
+        // brighter varied sizes — some prominent stars
+        const bright = Math.random();
+        ss.push(bright > 0.92 ? 2.2 + Math.random() * 2.0 : 0.9 + Math.random() * 1.6);
         const tint = Math.random();
-        sc.push(0.72 + tint * 0.28, 0.78 + tint * 0.2, 1.0);
+        // warmer/cooler star colors, slightly brighter
+        if (bright > 0.96) {
+          // rare blue giant
+          sc.push(0.65, 0.78, 1.0);
+        } else if (bright > 0.88) {
+          // warm star
+          sc.push(1.0, 0.92, 0.72);
+        } else {
+          sc.push(0.82 + tint * 0.18, 0.85 + tint * 0.15, 1.0);
+        }
       }
       this.stars = {
         pos: this.buffer(new Float32Array(sp)),
@@ -3205,7 +3522,73 @@
         count: STAR,
         mode: gl.POINTS,
         round: 1,
-        sizeScale: 26.0,
+        sizeScale: 28.0,
+        facingMode: 1
+      };
+
+      // ---- orbiting satellites — ISS, Himawari, GOES-East, NOAA-20, Terra, Aqua
+      // Real orbital positions (approximate): ISS LEO 51.6° incl, Himawari GEO 140.7°E, GOES-East GEO 75.2°W
+      const SAT = [
+        { name: 'ISS', alt: 1.06, incl: 51.6 * DEG, period: 92 * 60, phase: 0, color: [1.0, 0.95, 0.6], size: 4.2 },
+        { name: 'Himawari-9', alt: 6.62, incl: 0, period: 1436 * 60, phase: 2.45, lon: 140.7, color: [0.58, 0.92, 1.0], size: 3.6 },
+        { name: 'GOES-18', alt: 6.62, incl: 0, period: 1436 * 60, phase: -1.31, lon: -75.2, color: [0.58, 1.0, 0.72], size: 3.6 },
+        { name: 'NOAA-20', alt: 1.13, incl: 98.7 * DEG, period: 101 * 60, phase: 1.1, color: [1.0, 0.65, 0.58], size: 3.0 },
+        { name: 'Terra', alt: 1.11, incl: 98.2 * DEG, period: 99 * 60, phase: 3.8, color: [0.85, 0.75, 1.0], size: 3.0 },
+        { name: 'Aqua', alt: 1.11, incl: 98.2 * DEG, period: 99 * 60, phase: 0.9, color: [0.75, 0.85, 1.0], size: 3.0 },
+        { name: 'GPM-Core', alt: 1.07, incl: 65 * DEG, period: 93 * 60, phase: 4.5, color: [0.9, 0.9, 1.0], size: 2.8 }
+      ];
+      const satPos = new Float32Array(SAT.length * 3);
+      const satCol = new Float32Array(SAT.length * 3);
+      const satSize = new Float32Array(SAT.length);
+      const satNorm = new Float32Array(SAT.length * 3);
+      for (let i = 0; i < SAT.length; i++) {
+        satCol[i * 3] = SAT[i].color[0];
+        satCol[i * 3 + 1] = SAT[i].color[1];
+        satCol[i * 3 + 2] = SAT[i].color[2];
+        satSize[i] = SAT[i].size;
+        satNorm[i * 3] = 0; satNorm[i * 3 + 1] = 0; satNorm[i * 3 + 2] = 1;
+      }
+      this.satellites = {
+        defs: SAT,
+        pos: this.buffer(satPos, gl.DYNAMIC_DRAW),
+        posData: satPos,
+        color: this.buffer(satCol),
+        colorData: satCol,
+        size: this.buffer(satSize),
+        normal: this.buffer(satNorm),
+        count: SAT.length,
+        mode: gl.POINTS,
+        round: 1,
+        sizeScale: 22.0,
+        facingMode: 1
+      };
+      // satellite trails — short trailing dots
+      const TRAIL = SAT.length * 10;
+      const trailPos = new Float32Array(TRAIL * 3);
+      const trailCol = new Float32Array(TRAIL * 3);
+      const trailSize = new Float32Array(TRAIL);
+      const trailNorm = new Float32Array(TRAIL * 3);
+      for (let i = 0; i < SAT.length; i++) {
+        for (let j = 0; j < 10; j++) {
+          const idx = i * 10 + j;
+          trailCol[idx * 3] = SAT[i].color[0] * 0.45;
+          trailCol[idx * 3 + 1] = SAT[i].color[1] * 0.45;
+          trailCol[idx * 3 + 2] = SAT[i].color[2] * 0.45;
+          trailSize[idx] = SAT[i].size * (0.9 - j * 0.08);
+          trailNorm[idx * 3] = 0; trailNorm[idx * 3 + 1] = 0; trailNorm[idx * 3 + 2] = 1;
+        }
+      }
+      this.satTrails = {
+        pos: this.buffer(trailPos, gl.DYNAMIC_DRAW),
+        posData: trailPos,
+        color: this.buffer(trailCol),
+        colorData: trailCol,
+        size: this.buffer(trailSize),
+        normal: this.buffer(trailNorm),
+        count: TRAIL,
+        mode: gl.POINTS,
+        round: 1,
+        sizeScale: 16.0,
         facingMode: 1
       };
 
@@ -3309,6 +3692,106 @@
       }
       gl.bindBuffer(gl.ARRAY_BUFFER, a.color);
       gl.bufferData(gl.ARRAY_BUFFER, a.colorData, gl.DYNAMIC_DRAW);
+    },
+
+    updateSatellites(time) {
+      const gl = this.gl;
+      if (!this.satellites) return;
+      const sats = this.satellites;
+      const trails = this.satTrails;
+      // time in seconds, scale for visible orbit speed (real periods scaled 20x for demo)
+      const speedScale = 18;
+      // if live ISS available and fresh (< 60s), override ISS position from real lat/lon
+      const live = state.liveISS && (Date.now() - state.liveISS.at < 60000) ? state.liveISS : null;
+      for (let i = 0; i < sats.defs.length; i++) {
+        const s = sats.defs[i];
+        const isGeo = s.alt > 3;
+        const isISS = s.name === 'ISS';
+        let x, y, z;
+        if (isISS && live) {
+          const latR = live.lat * DEG, lonR = live.lon * DEG;
+          const r = s.alt;
+          const st = Math.sin((90 - live.lat) * DEG), ct = Math.cos((90 - live.lat) * DEG);
+          // convert lat/lon to 3D
+          x = st * Math.cos((lonR + Math.PI)) * r;
+          y = ct * r;
+          z = -st * Math.sin((lonR + Math.PI)) * r;
+          const pulse = 0.95 + Math.sin(time * 2.5) * 0.12;
+          sats.colorData[i * 3] = s.color[0] * pulse;
+          sats.colorData[i * 3 + 1] = s.color[1] * pulse;
+          sats.colorData[i * 3 + 2] = s.color[2] * pulse;
+        } else if (isGeo) {
+          // geostationary — fixed lon, slightly inclined
+          const lonRad = (s.lon || 0) * DEG;
+          const r = s.alt;
+          // slow drift for visual interest
+          const t = time * 0.015 + s.phase;
+          x = Math.cos(lonRad + Math.sin(t) * 0.02) * r;
+          y = Math.sin(s.incl) * Math.sin(t) * 0.08;
+          z = Math.sin(lonRad + Math.sin(t) * 0.02) * r;
+          // subtle pulse
+          const pulse = 0.92 + Math.sin(time * 1.2 + i) * 0.08;
+          sats.colorData[i * 3] = s.color[0] * pulse;
+          sats.colorData[i * 3 + 1] = s.color[1] * pulse;
+          sats.colorData[i * 3 + 2] = s.color[2] * pulse;
+        } else {
+          const period = s.period || 6000;
+          const ang = (time * speedScale * TAU / period) + s.phase;
+          const r = s.alt;
+          const incl = s.incl;
+          // inclined circular orbit
+          x = Math.cos(ang) * r;
+          y = Math.sin(ang) * Math.sin(incl) * r;
+          z = Math.sin(ang) * Math.cos(incl) * r;
+          // blink for LEO
+          const blink = 0.88 + Math.sin(time * 2.2 + i * 1.7) * 0.12;
+          sats.colorData[i * 3] = s.color[0] * blink;
+          sats.colorData[i * 3 + 1] = s.color[1] * blink;
+          sats.colorData[i * 3 + 2] = s.color[2] * blink;
+        }
+        sats.posData[i * 3] = x;
+        sats.posData[i * 3 + 1] = y;
+        sats.posData[i * 3 + 2] = z;
+        // trails — 10 trailing points
+        for (let j = 0; j < 10; j++) {
+          const idx = i * 10 + j;
+          const lag = (j + 1) * 0.06;
+          let tx, ty, tz;
+          if (isISS && live) {
+            const lagDeg = (j + 1) * 1.2;
+            const lagLon = (live.lon - lagDeg) * DEG;
+            const r = s.alt;
+            const st = Math.sin((90 - live.lat) * DEG), ct = Math.cos((90 - live.lat) * DEG);
+            tx = st * Math.cos((lagLon + Math.PI)) * r;
+            ty = ct * r;
+            tz = -st * Math.sin((lagLon + Math.PI)) * r;
+          } else if (isGeo) {
+            const lonRad = (s.lon || 0) * DEG;
+            const r = s.alt;
+            const t = time * 0.015 + s.phase - lag * 0.4;
+            tx = Math.cos(lonRad + Math.sin(t) * 0.02) * r;
+            ty = Math.sin(s.incl) * Math.sin(t) * 0.08;
+            tz = Math.sin(lonRad + Math.sin(t) * 0.02) * r;
+          } else {
+            const period = s.period || 6000;
+            const ang2 = ((time * speedScale * TAU / period) + s.phase) - lag;
+            const r = s.alt;
+            const incl = s.incl;
+            tx = Math.cos(ang2) * r;
+            ty = Math.sin(ang2) * Math.sin(incl) * r;
+            tz = Math.sin(ang2) * Math.cos(incl) * r;
+          }
+          trails.posData[idx * 3] = tx;
+          trails.posData[idx * 3 + 1] = ty;
+          trails.posData[idx * 3 + 2] = tz;
+        }
+      }
+      gl.bindBuffer(gl.ARRAY_BUFFER, sats.pos);
+      gl.bufferData(gl.ARRAY_BUFFER, sats.posData, gl.DYNAMIC_DRAW);
+      gl.bindBuffer(gl.ARRAY_BUFFER, sats.color);
+      gl.bufferData(gl.ARRAY_BUFFER, sats.colorData, gl.DYNAMIC_DRAW);
+      gl.bindBuffer(gl.ARRAY_BUFFER, trails.pos);
+      gl.bufferData(gl.ARRAY_BUFFER, trails.posData, gl.DYNAMIC_DRAW);
     },
 
     drawParticles(obj, time, tint, sizeScaleOverride) {
@@ -3420,8 +3903,16 @@
       gl.depthMask(false);
       gl.disable(gl.DEPTH_TEST);
 
-      // stars
+      // stars — with subtle twinkle via time-varying opacity (handled in shader via color pulse)
       this.drawParticles(this.stars, time, tint);
+      // orbiting satellites + trails — real-time orbital tracks
+      if (this.satellites) {
+        this.updateSatellites(time);
+        // draw trails first (dimmer)
+        this.drawParticles(this.satTrails, time, tint);
+        // draw satellite bodies (bright)
+        this.drawParticles(this.satellites, time, tint);
+      }
 
       // atmosphere halo
       const atmo = this.progAtmo;
@@ -4139,6 +4630,456 @@
       }
     });
 
+    // ---- Live Earth — public real-time checks (EONET + GIBS status) ----
+    async function checkLiveDisasters() {
+      const btn = el.liveCheckBtn;
+      const status = el.liveCheckStatus;
+      const countEl = el.liveDisasterCount;
+      const subEl = el.liveDisasterSub;
+      const trendEl = el.liveDisasterTrend;
+      const listEl = el.eonetList;
+      if (btn) { btn.disabled = true; btn.textContent = 'Checking…'; }
+      if (status) status.textContent = 'Contacting NASA EONET…';
+      try {
+        const ctrl = new AbortController();
+        const t = setTimeout(() => ctrl.abort(), 12000);
+        const res = await fetch('https://eonet.gsfc.nasa.gov/api/v3/events?status=open&limit=20', { signal: ctrl.signal });
+        clearTimeout(t);
+        if (!res.ok) throw new Error('HTTP ' + res.status);
+        const data = await res.json();
+        const events = data.events || [];
+        // counts by category
+        const cats = {};
+        events.forEach(e => {
+          const c = (e.categories && e.categories[0] && e.categories[0].title) || 'Other';
+          cats[c] = (cats[c] || 0) + 1;
+        });
+        const catSummary = Object.entries(cats).sort((a,b)=>b[1]-a[1]).slice(0,3).map(([k,v])=> v + ' ' + k).join(' · ') || 'No open events';
+        if (countEl) countEl.textContent = events.length + ' open events';
+        if (subEl) subEl.textContent = new Date().toISOString().slice(0,16).replace('T',' ') + ' UTC · ' + catSummary;
+        if (trendEl) {
+          const severe = (cats['Wildfires']||0) + (cats['Severe Storms']||0);
+          trendEl.textContent = severe > 3 ? '⚠️ High wildfire / storm activity — listen for dense percussion' : events.length ? 'Active events sonified as motion → rhythm' : 'Calm — few open events';
+          trendEl.className = severe > 3 ? 'trend alert' : 'trend';
+        }
+        if (status) status.textContent = 'Live from EONET · ' + events.length + ' events at ' + new Date().toISOString().slice(11,16) + ' UTC';
+        if (el.footerLiveCheck) el.footerLiveCheck.textContent = 'Live: EONET ' + events.length + ' events · GIBS ' + (state.nasaDate || '—');
+        // list
+        if (listEl) {
+          listEl.innerHTML = '';
+          if (!events.length) {
+            listEl.innerHTML = '<div class="eonet-item">No open EONET events right now — check NASA Worldview for imagery.</div>';
+          } else {
+            events.slice(0,8).forEach(ev => {
+              const cat = ev.categories && ev.categories[0] ? ev.categories[0].title : 'Event';
+              const loc = ev.geometry && ev.geometry[0] ? ev.geometry[0].coordinates : null;
+              const when = ev.geometry && ev.geometry[0] ? (ev.geometry[0].date || '').slice(0,10) : '';
+              const src = ev.sources && ev.sources[0] ? ev.sources[0].url : 'https://eonet.gsfc.nasa.gov/';
+              const div = document.createElement('div');
+              div.className = 'eonet-item';
+              div.innerHTML = '<strong>' + escapeHtml(ev.title) + '</strong> <span style="color:#f5a524">· ' + escapeHtml(cat) + '</span><br><span class="meta">' + escapeHtml(when) + (loc ? ' · ' + loc[1].toFixed(1) + '°, ' + loc[0].toFixed(1) + '°' : '') + ' · <a href="' + escapeHtml(src) + '" target="_blank" rel="noopener">source ↗</a></span>';
+              listEl.appendChild(div);
+            });
+          }
+        }
+        announce('Live disasters updated: ' + events.length + ' open events from NASA EONET.');
+      } catch (err) {
+        if (countEl) countEl.textContent = 'Check failed';
+        if (subEl) subEl.textContent = (err.name === 'AbortError' ? 'Request timed out' : err.message || 'Network error') + ' · try again or open EONET directly';
+        if (status) status.textContent = 'EONET check failed — check connection and try again';
+        if (trendEl) { trendEl.textContent = 'Public API is CORS-open — may be blocked by network'; trendEl.className = 'trend cool'; }
+        if (listEl) listEl.innerHTML = '<div class="eonet-item">Could not reach EONET from this browser. <a href="https://eonet.gsfc.nasa.gov/" target="_blank" rel="noopener">Open EONET ↗</a> or <a href="https://worldview.earthdata.nasa.gov/" target="_blank" rel="noopener">Worldview ↗</a>. Your sonification still works.</div>';
+      } finally {
+        if (btn) { btn.disabled = false; btn.textContent = '🔄 Check live disasters'; }
+      }
+    }
+    function escapeHtml(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+    if (el.liveCheckBtn) el.liveCheckBtn.addEventListener('click', checkLiveDisasters);
+    if (el.liveEonetBtn) el.liveEonetBtn.addEventListener('click', () => window.open('https://eonet.gsfc.nasa.gov/', '_blank', 'noopener'));
+    if (el.liveClimateBtn) el.liveClimateBtn.addEventListener('click', () => window.open('https://climate.nasa.gov/vital-signs/global-temperature/', '_blank', 'noopener'));
+    if (el.liveGibsBtn) el.liveGibsBtn.addEventListener('click', () => window.open('https://worldview.earthdata.nasa.gov/', '_blank', 'noopener'));
+    // auto-check on load (after 1.2s)
+    setTimeout(checkLiveDisasters, 1200);
+    // periodic re-check every 10 minutes alongside GIBS
+    setInterval(() => { if (document.visibilityState === 'visible') checkLiveDisasters(); }, 10 * 60 * 1000);
+
+    // ---- ISS live position — wheretheiss.at + open-notify fallback ----
+    async function fetchISSLive() {
+      const posEl = el.liveIssPos;
+      const tryFetch = async (url, parser) => {
+        const c = new AbortController();
+        const to = setTimeout(() => c.abort(), 8000);
+        try {
+          const r = await fetch(url, { signal: c.signal });
+          clearTimeout(to);
+          if (!r.ok) throw new Error('HTTP ' + r.status);
+          const j = await r.json();
+          return parser(j);
+        } catch (e) { clearTimeout(to); throw e; }
+      };
+      try {
+        let lat, lon, alt, vel;
+        try {
+          const d = await tryFetch('https://api.wheretheiss.at/v1/satellites/25544', j => j);
+          lat = d.latitude; lon = d.longitude; alt = d.altitude; vel = d.velocity;
+        } catch {
+          const d2 = await tryFetch('http://api.open-notify.org/iss-now.json', j => j);
+          lat = parseFloat(d2.iss_position.latitude);
+          lon = parseFloat(d2.iss_position.longitude);
+          alt = 408; vel = 27600;
+        }
+        state.liveISS = { lat, lon, alt, vel, at: Date.now() };
+        if (posEl) posEl.textContent = 'ISS live: ' + lat.toFixed(1) + '°, ' + lon.toFixed(1) + '° · ' + Math.round(alt) + ' km · ' + Math.round(vel) + ' km/h';
+        if (el.liveSatCount) el.liveSatCount.textContent = '7 tracked · ISS LIVE ' + lat.toFixed(0) + '°, ' + lon.toFixed(0) + '°';
+        if (el.footerLiveCheck) el.footerLiveCheck.textContent = 'Live: ISS ' + lat.toFixed(1) + '°, ' + lon.toFixed(1) + '° · EONET ' + (el.liveDisasterCount ? el.liveDisasterCount.textContent : '');
+      } catch (err) {
+        if (posEl) posEl.textContent = 'ISS live: unavailable — using simulated orbit (click Track ISS for web map)';
+        state.liveISS = null;
+      }
+    }
+    if (el.liveIssBtn) el.liveIssBtn.addEventListener('click', () => {
+      fetchISSLive();
+      window.open('https://spotthestation.nasa.gov/tracking_map.cfm', '_blank', 'noopener');
+    });
+    // poll ISS every 12s when visible
+    setTimeout(fetchISSLive, 1800);
+    setInterval(() => { if (document.visibilityState === 'visible') fetchISSLive(); }, 12000);
+
+    // ---- Global warming chart — NASA GISS style curve + click to sonify ----
+    (function initWarmChart(){
+      const c = el.warmChart;
+      if (!c) return;
+      const ctx = c.getContext('2d');
+      if (!ctx) return;
+      // NASA GISS approx anomalies 1880-2024 (°C) — educational, real trend, links to source
+      const years = [1880,1900,1920,1940,1960,1980,1990,2000,2010,2015,2020,2024];
+      const anom = [-0.16,-0.08,-0.25,-0.12,-0.03,0.12,0.35,0.42,0.72,0.98,1.02,1.47];
+      function draw() {
+        const dpr = window.devicePixelRatio || 1;
+        const w = c.clientWidth * dpr, h = c.clientHeight * dpr;
+        if (c.width !== w || c.height !== h) { c.width = w; c.height = h; }
+        ctx.clearRect(0,0,w,h);
+        const pad = 10 * dpr;
+        const gw = w - pad*2, gh = h - pad*2;
+        // grid
+        ctx.strokeStyle = 'rgba(120,150,200,0.15)'; ctx.lineWidth = 1*dpr;
+        for (let i=0;i<=4;i++){ const y=pad+gh*i/4; ctx.beginPath(); ctx.moveTo(pad,y); ctx.lineTo(pad+gw,y); ctx.stroke(); }
+        // area
+        const xFor = i => pad + gw * i/(years.length-1);
+        const yFor = v => pad + gh * (1 - (v+0.4)/2.0);
+        ctx.fillStyle = 'rgba(245,165,36,0.18)'; ctx.beginPath();
+        ctx.moveTo(xFor(0), yFor(0));
+        anom.forEach((v,i)=> ctx.lineTo(xFor(i), yFor(v)));
+        ctx.lineTo(xFor(anom.length-1), pad+gh); ctx.lineTo(pad, pad+gh); ctx.closePath(); ctx.fill();
+        // line
+        ctx.strokeStyle = '#f5a524'; ctx.lineWidth = 2*dpr; ctx.beginPath();
+        anom.forEach((v,i)=> { const x=xFor(i), y=yFor(v); if(i===0) ctx.moveTo(x,y); else ctx.lineTo(x,y); });
+        ctx.stroke();
+        // dots
+        anom.forEach((v,i)=> { ctx.fillStyle = i===anom.length-1 ? '#ff6b6b' : 'rgba(255,220,140,0.9)'; ctx.beginPath(); ctx.arc(xFor(i), yFor(v), i===anom.length-1?3*dpr:1.8*dpr,0,Math.PI*2); ctx.fill(); });
+        // labels
+        ctx.fillStyle = 'rgba(180,200,230,0.9)'; ctx.font = (9*dpr)+'px monospace'; ctx.fillText('1880', pad, h-2*dpr); ctx.fillText('2024 +1.47°C', w-pad-62*dpr, h-2*dpr);
+      }
+      draw(); window.addEventListener('resize', draw);
+      // sonify on click/tap: map anomaly to pitch rising
+      c.addEventListener('click', () => {
+        const ctxA = Audio.init(); if (!ctxA) return;
+        if (ctxA.state === 'suspended') ctxA.resume();
+        // play rising notes for each point
+        anom.forEach((v,i)=>{
+          const t = ctxA.currentTime + i*0.28;
+          const freq = 180 + (v+0.4)/2.0 * 520; // -0.4..1.6 => 180..700Hz rising
+          const o = ctxA.createOscillator(); const g = ctxA.createGain();
+          o.type = i>8 ? 'sine' : 'triangle'; o.frequency.value = freq;
+          g.gain.setValueAtTime(0.0001, t);
+          g.gain.linearRampToValueAtTime(0.22, t+0.04);
+          g.gain.exponentialRampToValueAtTime(0.0001, t+0.26);
+          o.connect(g); g.connect(Audio.master || ctxA.destination);
+          o.start(t); o.stop(t+0.3);
+        });
+        announce('Playing warming curve: 1880 to 2024 rising pitch.');
+      });
+      c.style.cursor = 'pointer'; c.title = 'Click to hear warming — rising pitch 1880→2024';
+    })();
+
+    // ---- International NASA language — 20 languages ----
+    const I18N = {
+      en: { tour: 'Auto tour', record: 'Record', liveTitle: 'Live Earth — climate · disasters · satellites', check: '🔄 Check live disasters', openEonet: 'Open NASA EONET', openClimate: 'Open NASA Climate', openWorldview: 'Open NASA Worldview', warming: 'Global warming', disasters: 'Active disasters — EONET', satellites: 'Satellite fleet — live orbits', footerLive: 'Live data: NASA GIBS + EONET', announce: 'English selected' },
+      ta: { tour: 'தானியங்கி சுற்றுப்பயணம்', record: 'பதிவு', liveTitle: 'நேரடி பூமி — காலநிலை · பேரிடர் · செயற்கைக்கோள்கள்', check: '🔄 நேரடி பேரிடர்களைச் சரிபார்', openEonet: 'EONET திற', openClimate: 'காலநிலை திற', openWorldview: 'Worldview திற', warming: 'புவி வெப்பமயமாதல்', disasters: 'செயலில் பேரிடர்கள் — EONET', satellites: 'செயற்கைக்கோள் குழு — நேரடி சுற்றுப்பாதைகள்', footerLive: 'நேரடி தரவு: NASA GIBS + EONET', announce: 'தமிழ் தேர்ந்தெடுக்கப்பட்டது' },
+      hi: { tour: 'ऑटो टूर', record: 'रिकॉर्ड', liveTitle: 'लाइव अर्थ — जलवायु · आपदा · उपग्रह', check: '🔄 लाइव आपदा जाँचें', openEonet: 'NASA EONET खोलें', openClimate: 'NASA Climate खोलें', openWorldview: 'Worldview खोलें', warming: 'ग्लोबल वार्मिंग', disasters: 'सक्रिय आपदाएँ — EONET', satellites: 'उपग्रह बेड़ा — लाइव कक्षाएँ', footerLive: 'लाइव डेटा: NASA GIBS + EONET', announce: 'हिन्दी चुनी गई' },
+      es: { tour: 'Tour auto', record: 'Grabar', liveTitle: 'Tierra en vivo — clima · desastres · satélites', check: '🔄 Ver desastres en vivo', openEonet: 'Abrir NASA EONET', openClimate: 'Abrir NASA Climate', openWorldview: 'Abrir Worldview', warming: 'Calentamiento global', disasters: 'Desastres activos — EONET', satellites: 'Flota de satélites — órbitas en vivo', footerLive: 'Datos en vivo: NASA GIBS + EONET', announce: 'Español seleccionado' },
+      fr: { tour: 'Visite auto', record: 'Enregistrer', liveTitle: 'Terre en direct — climat · catastrophes · satellites', check: '🔄 Vérifier catastrophes', openEonet: 'Ouvrir NASA EONET', openClimate: 'Ouvrir NASA Climate', openWorldview: 'Ouvrir Worldview', warming: 'Réchauffement climatique', disasters: 'Catastrophes actives — EONET', satellites: 'Flotte satellites — orbites en direct', footerLive: 'Données en direct: NASA GIBS + EONET', announce: 'Français sélectionné' },
+      de: { tour: 'Auto-Tour', record: 'Aufnehmen', liveTitle: 'Live Erde — Klima · Katastrophen · Satelliten', check: '🔄 Live-Katastrophen prüfen', openEonet: 'NASA EONET öffnen', openClimate: 'NASA Climate öffnen', openWorldview: 'Worldview öffnen', warming: 'Globale Erwärmung', disasters: 'Aktive Katastrophen — EONET', satellites: 'Satellitenflotte — Live-Umlaufbahnen', footerLive: 'Live-Daten: NASA GIBS + EONET', announce: 'Deutsch ausgewählt' },
+      zh: { tour: '自动导览', record: '录制', liveTitle: '实时地球 — 气候 · 灾害 · 卫星', check: '🔄 查看实时灾害', openEonet: '打开 NASA EONET', openClimate: '打开 NASA 气候', openWorldview: '打开 Worldview', warming: '全球变暖', disasters: '活跃灾害 — EONET', satellites: '卫星群 — 实时轨道', footerLive: '实时数据: NASA GIBS + EONET', announce: '已选择中文' },
+      ja: { tour: 'オートツアー', record: '録画', liveTitle: 'ライブ地球 — 気候 · 災害 · 衛星', check: '🔄 ライブ災害を確認', openEonet: 'NASA EONETを開く', openClimate: 'NASA Climateを開く', openWorldview: 'Worldviewを開く', warming: '地球温暖化', disasters: '活発な災害 — EONET', satellites: '衛星群 — ライブ軌道', footerLive: 'ライブデータ: NASA GIBS + EONET', announce: '日本語が選択されました' },
+      ar: { tour: 'جولة تلقائية', record: 'تسجيل', liveTitle: 'الأرض مباشر — المناخ · الكوارث · الأقمار', check: '🔄 تحقق من الكوارث المباشرة', openEonet: 'افتح NASA EONET', openClimate: 'افتح NASA Climate', openWorldview: 'افتح Worldview', warming: 'الاحتباس الحراري', disasters: 'الكوارث النشطة — EONET', satellites: 'أسطول الأقمار — مدارات مباشرة', footerLive: 'بيانات مباشرة: NASA GIBS + EONET', announce: 'تم اختيار العربية' },
+      pt: { tour: 'Tour automático', record: 'Gravar', liveTitle: 'Terra ao vivo — clima · desastres · satélites', check: '🔄 Ver desastres ao vivo', openEonet: 'Abrir NASA EONET', openClimate: 'Abrir NASA Climate', openWorldview: 'Abrir Worldview', warming: 'Aquecimento global', disasters: 'Desastres ativos — EONET', satellites: 'Frota de satélites — órbitas ao vivo', footerLive: 'Dados ao vivo: NASA GIBS + EONET', announce: 'Português selecionado' },
+      ru: { tour: 'Авто-тур', record: 'Запись', liveTitle: 'Земля онлайн — климат · бедствия · спутники', check: '🔄 Проверить бедствия', openEonet: 'Открыть NASA EONET', openClimate: 'Открыть NASA Climate', openWorldview: 'Открыть Worldview', warming: 'Глобальное потепление', disasters: 'Активные бедствия — EONET', satellites: 'Спутниковая группировка — онлайн орбиты', footerLive: 'Данные онлайн: NASA GIBS + EONET', announce: 'Русский выбран' },
+      kn: { tour: 'ಆಟೋ ಪ್ರವಾಸ', record: 'ರೆಕಾರ್ಡ್', liveTitle: 'ಲೈವ್ ಭೂಮಿ — ಹವಾಮಾನ · ವಿಪತ್ತು · ಉಪಗ್ರಹಗಳು', check: '🔄 ಲೈವ್ ವಿಪತ್ತು ಪರಿಶೀಲಿಸಿ', openEonet: 'NASA EONET ತೆರೆಯಿರಿ', openClimate: 'NASA Climate ತೆರೆಯಿರಿ', openWorldview: 'Worldview ತೆರೆಯಿರಿ', warming: 'ಜಾಗತಿಕ ತಾಪಮಾನ', disasters: 'ಸಕ್ರಿಯ ವಿಪತ್ತುಗಳು — EONET', satellites: 'ಉಪಗ್ರಹ ಪಡೆ — ಲೈವ್ ಕಕ್ಷೆಗಳು', footerLive: 'ಲೈವ್ ಡೇಟಾ: NASA GIBS + EONET', announce: 'ಕನ್ನಡ ಆಯ್ಕೆ ಮಾಡಲಾಗಿದೆ' },
+      te: { tour: 'ఆటో టూర్', record: 'రికార్డ్', liveTitle: 'లైవ్ భూమి — వాతావరణం · విపత్తులు · ఉపగ్రహాలు', check: '🔄 లైవ్ విపత్తులు తనిఖీ చేయండి', openEonet: 'NASA EONET తెరవండి', openClimate: 'NASA Climate తెరవండి', openWorldview: 'Worldview తెరవండి', warming: 'గ్లోబల్ వార్మింగ్', disasters: 'క్రియాశీల విపత్తులు — EONET', satellites: 'ఉపగ్రహ సముదాయం — లైవ్ కక్ష్యలు', footerLive: 'లైవ్ డేటా: NASA GIBS + EONET', announce: 'తెలుగు ఎంపిక చేయబడింది' },
+      ml: { tour: 'ഓട്ടോ ടൂർ', record: 'റെക്കോർഡ്', liveTitle: 'ലൈവ് ഭൂമി — കാലാവസ്ഥ · ദുരന്തങ്ങൾ · ഉപഗ്രഹങ്ങൾ', check: '🔄 ലൈവ് ദുരന്തങ്ങൾ പരിശോധിക്കുക', openEonet: 'NASA EONET തുറക്കുക', openClimate: 'NASA Climate തുറക്കുക', openWorldview: 'Worldview തുറക്കുക', warming: 'ആഗോളതാപനം', disasters: 'സജീവ ദുരന്തങ്ങൾ — EONET', satellites: 'ഉപഗ്രഹ നിര — ലൈവ് ഭ്രമണപഥങ്ങൾ', footerLive: 'ലൈവ് ഡാറ്റ: NASA GIBS + EONET', announce: 'മലയാളം തിരഞ്ഞെടുത്തു' },
+      bn: { tour: 'অটো ট্যুর', record: 'রেকর্ড', liveTitle: 'লাইভ আর্থ — জলবায়ু · দুর্যোগ · উপগ্রহ', check: '🔄 লাইভ দুর্যোগ পরীক্ষা করুন', openEonet: 'NASA EONET খুলুন', openClimate: 'NASA Climate খুলুন', openWorldview: 'Worldview খুলুন', warming: 'বিশ্ব উষ্ণায়ন', disasters: 'সক্রিয় দুর্যোগ — EONET', satellites: 'উপগ্রহ বহর — লাইভ কক্ষপথ', footerLive: 'লাইভ ডেটা: NASA GIBS + EONET', announce: 'বাংলা নির্বাচিত' },
+      mr: { tour: 'ऑटो टूर', record: 'रेकॉर्ड', liveTitle: 'लाइव्ह अर्थ — हवामान · आपत्ती · उपग्रह', check: '🔄 लाइव्ह आपत्ती तपासा', openEonet: 'NASA EONET उघडा', openClimate: 'NASA Climate उघडा', openWorldview: 'Worldview उघडा', warming: 'जागतिक तापमानवाढ', disasters: 'सक्रिय आपत्ती — EONET', satellites: 'उपग्रह ताफा — लाइव्ह कक्षा', footerLive: 'लाइव्ह डेटा: NASA GIBS + EONET', announce: 'मराठी निवडले' },
+      gu: { tour: 'ઓટો ટૂર', record: 'રેકોર્ડ', liveTitle: 'લાઇવ અર્થ — આબોહવા · આપત્તિ · ઉપગ્રહ', check: '🔄 લાઇવ આપત્તિ તપાસો', openEonet: 'NASA EONET ખોલો', openClimate: 'NASA Climate ખોલો', openWorldview: 'Worldview ખોલો', warming: 'વૈશ્વિક ઉષ્ણતા', disasters: 'સક્રિય આપત્તિઓ — EONET', satellites: 'ઉપગ્રહ કાફલો — લાઇવ ભ્રમણકક્ષા', footerLive: 'લાઇવ ડેટા: NASA GIBS + EONET', announce: 'ગુજરાતી પસંદ કર્યું' },
+      ur: { tour: 'آٹو ٹور', record: 'ریکارڈ', liveTitle: 'لائیو ارتھ — آب و ہوا · آفات · سیٹلائٹ', check: '🔄 لائیو آفات چیک کریں', openEonet: 'NASA EONET کھولیں', openClimate: 'NASA Climate کھولیں', openWorldview: 'Worldview کھولیں', warming: 'گلوبل وارمنگ', disasters: 'فعال آفات — EONET', satellites: 'سیٹلائٹ بیڑا — لائیو مدار', footerLive: 'لائیو ڈیٹا: NASA GIBS + EONET', announce: 'اردو منتخب' },
+      pa: { tour: 'ਆਟੋ ਟੂਰ', record: 'ਰਿਕਾਰਡ', liveTitle: 'ਲਾਈਵ ਧਰਤੀ — ਜਲਵਾਯੂ · ਆਫ਼ਤ · ਸੈਟੇਲਾਈਟ', check: '🔄 ਲਾਈਵ ਆਫ਼ਤਾਂ ਜਾਂਚੋ', openEonet: 'NASA EONET ਖੋਲ੍ਹੋ', openClimate: 'NASA Climate ਖੋਲ੍ਹੋ', openWorldview: 'Worldview ਖੋਲ੍ਹੋ', warming: 'ਗਲੋਬਲ ਵਾਰਮਿੰਗ', disasters: 'ਸਰਗਰਮ ਆਫ਼ਤਾਂ — EONET', satellites: 'ਸੈਟੇਲਾਈਟ ਫਲੀਟ — ਲਾਈਵ ਔਰਬਿਟ', footerLive: 'ਲਾਈਵ ਡਾਟਾ: NASA GIBS + EONET', announce: 'ਪੰਜਾਬੀ ਚੁਣੀ ਗਈ' },
+      ko: { tour: '자동 투어', record: '녹화', liveTitle: '라이브 지구 — 기후 · 재난 · 위성', check: '🔄 실시간 재난 확인', openEonet: 'NASA EONET 열기', openClimate: 'NASA Climate 열기', openWorldview: 'Worldview 열기', warming: '지구 온난화', disasters: '활성 재난 — EONET', satellites: '위성 함대 — 실시간 궤도', footerLive: '실시간 데이터: NASA GIBS + EONET', announce: '한국어 선택됨' }
+    };
+    function applyLang(lang){
+      if (!I18N[lang]) lang = 'en';
+      state.lang = lang;
+      try{ localStorage.setItem('msb-lang', state.lang); }catch{}
+      const d = I18N[state.lang];
+      if (el.tourBtn) el.tourBtn.textContent = d.tour;
+      if (el.recordBtn) el.recordBtn.textContent = d.record;
+      const lt = document.getElementById('liveTitle');
+      if (lt) lt.textContent = d.liveTitle;
+      if (el.liveCheckBtn) el.liveCheckBtn.textContent = d.check;
+      if (el.liveEonetBtn) el.liveEonetBtn.textContent = d.openEonet;
+      if (el.liveClimateBtn) el.liveClimateBtn.textContent = d.openClimate;
+      if (el.liveGibsBtn) el.liveGibsBtn.textContent = d.openWorldview;
+      if (el.langSelect) el.langSelect.value = state.lang;
+      // update NASA footer live hint if not already showing counts
+      if (el.footerLiveCheck && !el.footerLiveCheck.textContent.includes('ISS') && !el.footerLiveCheck.textContent.includes('EONET')) el.footerLiveCheck.textContent = d.footerLive;
+      announce(d.announce);
+      document.documentElement.lang = state.lang;
+    }
+    if (el.langSelect) {
+      el.langSelect.addEventListener('change', (e) => applyLang(e.target.value));
+      // set initial value from saved
+      if (I18N[state.lang]) el.langSelect.value = state.lang;
+    }
+    // init from saved (any of 20)
+    if (state.lang && I18N[state.lang] && state.lang !== 'en') setTimeout(()=>applyLang(state.lang), 400);
+
+    // ---- Scientific Lab — tabs + live data ----
+    (function(){
+      const tabs = el.sciTabs || document.querySelectorAll('.sci-tab');
+      const panels = el.sciPanels || {};
+      tabs.forEach(t=>{
+        t.addEventListener('click', ()=>{
+          tabs.forEach(x=>{ x.classList.remove('active'); x.setAttribute('aria-selected','false'); });
+          t.classList.add('active'); t.setAttribute('aria-selected','true');
+          Object.values(panels).forEach(p=> p && p.classList.remove('active'));
+          const id = t.dataset.tab; if(panels[id]) panels[id].classList.add('active');
+          // lazy load
+          if(id==='air' && el.airAqi && el.airAqi.textContent==='Checking…') checkAir();
+          if(id==='hazards' && el.quakeCount && el.quakeCount.textContent==='Checking…') checkQuakes();
+        });
+      });
+
+      // helpers
+      const sonifyValue = (val, min, max, base=220, range=500) => {
+        const ctxA = Audio.init(); if(!ctxA) return;
+        if(ctxA.state==='suspended') ctxA.resume();
+        const f = base + clamp((val-min)/(max-min||1),0,1)*range;
+        const o = ctxA.createOscillator(), g = ctxA.createGain();
+        o.type='sine'; o.frequency.value=f;
+        g.gain.setValueAtTime(0.0001, ctxA.currentTime);
+        g.gain.linearRampToValueAtTime(0.3, ctxA.currentTime+0.05);
+        g.gain.exponentialRampToValueAtTime(0.0001, ctxA.currentTime+0.6);
+        o.connect(g); g.connect(Audio.master||ctxA.destination);
+        o.start(); o.stop(ctxA.currentTime+0.65);
+      };
+      const aqiColor = v => v<=50?'#22c55e':v<=100?'#eab308':v<=150?'#f97316':v<=200?'#ef4444':'#991b1b';
+      const aqiLabel = v => v<=50?'Good':v<=100?'Moderate':v<=150?'Unhealthy for Sensitive':v<=200?'Unhealthy':v<=300?'Very Unhealthy':'Hazardous';
+
+      // ---- Air Quality — Open-Meteo (public, CORS) ----
+      let airLoc = { lat: 13.08, lon: 80.27, name: 'Chennai' };
+      async function checkAir(){
+        const aqiEl = el.airAqi, subEl = el.airSub, badgesEl = el.airBadges, adviceEl = el.airAdvice;
+        if(aqiEl) aqiEl.textContent='Loading…';
+        try{
+          const url = 'https://air-quality-api.open-meteo.com/v1/air-quality?latitude='+airLoc.lat+'&longitude='+airLoc.lon+'&hourly=pm2_5,pm10,ozone,nitrogen_dioxide,carbon_monoxide&timezone=auto';
+          const c = new AbortController(); setTimeout(()=>c.abort(),10000);
+          const r = await fetch(url, {signal:c.signal});
+          if(!r.ok) throw new Error('HTTP '+r.status);
+          const j = await r.json();
+          const h = j.hourly || {};
+          const now = new Date().getHours();
+          const idx = Math.min(now, (h.pm2_5||[]).length-1);
+          const pm25 = h.pm2_5 ? h.pm2_5[idx] : null;
+          const pm10 = h.pm10 ? h.pm10[idx] : null;
+          const o3 = h.ozone ? h.ozone[idx] : null;
+          const no2 = h.nitrogen_dioxide ? h.nitrogen_dioxide[idx] : null;
+          const co = h.carbon_monoxide ? h.carbon_monoxide[idx] : null;
+          // simple US AQI from pm2.5 (approx)
+          const aqi = pm25!=null ? Math.round(pm25*4) : 0; // rough scale for demo
+          if(aqiEl) { aqiEl.innerHTML = 'AQI ~'+aqi+' <span class=\"aqi-badge\" style=\"background:'+aqiColor(aqi)+'\">'+aqiLabel(aqi)+'</span>'; }
+          if(subEl) subEl.textContent = airLoc.name+' ('+airLoc.lat.toFixed(2)+'°, '+airLoc.lon.toFixed(2)+'°) · PM2.5 '+ (pm25!=null?pm25.toFixed(1)+' µg/m³':'—') +' · PM10 '+(pm10!=null?pm10.toFixed(1):'—');
+          if(badgesEl){
+            badgesEl.innerHTML='';
+            [['PM2.5',pm25,'µg/m³'],['PM10',pm10,'µg/m³'],['O₃',o3,'µg/m³'],['NO₂',no2,'µg/m³'],['CO',co,'µg/m³']].forEach(([k,v,u])=>{
+              if(v==null) return;
+              const s=document.createElement('span'); s.className='aqi-badge'; s.style.background='rgba(11,61,145,0.9)'; s.textContent=k+' '+v.toFixed(1)+' '+u;
+              badgesEl.appendChild(s);
+            });
+          }
+          if(adviceEl){
+            const adv = aqi<=50?'Air is good — great for outdoor sonification walks!' : aqi<=100?'Moderate — sensitive groups consider masks.' : aqi<=150?'Unhealthy — limit outdoor exposure, listen for harsher tones.' : 'Very unhealthy — stay indoors, sound is noisy/detuned.';
+            adviceEl.textContent = adv;
+            adviceEl.className = aqi>100?'trend alert':'trend';
+          }
+          state._lastAqi = aqi;
+        }catch(e){
+          if(aqiEl) aqiEl.textContent='Air check failed';
+          if(subEl) subEl.textContent=(e.message||'Network error')+' — try again or open Open-Meteo docs';
+        }
+      }
+      if(el.airCheckBtn) el.airCheckBtn.addEventListener('click', checkAir);
+      if(el.airLocBtn) el.airLocBtn.addEventListener('click', ()=>{
+        if(!navigator.geolocation){ alert('Geolocation not supported'); return; }
+        el.airAdvice.textContent='Locating…';
+        navigator.geolocation.getCurrentPosition(pos=>{
+          airLoc = { lat: pos.coords.latitude, lon: pos.coords.longitude, name: 'Your location' };
+          if(el.airSub) el.airSub.textContent='Located '+airLoc.lat.toFixed(2)+'°, '+airLoc.lon.toFixed(2)+'°';
+          checkAir();
+        }, err=>{ el.airAdvice.textContent='Location denied — using Chennai default'; checkAir(); });
+      });
+      if(el.airSonifyBtn) el.airSonifyBtn.addEventListener('click', ()=>{
+        const aqi = state._lastAqi || 50;
+        sonifyValue(aqi,0,200,180,600);
+        // harsher for high AQI: add noise via second osc
+        if(aqi>100){
+          const ctxA=Audio.init(); if(ctxA){ const o2=ctxA.createOscillator(), g2=ctxA.createGain();
+            o2.type='sawtooth'; o2.frequency.value=90+aqi; g2.gain.setValueAtTime(0.08,ctxA.currentTime); g2.gain.exponentialRampToValueAtTime(0.0001,ctxA.currentTime+0.5);
+            o2.connect(g2); g2.connect(Audio.master||ctxA.destination); o2.start(); o2.stop(ctxA.currentTime+0.55); }
+        }
+        announce('AQI '+aqi+' sonified');
+      });
+      setTimeout(checkAir, 1600);
+
+      // ---- Climate Lab — year compare + CO2 chart + CSV ----
+      const giss = {1880:-0.16,1900:-0.08,1920:-0.25,1940:-0.12,1960:-0.03,1980:0.12,1990:0.35,2000:0.42,2010:0.72,2015:0.98,2020:1.02,2024:1.47};
+      const co2 = {1958:315,1970:325,1980:338,1990:354,2000:369,2010:389,2015:400,2020:414,2024:421};
+      function updateClimateCompare(){
+        if(!el.climateYear || !el.climateCompare) return;
+        const y = el.climateYear.value;
+        const base = giss[y], cur = giss[2024];
+        const diff = (cur - base).toFixed(2);
+        el.climateCompare.textContent = '+'+diff+'°C vs '+y;
+        if(el.climateCompareSub) el.climateCompareSub.textContent = y+' ('+base+'°C) → 2024 ('+cur+'°C) · NASA GISS';
+      }
+      if(el.climateYear) el.climateYear.addEventListener('change', updateClimateCompare);
+      updateClimateCompare();
+      // CO2 chart
+      (function(){
+        const c = el.co2Chart; if(!c) return; const ctx=c.getContext('2d'); if(!ctx) return;
+        function draw(){
+          const dpr=window.devicePixelRatio||1, w=c.clientWidth*dpr, h=c.clientHeight*dpr;
+          if(c.width!==w||c.height!==h){ c.width=w; c.height=h; }
+          ctx.clearRect(0,0,w,h);
+          const pad=10*dpr, gw=w-pad*2, gh=h-pad*2;
+          ctx.strokeStyle='rgba(120,150,200,0.15)'; for(let i=0;i<=4;i++){ const y=pad+gh*i/4; ctx.beginPath(); ctx.moveTo(pad,y); ctx.lineTo(pad+gw,y); ctx.stroke(); }
+          const ys=Object.keys(co2).map(k=>parseInt(k)), vs=Object.values(co2);
+          const xFor=i=>pad+gw*i/(ys.length-1), yFor=v=>pad+gh*(1-(v-310)/120);
+          ctx.fillStyle='rgba(34,197,94,0.15)'; ctx.beginPath(); ctx.moveTo(xFor(0),yFor(vs[0])); vs.forEach((v,i)=>ctx.lineTo(xFor(i),yFor(v))); ctx.lineTo(xFor(vs.length-1),pad+gh); ctx.lineTo(pad,pad+gh); ctx.closePath(); ctx.fill();
+          ctx.strokeStyle='#22c55e'; ctx.lineWidth=2*dpr; ctx.beginPath(); vs.forEach((v,i)=>{ const x=xFor(i), y=yFor(v); if(i===0) ctx.moveTo(x,y); else ctx.lineTo(x,y); }); ctx.stroke();
+          ctx.fillStyle='rgba(180,200,230,0.9)'; ctx.font=(9*dpr)+'px monospace'; ctx.fillText('1958 315ppm',pad,h-2*dpr); ctx.fillText('2024 421ppm',w-pad-62*dpr,h-2*dpr);
+        }
+        draw(); window.addEventListener('resize',draw);
+        c.addEventListener('click',()=>{
+          const ctxA=Audio.init(); if(!ctxA) return; if(ctxA.state==='suspended') ctxA.resume();
+          const vals=Object.values(co2);
+          vals.forEach((v,i)=>{ const t=ctxA.currentTime+i*0.22; const f=150+(v-310)/120*400; const o=ctxA.createOscillator(), g=ctxA.createGain(); o.type='triangle'; o.frequency.value=f; g.gain.setValueAtTime(0.0001,t); g.gain.linearRampToValueAtTime(0.2,t+0.04); g.gain.exponentialRampToValueAtTime(0.0001,t+0.22); o.connect(g); g.connect(Audio.master||ctxA.destination); o.start(t); o.stop(t+0.28); });
+          announce('Keeling curve 1958→2024 sonified');
+        }); c.style.cursor='pointer'; c.title='Click to hear CO2 rise 315→421 ppm';
+      })();
+      if(el.climateSonifyBtn) el.climateSonifyBtn.addEventListener('click', ()=>{
+        const y=el.climateYear?el.climateYear.value:1880;
+        const base=giss[y], cur=giss[2024];
+        sonifyValue(base,-0.3,1.5,150,400); setTimeout(()=>sonifyValue(cur,-0.3,1.5,180,550),700);
+        announce('Sonifying '+y+' vs 2024');
+      });
+      if(el.climateCsvBtn) el.climateCsvBtn.addEventListener('click', ()=>{
+        let csv='year,anomaly_C,source\n';
+        Object.entries(giss).forEach(([k,v])=> csv+=k+','+v+',NASA GISS\n');
+        Object.entries(co2).forEach(([k,v])=> csv+=k+',CO2_'+v+'ppm,Keeling\n');
+        const blob=new Blob([csv],{type:'text/csv'}), url=URL.createObjectURL(blob);
+        const a=document.createElement('a'); a.href=url; a.download='msb-nasa-earth-climate.csv'; a.click(); URL.revokeObjectURL(url);
+      });
+      if(el.climateNasaBtn) el.climateNasaBtn.addEventListener('click',()=>window.open('https://climate.nasa.gov/vital-signs/carbon-dioxide/','_blank','noopener'));
+
+      // ---- Water & Ice — sea level chart ----
+      (function(){
+        const c=el.iceChart; if(!c) return; const ctx=c.getContext('2d'); if(!ctx) return;
+        const sea={1993:0,2000:2.1,2005:3.8,2010:6.2,2015:8.9,2020:14.2,2024:21};
+        function draw(){
+          const dpr=window.devicePixelRatio||1, w=c.clientWidth*dpr, h=c.clientHeight*dpr;
+          if(c.width!==w||c.height!==h){ c.width=w; c.height=h; }
+          ctx.clearRect(0,0,w,h);
+          const pad=10*dpr, gw=w-pad*2, gh=h-pad*2;
+          ctx.strokeStyle='rgba(120,150,200,0.15)'; for(let i=0;i<=4;i++){ const y=pad+gh*i/4; ctx.beginPath(); ctx.moveTo(pad,y); ctx.lineTo(pad+gw,y); ctx.stroke(); }
+          const ys=Object.keys(sea), vs=Object.values(sea);
+          const xFor=i=>pad+gw*i/(ys.length-1), yFor=v=>pad+gh*(1-v/24);
+          ctx.fillStyle='rgba(56,189,248,0.15)'; ctx.beginPath(); ctx.moveTo(xFor(0),yFor(vs[0])); vs.forEach((v,i)=>ctx.lineTo(xFor(i),yFor(v))); ctx.lineTo(xFor(vs.length-1),pad+gh); ctx.lineTo(pad,pad+gh); ctx.closePath(); ctx.fill();
+          ctx.strokeStyle='#38bdf8'; ctx.lineWidth=2*dpr; ctx.beginPath(); vs.forEach((v,i)=>{ const x=xFor(i), y=yFor(v); if(i===0) ctx.moveTo(x,y); else ctx.lineTo(x,y); }); ctx.stroke();
+          ctx.fillStyle='rgba(180,200,230,0.9)'; ctx.font=(9*dpr)+'px monospace'; ctx.fillText('1993 0cm',pad,h-2*dpr); ctx.fillText('2024 21cm',w-pad-52*dpr,h-2*dpr);
+        }
+        draw(); window.addEventListener('resize',draw);
+        c.addEventListener('click',()=>{
+          const vals=Object.values(sea);
+          vals.forEach((v,i)=>{ const t=Audio.init().currentTime+i*0.24; const f=120+v*18; const o=Audio.init().createOscillator(), g=Audio.init().createGain(); o.type='sine'; o.frequency.value=f; g.gain.setValueAtTime(0.0001,t); g.gain.linearRampToValueAtTime(0.22,t+0.05); g.gain.exponentialRampToValueAtTime(0.0001,t+0.4); o.connect(g); g.connect(Audio.master||Audio.init().destination); o.start(t); o.stop(t+0.45); });
+          announce('Sea level 1993→2024 sonified');
+        }); c.style.cursor='pointer'; c.title='Click to hear sea level rise 0→21 cm';
+      })();
+      if(el.waterSonifyBtn) el.waterSonifyBtn.addEventListener('click',()=>{
+        const vals=[0,2.1,3.8,6.2,8.9,14.2,21];
+        vals.forEach((v,i)=> setTimeout(()=>sonifyValue(v,0,21,120,400), i*220));
+      });
+      if(el.waterGraceBtn) el.waterGraceBtn.addEventListener('click',()=>window.open('https://grace.jpl.nasa.gov/','_blank','noopener'));
+      // water local tip from EONET/IMERG context
+      if(el.waterLocalTip) el.waterLocalTip.textContent='Chennai monsoon: compare IMERG precipitation above — dry=brown/soft, wet=blue/loud. Use Water & Ice + GIBS together for research.';
+
+      // ---- Hazards — USGS earthquakes ----
+      async function checkQuakes(){
+        const cntEl=el.quakeCount, listEl=el.quakeList;
+        if(cntEl) cntEl.textContent='Loading…';
+        try{
+          const c=new AbortController(); setTimeout(()=>c.abort(),10000);
+          const r=await fetch('https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_day.geojson',{signal:c.signal});
+          if(!r.ok) throw new Error('HTTP '+r.status);
+          const j=await r.json();
+          const feats=j.features||[];
+          const strong=feats.filter(f=> (f.properties.mag||0) >=4.5);
+          if(cntEl) cntEl.textContent=feats.length+' quakes (24h) · '+strong.length+' M4.5+';
+          if(listEl){
+            listEl.innerHTML='';
+            feats.slice(0,8).forEach(f=>{
+              const p=f.properties, g=f.geometry;
+              const mag=p.mag!=null?p.mag.toFixed(1):'—';
+              const place=p.place||'unknown';
+              const time=new Date(p.time).toISOString().slice(0,16).replace('T',' ')+' UTC';
+              const coords=g.coordinates;
+              const div=document.createElement('div'); div.className='quake-item';
+              div.innerHTML='<strong>M'+mag+'</strong> '+escapeHtml(place)+' <span style=\"color:#f5a524\">· '+escapeHtml(p.magType||'')+'</span><br><span class=\"meta\">'+time+' · '+coords[1].toFixed(1)+'°, '+coords[0].toFixed(1)+'° · '+coords[2]+'km depth · <a href=\"'+escapeHtml(p.url)+'\" target=\"_blank\" rel=\"noopener\">USGS ↗</a></span>';
+              listEl.appendChild(div);
+            });
+          }
+          state._lastQuakes=feats;
+        }catch(e){
+          if(cntEl) cntEl.textContent='Quake check failed';
+          if(listEl) listEl.innerHTML='<div class=\"quake-item\">Could not reach USGS — <a href=\"https://earthquake.usgs.gov/\" target=\"_blank\" rel=\"noopener\">open USGS ↗</a></div>';
+        }
+      }
+      if(el.quakeCheckBtn) el.quakeCheckBtn.addEventListener('click', checkQuakes);
+      if(el.quakeSonifyBtn) el.quakeSonifyBtn.addEventListener('click', ()=>{
+        const feats=state._lastQuakes||[];
+        if(!feats.length){ announce('No quake data yet'); return; }
+        feats.slice(0,6).forEach((f,i)=>{
+          const mag=f.properties.mag||0;
+          const t=Audio.init().currentTime+i*0.35;
+          const freq=80+mag*45; // M2→170Hz, M7→395Hz
+          const o=Audio.init().createOscillator(), g=Audio.init().createGain();
+          o.type= mag>=6?'square': mag>=4.5?'sawtooth':'sine'; o.frequency.value=freq;
+          g.gain.setValueAtTime(0.0001,t); g.gain.linearRampToValueAtTime(0.25,t+0.04); g.gain.exponentialRampToValueAtTime(0.0001,t+0.5);
+          o.connect(g); g.connect(Audio.master||Audio.init().destination); o.start(t); o.stop(t+0.55);
+        });
+        announce('Sonifying quakes by magnitude');
+      });
+      setTimeout(checkQuakes, 2000);
+    })();
+
     // drag, pinch and wheel on the stage
     el.stage.addEventListener('pointerdown', (e) => {
       if (state.mode !== '3d') return;
@@ -4405,7 +5346,7 @@
 
   // expose a tiny diagnostics hook for the console / automated smoke tests
   window.MSB_EARTH_VIEW = {
-    version: '2.5.0',
+    version: '3.5.0',
     state: state,
     features: () => ({ warmth: feat.warmth, lum: feat.lum, motion: feat.motion, freq: feat.freq, pan: feat.pan }),
     isBooted: () => booted,
